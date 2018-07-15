@@ -51,7 +51,7 @@ import copy
 #     #     return 0.25 * n * s**2 / math.tan(math.pi/n)
 
 
-class Location:
+class Location(object):
     # longitude, latitude represent a location in the globe, altitude represent the altitude in respect to the sea level
     def __init__(self, x, y, alt):
         self.x = x

@@ -29,16 +29,16 @@ def read_files(buildings_fullpath = 'C:\\Users\\Naama\\Documents\\Academy\\Cours
             f = open(file_full_path, 'r')
             lines = f.readlines()
             f.close()
-            num_of_buildings = len(lines)
+            num_of_lines = len(lines)
 
             file_name = os.path.splitext(basename(file))[0]
             if file_name == 'height':
-                lines_cor = lines[1:num_of_buildings]
+                lines_cor = lines[1:num_of_lines]
                 for line in lines_cor:
                     height_lst.append(float(line.split('.')[0]+'.' + line.split('.')[1][0:-2]))
 
             elif file_name == 'area':
-                lines_cor = lines[1:num_of_buildings]
+                lines_cor = lines[1:num_of_lines]
                 for line in lines_cor:
                     area_lst.append(float(line.split('.')[0] + '.' + line.split('.')[1][0:-2]))
                 # for line in it_lines:
@@ -47,18 +47,19 @@ def read_files(buildings_fullpath = 'C:\\Users\\Naama\\Documents\\Academy\\Cours
                 #     str_data = data + float_data[0]
                 #     val_data = float(str_data)
             elif file_name == 'location': # triple values?
-                lines_cor = lines[1:num_of_buildings]
+                lines_cor = lines[1:num_of_lines]
                 for line in lines_cor:
                     [x, y, alt] = line.split(', ')
-                    alt = float(alt.split('.')[0] + '.' + alt.split('.')[1][0:-2])
+                    x = x[1:len(x)]
+                    alt = float(alt.split('.')[0] + '.' + alt.split('.')[1][0:-3])
                     location_lst.append((float(x), float(y), float(alt)))
 
-        for idx in range(num_of_buildings-1):
+        for idx in range(num_of_lines-1):
             # (building_id, building_type, area, location, init_height)
             building = Building(prev_id + idx, subdir, area_lst[idx], location_lst[idx], height_lst[idx])
             all_building_onetype.append(building)
         buildings_data.append((subdir, all_building_onetype))
-        prev_id = num_of_buildings-1
+        prev_id = prev_id + num_of_lines-1
 
     return buildings_data
 
