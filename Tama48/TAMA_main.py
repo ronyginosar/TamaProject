@@ -5,13 +5,13 @@ import simulated_annealing
 
 if __name__ == '__main__':
 
-    dir_path = 'C:\\Users\\Naama\\Documents\\Academy\\Courses\\AI\\Tama48\\all_building_files';
+    dir_path = '..\\data'
     buildings_data = ext_data.read_files(dir_path)
 
     is_genetic = 1
-    additional_population = 100
+    add_housing_unit = 100
 
     if is_genetic:
-        new_plan = genetic_algorithm.find_solution(buildings_data, additional_population)
+        new_plan = genetic_algorithm.find_solution(buildings_data, add_housing_unit)
     else:
-        new_plan = simulated_annealing.find_solution(buildings_data, additional_population)
+        new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
