@@ -1,7 +1,7 @@
 import extract_GIS_data as ext_data
 import genetic_algorithm
-import simulated_annealing
-
+import min_conflict_algorithm
+import
 
 if __name__ == '__main__':
 
@@ -11,7 +11,10 @@ if __name__ == '__main__':
     is_genetic = 1
     add_housing_unit = 100
 
+
+
     if is_genetic:
         new_plan = genetic_algorithm.find_solution(buildings_data, add_housing_unit)
     else:
-        new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
+        new_plan = min_conflict_algorithm.find_solution(buildings_data, add_housing_unit)
+        #new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
