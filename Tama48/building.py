@@ -3,11 +3,10 @@ Created on July 2, 2018
 
 @author: Naama
 """
-from enum import Enum
-import copy
+#from enum import Enum
+#import copy
 #import numpy as np
 #import math
-
 
 # class BuildingType(Enum):
 #     # TODO: edit more in details, like different types of public buildings..

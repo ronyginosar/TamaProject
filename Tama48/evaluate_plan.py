@@ -1,52 +1,52 @@
-"""
-buildings_data: list of tuples, each tuple contains (buildings_type, list of all Building objects in this type)
-additional_height: tuple of (building_id(int), additional_height(meters))
-type_importance_dict:
-"""
+import needs
 
-PERCENTAGE = 100
-# recommended class size
-CLASS_SIZE = 27
-#KINDERGARDEN_M2 = 130
-KINDERGARDEN_NUM_GROUPS = 3
+class EvaluatePlan(object):
+    """
+    init_state: includes all values of Building as object i.e
+    [(kindergarden, [B1, B2, ..]), ((hospital, [B7, B8, ..])), ...]
 
-class Needs(object):
-    def __init__(self, buildings_data,  add_housing_units, avg_family_size = 3.2, age_percentage18 = 2.0, religious_percentage= 20.0):
-        self.buildings_data = buildings_data
-        self.add_housing_units = add_housing_units
-        self.avg_family_size = avg_family_size
-        self.age_percentage18 = age_percentage18
-        self.religious_percentage = religious_percentage
+    plan_hights_state: includes all values of ONLY heights as object i.e
+    [(kindergarden, [h1, h2, ..]), ((hospital, [h7, h8, ..])), ...]
 
-        # overall population in avarge to add given the housing unit we add
-        self.add_population = self.add_housing_units * self.avg_family_size
-        # number of kids in a certain age (for ex. 102 kids in the age of 10 yo)
-        self.age_size = self.add_population / PERCENTAGE
-        # number of classes per age to add
-        self.class_rooms_per_age = self.age_size/ CLASS_SIZE
+    needs is an object of Needs. it's a "singleton" for one run,
+    i.e for onerequest of additional population, we create this object only once.
+    """
+    def __init__(self, init_state, plan_hights_state, needs):
 
-        self.all_building_types = [building[0] for building in self.buildings_data]
-        avg_imp = 1/(len(self.all_building_types)-1) # -1 for not considering the residential
-        for building in self.buildings_data:
-            self.type_importance_dict[building] = avg_imp
+        self.init_state = init_state
+        self.plan_hights_state = plan_hights_state
+        self.needs = needs
+        self.buildings_types = self.needs.buildings_types
 
-        # add units of public services
-        self.kindergarden_num = (self.age_size * KINDERGARDEN_NUM_GROUPS)/ CLASS_SIZE
+    def check_plan(self):
+        # all_needs = needs.get_all_needs
 
-    def calc_all_needs(self):
-        all_needs_dict = dict()
-        for building in self.buildings_data:
-            if building[0] == 'kindergarden':
-                all_needs_dict[building[0]] = self.kindergarden_num
-            # if ....
+        evaluate_plan = 1
+        for b_type in self.buildings_types:
+            needs_for_type = needs.get_needs_for_type(b_type)
+            evaluated_for_type = self.evaluate_plan_for_type(b_type, needs_for_type)
 
-        return all_needs_dict
+            # in  case of better conditions than needs, still having 1 as rank
+            evaluate_plan *= max(evaluated_for_type/needs_for_type)
+            # evaluate_plan *= (evaluated_for_type/needs_for_type)
 
-    # TODO calc for genetic iterations..
-    # def calc_plan_evaluation(additional_height):
-    #     plan_grade = 0.0
-    #     for building_type in self.buildings_data:
-    #         imp = self.type_importance_dict[building_type]
-    #         plan_grade += self.calc_specific_plan_evaluation(building_type)*imp
-    #
-    #     return plan_grade
+    """
+    needs_for_type are in units of m^2.
+    """
+    def evaluate_plan_for_type(self, b_type, needs_for_type):
+        buildings_in_type = [building[1] for building in self.init_state if building[0] == b_type][0]
+
+        sum_m2 = 0
+        idx = 0
+        if b_type != 'residential':
+            for building in buildings_in_type:
+                sum_m2 += building.area * self.plan_hights_state[idx]
+
+                # add another function between 0-1 related to the distances..
+
+                # more??
+
+                idx += 1
+        else:
+            # maybe to check something else, in this case, it is mandatory to have number of meters per person...
+            pass
