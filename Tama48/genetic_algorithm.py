@@ -1,7 +1,7 @@
 import evaluate_plan
+import needs
 import random
 
-<<<<<<< HEAD
 MUTATION_PROB = 0.03
 
 # creates a random state
@@ -46,10 +46,14 @@ def reproduce(population, buildings_data, add_housing_unit, all_needs):
 def get_best_state(population):
     pass #TODO implement
 
+
+
+################################################################
+
 # the main algorithm structure
 def find_solution(buildings_data, add_housing_unit, k=16, num_iterations=20):
-    needs = evaluate_plan.Needs(buildings_data, add_housing_unit)
-    all_needs = needs.calc_all_needs()
+    our_needs = needs.Needs(buildings_data, add_housing_unit)
+    all_needs = our_needs.calc_all_needs()
 
     population = generate_random_population(k, buildings_data, add_housing_unit, all_needs)
 
@@ -57,39 +61,6 @@ def find_solution(buildings_data, add_housing_unit, k=16, num_iterations=20):
         reproduce(population, buildings_data, add_housing_unit, all_needs)
 
     best_state = get_best_state(population)
-||||||| merged common ancestors
-def find_solution(buildings_data, add_housing_unit):
-    additional_heights = []
-    building_types = [building[0] for building in buildings_data]
-    building_residential = []
-    needs = evaluate_plan.Needs(buildings_data, add_housing_unit)
-    all_needs = needs.calc_all_needs()
 
-    # TODO implement algorithm, implement 
-    for building in buildings_data:
-        if building[0] == 'residential':
-            building_residential == building[1]
-            break
-        else:
-            building_types.append(building)
-=======
-def genetic_solution(buildings_data, all_needs):
-    additional_heights = []
-    building_residential = []
-    building_types = []
-    # TODO implement algorithm, implement 
-    for building in buildings_data:
-        if building[0] == 'residential':
-            building_residential == building[1]
-            break
-        else:
-            building_types.append(building[0])
-
-    # type algorithm here
-    # for ...
-    #   new_plan_state = ...
-    #   additional_heights = evaluate_plan.EvaluatePlan(init_state, new_plan_state, all_needs)
-    # ...
->>>>>>> e238ad48a594a83acb9cca339035d79564cc1d11
 
     return best_state.get_heights_to_add()

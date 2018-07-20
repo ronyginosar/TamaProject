@@ -11,10 +11,10 @@ class EvaluatePlan(object):
     needs is an object of Needs. it's a "singleton" for one run,
     i.e for onerequest of additional population, we create this object only once.
     """
-    def __init__(self, init_state, plan_hights_state, needs):
+    def __init__(self, init_state, plan_heights_state, needs):
 
         self.init_state = init_state
-        self.plan_hights_state = plan_hights_state
+        self.plan_heights_state = plan_heights_state
         self.needs = needs
         self.buildings_types = self.needs.buildings_types
 
@@ -40,7 +40,7 @@ class EvaluatePlan(object):
         idx = 0
         if b_type != 'residential':
             for building in buildings_in_type:
-                sum_m2 += building.area * self.plan_hights_state[idx]
+                sum_m2 += building.area * self.plan_heights_state[idx]
 
                 # add another function between 0-1 related to the distances..
 
