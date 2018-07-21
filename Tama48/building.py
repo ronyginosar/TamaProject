@@ -84,5 +84,23 @@ class Building(object):
     def __str__(self):
         return "B_" + str(self.building_type) + "_" + str(self.id)
 
+    def get_id(self):
+        return self.id
+
+    def get_type(self):
+        return self.building_type
+
+    def get_area(self):
+        return self.area
+
+    def get_location(self):
+        return self.location
+
+    def get_init_height(self):
+        return self.init_height
+
+    def get_extra_height(self):
+        return self.extra_height
+
     # def __hash__(self):
     #     return hash(self.id)

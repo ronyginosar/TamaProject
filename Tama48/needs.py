@@ -38,6 +38,8 @@ KINDERGARDEN_NUM_GRADES = 3
 PRIMARY_NUM_GRADES = 6
 HS_NUM_GRADES = 4
 
+# square meters per housing unit
+METERS_PER_UNIT = 90
 
 class Needs(object):
     def __init__(self, buildings_types,  add_housing_units, avg_family_size = 3.2, age_percentage18 = 2.0, religious_percentage= 20.0):

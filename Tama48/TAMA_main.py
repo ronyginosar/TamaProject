@@ -24,7 +24,7 @@ if __name__ == '__main__':
     all_needs = needs.Needs(buildings_data, add_housing_unit)
 
     if is_genetic:
-        new_plan = genetic_algorithm.genetic_solution(buildings_data, all_needs)
+        new_plan = genetic_algorithm.find_solution(buildings_data, all_needs)
     else:
         new_plan = min_conflict_algorithm.min_conflict_solution(buildings_data, all_needs)
         # new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
