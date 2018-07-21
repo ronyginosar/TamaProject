@@ -16,3 +16,6 @@ class State(object):
 
     def get_heights_to_add(self):
         return self.additional_floors
+
+    def get_building_data(self):
+        return self.buildings_data
