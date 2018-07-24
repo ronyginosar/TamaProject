@@ -3,11 +3,10 @@ Created on July 2, 2018
 
 @author: Naama
 """
-from enum import Enum
-import copy
+#from enum import Enum
+#import copy
 #import numpy as np
 #import math
-
 
 # class BuildingType(Enum):
 #     # TODO: edit more in details, like different types of public buildings..
@@ -84,6 +83,24 @@ class Building(object):
 
     def __str__(self):
         return "B_" + str(self.building_type) + "_" + str(self.id)
+
+    def get_id(self):
+        return self.id
+
+    def get_type(self):
+        return self.building_type
+
+    def get_area(self):
+        return self.area
+
+    def get_location(self):
+        return self.location
+
+    def get_init_height(self):
+        return self.init_height
+
+    def get_extra_height(self):
+        return self.extra_height
 
     # def __hash__(self):
     #     return hash(self.id)
