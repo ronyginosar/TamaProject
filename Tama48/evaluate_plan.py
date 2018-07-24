@@ -44,7 +44,15 @@ class Needs(object):
         self.mikve_needs = ((self.add_population*self.religious_percentage/PERCENTAGE)/22.5)*0.007 * MIKVE_AREA
         self.cc_needs = 0
         self.ec_needs = 0
-        self.police =
+        if(self.add_population <7000):
+            self.police = 100
+        elif(self.add_population <15000):
+            self.police = 500
+
+        elif(self.add_population <40000):
+            self.police = 500
+        elif(self.add_population <100000):
+            self.police = 500
 
 
     #TODO all needs need to be in area
