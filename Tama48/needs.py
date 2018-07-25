@@ -54,15 +54,20 @@ class Needs(object):
         self.add_population = self.add_housing_units * self.avg_family_size
         # number of kids in a certain age (for ex. 102 kids in the age of 10 yo)
         self.grade_size = age_percentage18 * self.add_population / PERCENTAGE
+
+        # naama: just so it won't fail..
         #self.elderly_size =
+        self.age_size = self.grade_size
+        #####
 
         # number of classes per age to add
-        self.class_rooms_per_age = math.ceil(self.age_size / CLASS_SIZE)
+        self.class_rooms_per_age = math.ceil(self.age_size / CLASS_SIZE)  # naama: age_size or grade size?
 
         self.all_building_types = [building[0] for building in self.buildings_types]
         avg_imp = 1/(len(self.all_building_types)-1) # -1 for not considering the residential
+        self.type_importance_dict = {}
         for building in self.buildings_types:
-            self.type_importance_dict[building] = avg_imp
+            self.type_importance_dict[str(building)] = avg_imp
 
         # add units of public services
         self.kindergarden_needs = (self.grade_size * KINDERGARDEN_NUM_GRADES)/ CLASS_SIZE * CLASSROOM_AREA

@@ -20,15 +20,15 @@ def get_residential_buildings(buildings_data):
             residential_buildings = buildings_data[TYPE][BUILDINGS]
     return residential_buildings
 
-def generate_random_state(buildings_data, add_housing_unit, all_needs):
+def generate_random_state(buildings_data, add_housing_units, all_needs):
     additional_floors = []
 
     residential_buildings = get_residential_buildings(buildings_data)
 
-    # an array of division indexes to divide the housing units between the buildings
+    # an array of division indexes to divide the housing units between the residential(?) buildings
     random_division = []
     for i in range(len(residential_buildings)):
-        random_division.append(random.randint(add_housing_unit))
+        random_division.append(random.randint(0, add_housing_units))
     sorted(random_division)
 
     prev_apartments = 0
@@ -43,10 +43,10 @@ def generate_random_state(buildings_data, add_housing_unit, all_needs):
     # because we add each time only the integer number of floors, we might end up with less housing units than
     # we need, so here we cover for that
     units_added = get_units_added(residential_buildings, additional_floors)
-    if units_added < add_housing_unit:
-        additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_unit)
+    if units_added < add_housing_units:
+        additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_units)
         additional_public_floors = get_additional_public_floors(buildings_data, additional_floors, all_needs)
-    new_state = state.State(buildings_data, additional_floors, additional_public_floors)
+    new_state = state.State(buildings_data, additional_floors, additional_public_floors, all_needs)
 
     return new_state
 
@@ -91,7 +91,7 @@ def add_units(units_added, residential_buildings, additional_floors, add_housing
 
     # adds floors at random buildings, so that we will meet the housing units requirements
     while units_added < add_housing_unit:
-        building_to_enlarge = random.randint(len(residential_buildings) - 1)
+        building_to_enlarge = random.randint(0, len(residential_buildings) - 1)
         new_add_floors[building_to_enlarge] += 1
         units_added += int(residential_buildings[building_to_enlarge].get_area()/needs.METERS_PER_UNIT)
 
@@ -109,15 +109,13 @@ def merge(pair, add_housing_unit, all_needs, residential_buildings):
         #why 0.5??
         if random.random() > 0.5:
             additional_floors[i] = parent2_heights[i]
-<<<<<<< HEAD
     # when merging, we need to make sure that the additional housing units is as required
     units_added = get_units_added(additional_floors)
-=======
 
     # because we randomly combine the different states, we might end up with more or less housing units than
     # we need, so here we cover for that
     units_added = get_units_added(additional_floors, add_housing_unit)
->>>>>>> c8a6fb715332993335778700ced2325a05ec7648
+
     if units_added > add_housing_unit:
         additional_floors = reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit)
     if units_added < add_housing_unit:
@@ -161,16 +159,18 @@ def get_best_state(population):
 
 # the main algorithm structure
 """
-k: ??
-all_needs_dict: dict
-num_iterations: for 
+buildings_data- List<(string, List<Building>> string:building_type
+all_needs_dict- dict<string, int>, string:building_type, int:num_of_units
+add_housing_units- int:(user request) num of units to add
+k- int:num of children in each iterations??
+num_iterations- int: not of iteration of the algorithm.
 """
 def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, num_iterations=20):
 
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     for it in range(num_iterations):
-        reproduce(population, buildings_data, add_housing_unit, all_needs_dict)
+        reproduce(population, buildings_data, add_housing_units, all_needs_dict)
 
     best_state = get_best_state(population)
     return 0
