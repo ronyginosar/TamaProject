@@ -1,17 +1,20 @@
-import evaluate_plan
 import needs
 import state
 import random
 
+# TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
 MUTATION_PROB = 0.03
-
 TYPE = 0
 BUILDINGS = 1
 
-# creates a random state
+
+"""
+creates a random state
+"""
 def get_additional_public_floors(buildings_data, additional_floors, all_needs):
-    # TODO implement
+    # TODO: implement
     return 1
+
 
 def get_residential_buildings(buildings_data):
     residential_buildings = []
@@ -19,6 +22,7 @@ def get_residential_buildings(buildings_data):
         if type[TYPE] == 'residential':
             residential_buildings = buildings_data[TYPE][BUILDINGS]
     return residential_buildings
+
 
 def generate_random_state(buildings_data, add_housing_units, all_needs):
     additional_floors = []
@@ -51,7 +55,6 @@ def generate_random_state(buildings_data, add_housing_units, all_needs):
     return new_state
 
 
-
 # generates the first set of states
 def generate_random_population(pop_size, buildings_data, add_housing_unit, all_needs):
     population = []
@@ -60,19 +63,24 @@ def generate_random_population(pop_size, buildings_data, add_housing_unit, all_n
     return population
 
 
-# selects the top 25% of states, according to their score
+"""
+selects the top 25% of states, according to their score
+"""
 def get_top_individuals(population):
-    pass #TODO implement. don't forget to return at least 2 individuals
+    pass #TODO: implement. don't forget to return at least 2 individuals
 
 
-# creates a random merge of a pair
+"""
+creates a random merge of a pair
+"""
 def get_units_added(residential_buildings, additional_floors):
     units_added = 0
     for i in range(len(residential_buildings)):
         units_added += int(additional_floors[i]*residential_buildings[i].get_area()/needs.METERS_PER_UNIT)
     return units_added
 
-
+"""
+"""
 def reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit):
     new_add_floors = additional_floors
 
@@ -85,7 +93,8 @@ def reduce_units(units_added, residential_buildings, additional_floors, add_hous
 
     return new_add_floors
 
-
+"""
+"""
 def add_units(units_added, residential_buildings, additional_floors, add_housing_unit):
     new_add_floors = additional_floors
 
@@ -97,6 +106,8 @@ def add_units(units_added, residential_buildings, additional_floors, add_housing
 
     return new_add_floors
 
+"""
+"""
 def merge(pair, add_housing_unit, all_needs, residential_buildings):
     parent1 = pair[0]
     parent2 = pair[1]
@@ -125,7 +136,8 @@ def merge(pair, add_housing_unit, all_needs, residential_buildings):
 
     return new_state
 
-
+"""
+"""
 def get_pair(elite):
     first, second = elite[random.randint(0,len(elite)-1)]
     while first == second:
@@ -133,7 +145,9 @@ def get_pair(elite):
     return (first, second)
 
 
-# creates a new set of states, by reproducing the top states in the population
+"""
+creates a new set of states, by reproducing the top states in the population
+"""
 def reproduce(population, buildings_data, add_housing_unit, all_needs):
     new_pop = []
     residential_buildings = get_residential_buildings(buildings_data)
@@ -146,7 +160,9 @@ def reproduce(population, buildings_data, add_housing_unit, all_needs):
     return new_pop
 
 
-# returns the best state of a group of states
+"""
+returns the best state of a group of states
+"""
 def get_best_state(population):
     best_state = population[0]
     for individual in population:
@@ -157,13 +173,14 @@ def get_best_state(population):
 
 ################################################################
 
-# the main algorithm structure
 """
-buildings_data- List<(string, List<Building>> string:building_type
-all_needs_dict- dict<string, int>, string:building_type, int:num_of_units
-add_housing_units- int:(user request) num of units to add
-k- int:num of children in each iterations??
-num_iterations- int: not of iteration of the algorithm.
+the main algorithm structure
+
+@:param buildings_data- List<(string, List<Building>> string:building_type (from building_types.py file)
+@:param all_needs_dict- dict<string, int>, string:building_type, int:num_of_units
+@:param add_housing_units- int:(user request) num of units to add
+@:param k- int:num of children in each iterations??
+@:param num_iterations- int: not of iteration of the algorithm.
 """
 def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, num_iterations=20):
 

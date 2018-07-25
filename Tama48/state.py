@@ -1,15 +1,18 @@
-import evaluate_plan
+import evaluate_plan as ep
+import building_types
 
 class State(object):
     """
-    buildings_data
+    init State CTOR
+    @:param buildings_data- List<(string, List<Building>>, string:building_type (from building_types.py file)
+    @:param all_needs_dict- dict<string, int>, string:building_type, int:num_of_units
+    @:param additional_floors_resd- List<int, int>, first int: building_id, second int:number of floors to add.
     """
-    def __init__(self, buildings_data, additional_floors, additional_floors_resd, all_needs):
+    def __init__(self, buildings_data, additional_floors_resd, all_needs_dict):
         self.buildings_data = buildings_data
         self.additional_floors_resd = additional_floors_resd
         self.additional_floors = []
-
-        self.eval_plan = evaluate_plan.EvaluatePlan(buildings_data, additional_floors, all_needs)
+        self.evaluate_plan_obj = None
         self.score = self.calc_score()
 
     # returns the score of this state
@@ -17,12 +20,19 @@ class State(object):
         return self.score
 
     def calc_public_state(self):
+        #TODO: to implement!
         self.additional_floors.append(("residential", self.additional_floors_resd))
-        buildings_in_type = [building[1] for building in self.building_data if building[0] != "residential"][0]
 
+        b_public_types = [b_type for b_type in building_types.all_building_types()
+                          if b_type != building_types.RESIDENTIAL][0]
     def calc_score(self):
         self.calc_public_state()
-        return 0 #TODO implement
+        self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, self.additional_floors, self.all_needs_dict)
+        self.score = building_types.DISTANCE_PERCTG * self.evaluate_plan_obj.calc_plan_score()
+        return self.score
+
+    def evaluate_distance_score(self):
+        pass
 
     def get_heights_to_add(self):
         return self.additional_floors_resd

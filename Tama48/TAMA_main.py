@@ -12,13 +12,13 @@ import needs
 if __name__ == '__main__':
 
     # dir_path = '..\\..\\data'
+    # buildings_data - List < (string, List < Building >>, string:building_type
     buildings_data = ext_data.read_files()
 
     is_genetic = 1
     add_housing_units = 100
 
     # calculate needs
-    building_types = [building[0] for building in buildings_data]
     all_needs = needs.Needs(buildings_data, add_housing_units)
     all_needs_dict = all_needs.calc_all_needs()
 

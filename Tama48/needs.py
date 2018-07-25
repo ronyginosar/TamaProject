@@ -1,16 +1,7 @@
 import math
-
-# from enum import Enum
-# class BuildingType(Enum):
-#     kindergarden = 1
-#     primary_school = 2
-#     high_school = 3
-#     synagogue = 4
-#     community_center = 5
-#     elderly_center = 6
+import building_types
 
 PERCENTAGE = 100
-
 # recommended class size
 CLASS_SIZE = 30
 
@@ -25,6 +16,7 @@ PRIMARY_NUM_GRADES = 6
 HS_NUM_GRADES = 4
 
 # square meters per housing unit
+# TODO: Naama: which unit??? I think it is different from building types... to check!
 METERS_PER_UNIT = 90
 
 class Needs(object):
@@ -70,19 +62,18 @@ class Needs(object):
 
     def calc_all_needs(self):
         for building in self.buildings_types:
-            # TODO: change it to use the enum or the dictionary..?
             # TODO: finish all needs
-            if building[0] == 'kindergarden':
+            if building[0] == building_types.KINDERGARDEN:
                 self.all_needs_dict[building[0]] = self.kindergarden_needs
-            elif building[0] == 'primary_school':
+            elif building[0] == building_types.PRIMARY_SCHOOL:
                 self.all_needs_dict[building[0]] = self.primary_needs
-            elif building[0] == 'high_school':
+            elif building[0] == building_types.HIGH_SCHOOL:
                 self.all_needs_dict[building[0]] = self.hs_needs
-            elif building[0] == 'synagogue':
+            elif building[0] == building_types.SYNAGOUGE:
                 self.all_needs_dict[building[0]] = self.shul_needs
-            elif building[0] == 'community_center':
+            elif building[0] == building_types.COMMUNITY_CNTR:
                 self.all_needs_dict[building[0]] = self.cc_needs
-            elif building[0] == 'elderly_center':
+            elif building[0] == building_types.ELDERLY_CNTR:
                 self.all_needs_dict[building[0]] = self.ec_needs
 
         return self.all_needs_dict
