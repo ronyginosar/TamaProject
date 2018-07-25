@@ -9,20 +9,6 @@ import math
 #     community_center = 5
 #     elderly_center = 6
 
-B_TYPE_DICT = {1:  'clinic',
-               2:  'community_center',
-               3:  'elderly_center',
-               4:  'high_school',
-               5:  'hospital',
-               6:  'kindergarden',
-               7:  'mikve',
-               8:  'police',
-               9:  'primary_school',
-               10: 'residential',
-               11: 'sport',
-               12: 'synagogue'}
-
-
 PERCENTAGE = 100
 
 # recommended class size

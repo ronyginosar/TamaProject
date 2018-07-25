@@ -1,6 +1,14 @@
 #import needs
 #import math
 
+"""
+cost                    : more than 20% of the height is more expensive in x*money.
+                        : more than 12 floors- more expensive by y*money
+distance                :
+ratio to optimum needs  :
+"""
+
+
 def calc_distance_two_building(residential_building, public_building):
     loc1 = residential_building.get_location()
     loc2 = residential_building.get_location()
@@ -35,8 +43,7 @@ def evaluate_by_distance_all(residential_buildings, extra_heights_state, public_
 
 class EvaluatePlan(object):
     """
-    init_state: includes all values of Building as object i.e
-    [(kindergarden, [B1, B2, ..]), ((hospital, [B7, B8, ..])), ...]
+    init_state: List< String, List<Building>>: i.e [(kindergarden, [B1, B2, ..]), ((hospital, [B7, B8, ..])), ...]
 
     plan_hights_state: includes all values of ONLY heights as object i.e
     [(kindergarden, [h1, h2, ..]), ((hospital, [h7, h8, ..])), ...]
