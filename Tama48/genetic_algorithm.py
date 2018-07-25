@@ -13,14 +13,17 @@ def get_additional_public_floors(buildings_data, additional_floors, all_needs):
     # TODO implement
     return 1
 
-
-def generate_random_state(buildings_data, add_housing_unit, all_needs):
+def get_residential_buildings(buildings_data):
     residential_buildings = []
-    additional_floors = []
-
     for type in buildings_data:
         if type[TYPE] == 'residential':
             residential_buildings = buildings_data[TYPE][BUILDINGS]
+    return residential_buildings
+
+def generate_random_state(buildings_data, add_housing_unit, all_needs):
+    additional_floors = []
+
+    residential_buildings = get_residential_buildings(buildings_data)
 
     # an array of division indexes to divide the housing units between the buildings
     random_division = []
@@ -37,6 +40,8 @@ def generate_random_state(buildings_data, add_housing_unit, all_needs):
         floors_to_add = int(needed_area/floor_size)
         additional_floors.append(floors_to_add)
 
+    # because we add each time only the integer number of floors, we might end up with less housing units than
+    # we need, so here we cover for that
     units_added = get_units_added(residential_buildings, additional_floors)
     if units_added < add_housing_unit:
         additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_unit)
@@ -57,7 +62,7 @@ def generate_random_population(pop_size, buildings_data, add_housing_unit, all_n
 
 # selects the top 25% of states, according to their score
 def get_top_individuals(population):
-    pass #TODO implement
+    pass #TODO implement. don't forget to return at least 2 individuals
 
 
 # creates a random merge of a pair
@@ -92,7 +97,7 @@ def add_units(units_added, residential_buildings, additional_floors, add_housing
 
     return new_add_floors
 
-def merge(pair, add_housing_unit, all_needs):
+def merge(pair, add_housing_unit, all_needs, residential_buildings):
     parent1 = pair[0]
     parent2 = pair[1]
     buildings_data = parent1.get_building_data()
@@ -104,12 +109,19 @@ def merge(pair, add_housing_unit, all_needs):
         #why 0.5??
         if random.random() > 0.5:
             additional_floors[i] = parent2_heights[i]
+<<<<<<< HEAD
     # when merging, we need to make sure that the additional housing units is as required
     units_added = get_units_added(additional_floors)
+=======
+
+    # because we randomly combine the different states, we might end up with more or less housing units than
+    # we need, so here we cover for that
+    units_added = get_units_added(additional_floors, add_housing_unit)
+>>>>>>> c8a6fb715332993335778700ced2325a05ec7648
     if units_added > add_housing_unit:
-        additional_floors = reduce_units(additional_floors, add_housing_unit)
+        additional_floors = reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit)
     if units_added < add_housing_unit:
-        additional_floors = add_units(additional_floors, add_housing_unit)
+        additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_unit)
 
     new_state = state.State(buildings_data, additional_floors, get_additional_public_floors(buildings_data, additional_floors, all_needs))
 
@@ -126,9 +138,10 @@ def get_pair(elite):
 # creates a new set of states, by reproducing the top states in the population
 def reproduce(population, buildings_data, add_housing_unit, all_needs):
     new_pop = []
+    residential_buildings = get_residential_buildings(buildings_data)
     elite = get_top_individuals(population)
     while (len(new_pop) < len(population)):
-        new_individual = merge(get_pair(elite), add_housing_unit, all_needs)
+        new_individual = merge(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
         if (random.random() < MUTATION_PROB):
             new_individual = generate_random_state(buildings_data, add_housing_unit, all_needs)
         new_pop.append(new_individual)
