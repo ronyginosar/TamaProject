@@ -1,0 +1,12 @@
+CLINIC = 'clinic',
+COMMUNITY_CNTR = 'community_center',
+'elderly_center',
+               4: 'high_school',
+               5: 'hospital',
+               6: 'kindergarden',
+               7: 'mikve',
+               8: 'police',
+               9: 'primary_school',
+               10: 'residential',
+               11: 'sport',
+               12: 'synagogue'}
