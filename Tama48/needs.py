@@ -79,7 +79,8 @@ class Needs(object):
 
     def calc_all_needs(self):
         for building in self.buildings_types:
-            # TODO change it to use the enum or the dictionary..
+            # TODO: change it to use the enum or the dictionary..?
+            # TODO: finish all needs
             if building[0] == 'kindergarden':
                 self.all_needs_dict[building[0]] = self.kindergarden_needs
             elif building[0] == 'primary_school':
@@ -92,6 +93,8 @@ class Needs(object):
                 self.all_needs_dict[building[0]] = self.cc_needs
             elif building[0] == 'elderly_center':
                 self.all_needs_dict[building[0]] = self.ec_needs
+
+        return self.all_needs_dict
 
     # get values
     def get_needs_for_type(self, building_type):

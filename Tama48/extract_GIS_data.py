@@ -5,7 +5,7 @@ from os.path import isfile, join
 from os.path import basename
 
 
-def read_files(buildings_fullpath = 'C:\\Users\\Naama\\Documents\\Academy\\Courses\\AI\\Tama48\\all_building_files'):
+def read_files(buildings_fullpath = '..\\data'):
     prev_id = 0
     buildings_data = []
 

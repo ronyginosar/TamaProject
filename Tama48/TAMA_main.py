@@ -11,20 +11,21 @@ import needs
 
 if __name__ == '__main__':
 
-    dir_path = '..\\data'
-    buildings_data = ext_data.read_files(dir_path)
+    # dir_path = '..\\..\\data'
+    buildings_data = ext_data.read_files()
 
     is_genetic = 1
-    add_housing_unit = 100
+    add_housing_units = 100
 
     # calculate needs
-    additional_heights = []
     building_types = [building[0] for building in buildings_data]
-    building_residential = []
-    all_needs = needs.Needs(buildings_data, add_housing_unit)
+    all_needs = needs.Needs(buildings_data, add_housing_units)
+    all_needs_dict = all_needs.calc_all_needs()
 
+    # additional_heights = []
+    # building_residential = []
     if is_genetic:
-        new_plan = genetic_algorithm.find_solution(buildings_data, all_needs)
+        new_plan = genetic_algorithm.genetic_solution(buildings_data, all_needs, add_housing_units)
     else:
-        new_plan = min_conflict_algorithm.min_conflict_solution(buildings_data, all_needs)
+        new_plan = min_conflict_algorithm.min_conflict_solution(buildings_data, all_needs, add_housing_units)
         # new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)

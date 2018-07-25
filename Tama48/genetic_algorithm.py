@@ -10,7 +10,8 @@ BUILDINGS = 1
 
 # creates a random state
 def get_additional_public_floors(buildings_data, additional_floors, all_needs):
-    pass #TODO implement
+    # TODO implement
+    return 1
 
 
 def generate_random_state(buildings_data, add_housing_unit, all_needs):
@@ -39,10 +40,11 @@ def generate_random_state(buildings_data, add_housing_unit, all_needs):
     units_added = get_units_added(residential_buildings, additional_floors)
     if units_added < add_housing_unit:
         additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_unit)
-
-    new_state = state.State(buildings_data, additional_floors, get_additional_public_floors(buildings_data, additional_floors, all_needs))
+        additional_public_floors = get_additional_public_floors(buildings_data, additional_floors, all_needs)
+    new_state = state.State(buildings_data, additional_floors, additional_public_floors)
 
     return new_state
+
 
 
 # generates the first set of states
@@ -99,9 +101,10 @@ def merge(pair, add_housing_unit, all_needs):
 
     additional_floors = parent1.get_heights_to_add()
     for i in range(len(additional_floors)):
+        #why 0.5??
         if random.random() > 0.5:
             additional_floors[i] = parent2_heights[i]
-
+    # when merging, we need to make sure that the additional housing units is as required
     units_added = get_units_added(additional_floors)
     if units_added > add_housing_unit:
         additional_floors = reduce_units(additional_floors, add_housing_unit)
@@ -141,20 +144,21 @@ def get_best_state(population):
     return best_state
 
 
-
 ################################################################
 
 # the main algorithm structure
-def find_solution(buildings_data, add_housing_unit, k=16, num_iterations=20):
-    our_needs = needs.Needs(buildings_data, add_housing_unit)
-    all_needs = our_needs.calc_all_needs()
+"""
+k: ??
+all_needs_dict: dict
+num_iterations: for 
+"""
+def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, num_iterations=20):
 
-    population = generate_random_population(k, buildings_data, add_housing_unit, all_needs)
+    population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     for it in range(num_iterations):
-        reproduce(population, buildings_data, add_housing_unit, all_needs)
+        reproduce(population, buildings_data, add_housing_unit, all_needs_dict)
 
     best_state = get_best_state(population)
-
-
-    return best_state.get_heights_to_add()
+    return 0
+    #return best_state.get_heights_to_add()
