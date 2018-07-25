@@ -1,6 +1,7 @@
 import needs
 import state
 import random
+import building_types
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
 MUTATION_PROB = 0.03
@@ -11,27 +12,16 @@ BUILDINGS = 1
 """
 creates a random state
 """
-# creates a random state  # TODO rony: does min_conf need it??
+# TODO rony: does min_conf need it??
+# TODO: Naama: I don't understand what is the reason for that here. please talk to me- I'll implement it inside state!!
 def get_additional_public_floors(buildings_data, additional_floors, all_needs):
-    # TODO: implement
     return 1
 
+# TODO: TO CHECK IMPLEMENTATION, Naama: some comments!
+def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  # TODO rony: does min_conf need it??
+    additional_floors_resd = []
 
-# def get_residential_buildings(buildings_data):
-
-def get_residential_buildings(buildings_data):  # TODO rony: does min_conf need it??
-
-    residential_buildings = []
-    for type in buildings_data:
-        if type[TYPE] == 'residential':
-            residential_buildings = buildings_data[TYPE][BUILDINGS]
-    return residential_buildings
-
-
-def generate_random_state(buildings_data, add_housing_units, all_needs):  # TODO rony: does min_conf need it??
-    additional_floors = []
-
-    residential_buildings = get_residential_buildings(buildings_data)
+    residential_buildings = building_types.find_buildings_in_type(building_types.RESIDENTIAL, buildings_data)
 
     # an array of division indexes to divide the housing units between the residential(?) buildings
     random_division = []
@@ -46,19 +36,25 @@ def generate_random_state(buildings_data, add_housing_units, all_needs):  # TODO
         floor_size = residential_buildings[i].get_area()
         needed_area = needs.METERS_PER_UNIT*num_units
         floors_to_add = int(needed_area/floor_size)
-        additional_floors.append(floors_to_add)
+        additional_floors_resd.append(floors_to_add)
 
     # because we add each time only the integer number of floors, we might end up with less housing units than
     # we need, so here we cover for that
-    units_added = get_units_added(residential_buildings, additional_floors)
+    units_added = get_units_added(residential_buildings, additional_floors_resd)
     if units_added < add_housing_units:
-        additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_units)
-        additional_public_floors = get_additional_public_floors(buildings_data, additional_floors, all_needs)
-    new_state = state.State(buildings_data, additional_floors, additional_public_floors, all_needs)
+        # TODO: Naama: are you sure you want to assign additional_floors_resd again? but I didn't follow it actually..
+        additional_floors_resd = add_units(units_added, residential_buildings, additional_floors_resd, add_housing_units)
+
+    new_state = state.State(buildings_data, additional_floors_resd, all_needs_dict)
+    # TODO: Naama: do not assign additional_public_floors, it will be during the calculation of the state's score.
+    # TODO: Naama: if you need this value please use: new_state.calc_public_state()
+    #    additional_public_floors = get_additional_public_floors(buildings_data, additional_floors, all_needs)
+    #new_state = state.State(buildings_data, additional_floors, additional_public_floors, all_needs)
 
     return new_state
 
 # generates the first set of states
+# TODO: TO CHECK IMPLEMENTATION
 def generate_random_population(pop_size, buildings_data, add_housing_unit, all_needs):
     population = []
     for i in range(pop_size):
@@ -68,14 +64,15 @@ def generate_random_population(pop_size, buildings_data, add_housing_unit, all_n
 """
 selects the top 25% of states, according to their score
 """
+#TODO: to implement. don't forget to return at least 2 individuals
 def get_top_individuals(population):
-    pass #TODO: implement. don't forget to return at least 2 individuals
+    pass
 
 """
 creates a random merge of a pair
 """
-
-# creates a random merge of a pair   # TODO rony: is this the right comment for this function?
+# TODO Rony: is this the right comment for this function?
+# TODO: TO CHECK IMPLEMENTATION
 def get_units_added(residential_buildings, additional_floors):
     units_added = 0
     for i in range(len(residential_buildings)):
@@ -84,6 +81,7 @@ def get_units_added(residential_buildings, additional_floors):
 
 """
 """
+# TODO: TO CHECK IMPLEMENTATION
 def reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit):
     new_add_floors = additional_floors
 
@@ -98,6 +96,7 @@ def reduce_units(units_added, residential_buildings, additional_floors, add_hous
 
 """
 """
+# TODO: TO CHECK IMPLEMENTATION
 def add_units(units_added, residential_buildings, additional_floors, add_housing_unit):
     new_add_floors = additional_floors
 
@@ -111,6 +110,7 @@ def add_units(units_added, residential_buildings, additional_floors, add_housing
 
 """
 """
+# TODO: TO CHECK IMPLEMENTATION
 def merge(pair, add_housing_unit, all_needs, residential_buildings):
     parent1 = pair[0]
     parent2 = pair[1]
@@ -141,6 +141,7 @@ def merge(pair, add_housing_unit, all_needs, residential_buildings):
 
 """
 """
+# TODO: TO CHECK IMPLEMENTATION
 def get_pair(elite):
     first, second = elite[random.randint(0,len(elite)-1)]
     while first == second:
@@ -151,9 +152,10 @@ def get_pair(elite):
 """
 creates a new set of states, by reproducing the top states in the population
 """
+# TODO: TO CHECK IMPLEMENTATION
 def reproduce(population, buildings_data, add_housing_unit, all_needs):
     new_pop = []
-    residential_buildings = get_residential_buildings(buildings_data)
+    residential_buildings = building_types.find_buildings_in_type(building_types.RESIDENTIAL, buildings_data)
     elite = get_top_individuals(population)
     while (len(new_pop) < len(population)):
         new_individual = merge(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
@@ -166,6 +168,7 @@ def reproduce(population, buildings_data, add_housing_unit, all_needs):
 """
 returns the best state of a group of states
 """
+# TODO: TO CHECK IMPLEMENTATION
 def get_best_state(population):
     best_state = population[0]
     for individual in population:
@@ -185,6 +188,7 @@ the main algorithm structure
 @:param k- int:num of children in each iterations??
 @:param num_iterations- int: not of iteration of the algorithm.
 """
+# TODO: TO CHECK IMPLEMENTATION
 def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, num_iterations=20):
 
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)

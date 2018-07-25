@@ -78,7 +78,7 @@ class Needs(object):
 
         return self.all_needs_dict
 
-    # get values
+    # get values for all needs
     def get_needs_for_type(self, building_type):
         for building in self.buildings_types:
             if building[0] == building_type:
