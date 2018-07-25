@@ -8,23 +8,19 @@ TYPE = 0
 BUILDINGS = 1
 
 
-<<<<<<< HEAD
 """
 creates a random state
 """
-=======
 # creates a random state  # TODO rony: does min_conf need it??
->>>>>>> 5c00eb802f135617263c6b5a9d30a12bd7d35fca
 def get_additional_public_floors(buildings_data, additional_floors, all_needs):
     # TODO: implement
     return 1
 
 
-<<<<<<< HEAD
-def get_residential_buildings(buildings_data):
-=======
+# def get_residential_buildings(buildings_data):
+
 def get_residential_buildings(buildings_data):  # TODO rony: does min_conf need it??
->>>>>>> 5c00eb802f135617263c6b5a9d30a12bd7d35fca
+
     residential_buildings = []
     for type in buildings_data:
         if type[TYPE] == 'residential':
@@ -32,11 +28,7 @@ def get_residential_buildings(buildings_data):  # TODO rony: does min_conf need 
     return residential_buildings
 
 
-<<<<<<< HEAD
-def generate_random_state(buildings_data, add_housing_units, all_needs):
-=======
 def generate_random_state(buildings_data, add_housing_units, all_needs):  # TODO rony: does min_conf need it??
->>>>>>> 5c00eb802f135617263c6b5a9d30a12bd7d35fca
     additional_floors = []
 
     residential_buildings = get_residential_buildings(buildings_data)
@@ -66,7 +58,6 @@ def generate_random_state(buildings_data, add_housing_units, all_needs):  # TODO
 
     return new_state
 
-
 # generates the first set of states
 def generate_random_population(pop_size, buildings_data, add_housing_unit, all_needs):
     population = []
@@ -74,21 +65,17 @@ def generate_random_population(pop_size, buildings_data, add_housing_unit, all_n
         population.append(generate_random_state(buildings_data, add_housing_unit, all_needs))
     return population
 
-
 """
 selects the top 25% of states, according to their score
 """
 def get_top_individuals(population):
     pass #TODO: implement. don't forget to return at least 2 individuals
 
-
-<<<<<<< HEAD
 """
 creates a random merge of a pair
 """
-=======
+
 # creates a random merge of a pair   # TODO rony: is this the right comment for this function?
->>>>>>> 5c00eb802f135617263c6b5a9d30a12bd7d35fca
 def get_units_added(residential_buildings, additional_floors):
     units_added = 0
     for i in range(len(residential_buildings)):
@@ -122,12 +109,8 @@ def add_units(units_added, residential_buildings, additional_floors, add_housing
 
     return new_add_floors
 
-<<<<<<< HEAD
 """
 """
-=======
-
->>>>>>> 5c00eb802f135617263c6b5a9d30a12bd7d35fca
 def merge(pair, add_housing_unit, all_needs, residential_buildings):
     parent1 = pair[0]
     parent2 = pair[1]
