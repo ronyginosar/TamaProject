@@ -10,7 +10,8 @@ def read_files(buildings_fullpath = '..\\data'):
     buildings_data = []
 
     type_idx = 0
-    all_types_dirs = [x[1] for x in os.walk(buildings_fullpath)][0]
+
+    all_types_dirs = os.listdir(buildings_fullpath)  # [x[1] for x in os.walk(buildings_fullpath)][0]
     for subdir in all_types_dirs:
         location_lst = []
         height_lst = []
