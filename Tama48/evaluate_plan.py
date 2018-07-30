@@ -50,16 +50,16 @@ all residential building' new area (of the new state) * all distances of them to
 normalized to 0-1, for probability preferences.
 """
 # TODO: TO CHECK IMPLEMENTATION
-def evaluate_buildings_distances_for_type(data_buildings_resd, extra_floors_state, public_buildings_sametype):
-    svg_dist_lst = []
+def evaluate_buildings_distances_for_type(buildings_data_resd, extra_floors_state, public_buildings_sametype):
+    avg_dist_lst = []
     for public_building in public_buildings_sametype:
         svg_dist = 0.0
-        for resi_building in data_buildings_resd:
-            extra_area = extra_floors_state[resi_building.id] * resi_building.area
-            svg_dist += util.calc_distance_two_buildings(resi_building, public_building) * extra_area
-        svg_dist_lst.append(svg_dist)
-    sum_svg_dist_lst = sum(svg_dist_lst)
-    sum_svg_dist_lst_prob = [avg_dist / sum_svg_dist_lst for avg_dist in svg_dist_lst]
+        for resd_building in buildings_data_resd:
+            extra_area = extra_floors_state[resd_building.id] * resd_building.area
+            svg_dist += util.calc_distance_two_buildings(resd_building, public_building) * extra_area
+        avg_dist_lst.append(svg_dist)
+    sum_svg_dist_lst = sum(avg_dist_lst)
+    sum_svg_dist_lst_prob = [avg_dist / sum_svg_dist_lst for avg_dist in avg_dist_lst]
 
     # finally, duplicate the probability (importance) of the PUBLIC buildings with its extra height
     i = 0

@@ -81,9 +81,6 @@ class Building(object):
         # TODO: a dictionary of {building_type : (closest_building, distance)}
         # TODO: for example: {school : (school_1, 150)} for a school that is 150 meters from the building
 
-    def calc_building_volume(self):
-        return self.area*(self.init_height + self.extra_height)
-
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and self.id == other.id)
 
@@ -127,6 +124,9 @@ class Building(object):
 
     def get_extra_height(self):
         return self.extra_height
+
+    def get_overall_volume(self):
+        return (self.init_height + self.extra_height) * self.area
 
     # def __hash__(self):
     #     return hash(self.id)

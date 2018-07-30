@@ -20,12 +20,15 @@ def all_building_types():
     return [CLINIC, COMMUNITY_CNTR, ELDERLY_CNTR, HIGH_SCHOOL, HOSPITAL, KINDERGARDEN, MIKVE,
                               POLICE, PRIMARY_SCHOOL, RESIDENTIAL, SPORT, SYNAGOUGE]
 
+def all_public_building_types():
+    return [CLINIC, COMMUNITY_CNTR, ELDERLY_CNTR, HIGH_SCHOOL, HOSPITAL, KINDERGARDEN, MIKVE,
+                              POLICE, PRIMARY_SCHOOL, SPORT, SYNAGOUGE]
 
 def find_buildings_in_type(b_type, building_data):
     return [building[1] for building in building_data if building[0] == b_type][0]
 
 
-def find_buildings_public(b_type, building_data):
+def find_buildings_public(building_data):
     return [building for building in building_data if building[0] != RESIDENTIAL]
 
 
