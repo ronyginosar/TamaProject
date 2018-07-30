@@ -48,7 +48,8 @@ Created on July 2, 2018
 #     # # Another option for area
 #     # def area_polygon(self, n, s):
 #     #     return 0.25 * n * s**2 / math.tan(math.pi/n)
-
+import building_types as bt
+import util
 
 class Location(object):
     # longitude, latitude represent a location in the globe, altitude represent the altitude in respect to the sea level
@@ -57,7 +58,7 @@ class Location(object):
         self.y = y
         self.alt = alt
 
-
+# TODO: Naama
 def create_empty_nearest_public_list(pub_type_list):
     pub_dict = dict()
     for type in pub_type_list:
@@ -76,11 +77,9 @@ class Building(object):
         self.location = location
         self.init_height = init_height
         self.extra_height = 0
-        self.nearest_public_buildings = create_empty_nearest_public_list(pub_type_list) # TODO: a dictionary of
-        # TODO {building_type : (closest_building, distance)} for example:
-        # TODO {school : (school_1, 150)} for a school that is 150 meters from the building
-
-        # self.building_polygon = building_polygon # on top (roof)
+        self.nearest_public_buildings = create_empty_nearest_public_list(pub_type_list)
+        # TODO: a dictionary of {building_type : (closest_building, distance)}
+        # TODO: for example: {school : (school_1, 150)} for a school that is 150 meters from the building
 
     def calc_building_volume(self):
         return self.area*(self.init_height + self.extra_height)
@@ -94,7 +93,20 @@ class Building(object):
     def __str__(self):
         return "B_" + str(self.building_type) + "_" + str(self.id)
 
-    def add_nearest_public_building(self, type, building_object, dist): #TODO: use this function to load data
+    # TODO: TO Check implementation
+    def all_types_nearest_public_building(self, building_data):
+        for b_type in bt.all_building_types():
+            closest_building_per_type = None
+            min_distance_per_type = float('inf')
+            for building in bt.find_buildings_in_type(b_type, building_data):
+                dist = util.calc_distance_two_buildings(self, building)
+                if dist < min_distance_per_type:
+                    min_distance_per_type = dist
+                    closest_building_per_type = building
+            self.add_nearest_public_building(b_type, closest_building_per_type, dist)
+
+    # TODO: use this function to load data
+    def add_nearest_public_building(self, type, building_object, dist):
         self.nearest_public_buildings[type] = (building_object, dist)
 
     def get_id(self):

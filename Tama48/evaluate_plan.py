@@ -1,4 +1,5 @@
 import building_types as bt
+import util
 
 """
 3 main evaluations methods:
@@ -38,19 +39,6 @@ def get_additional_public_floors(buildings_data, additional_floors, all_needs):
     pass
 
 ########################### DISTANCE ##############################
-"""
-Done!
-distance between centers of two buildings
-usually for one public, one residential
-"""
-# TODO: TO CHECK IMPLEMENTATION
-def calc_distance_two_buildings(buildings_resd, building_public):
-    loc1 = buildings_resd.get_location()
-    loc2 = building_public.get_location()
-
-    euclid_dist = pow(pow(loc1.x - loc2.x, 2) + pow(loc1.y - loc2.y, 2), 0.5)
-    return euclid_dist
-
 
 """
 evaluate distance of all buildings from all public buildings from one building_type.
@@ -68,7 +56,7 @@ def evaluate_buildings_distances_for_type(data_buildings_resd, extra_floors_stat
         svg_dist = 0.0
         for resi_building in data_buildings_resd:
             extra_area = extra_floors_state[resi_building.id] * resi_building.area
-            svg_dist += calc_distance_two_buildings(resi_building, public_building) * extra_area
+            svg_dist += util.calc_distance_two_buildings(resi_building, public_building) * extra_area
         svg_dist_lst.append(svg_dist)
     sum_svg_dist_lst = sum(svg_dist_lst)
     sum_svg_dist_lst_prob = [avg_dist / sum_svg_dist_lst for avg_dist in svg_dist_lst]

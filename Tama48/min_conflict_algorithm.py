@@ -1,5 +1,4 @@
 import evaluate_plan
-<<<<<<< HEAD
 import building_types as bt
 
 def min_conflict_solution(buildings_data, all_needs):
@@ -13,7 +12,6 @@ def min_conflict_solution(buildings_data, all_needs):
             break
         else:
             bt.append(building[0])
-=======
 import building_types
 import util
 
@@ -48,11 +46,6 @@ def min_conflict_solution(buildings_data, all_needs, housing_units_to_add):
 
     return added_floors
 
-
-
-
-
-
     # additional_heights = []
     # building_residential = []
     # building_types = []
@@ -63,7 +56,6 @@ def min_conflict_solution(buildings_data, all_needs, housing_units_to_add):
     #         break
     #     else:
     #         building_types.append(building[0])
->>>>>>> 6afc155f11c541c8fd4d2d5d90c83d66ae00b69b
 
     # type algorithm here
     # for ...

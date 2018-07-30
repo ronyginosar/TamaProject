@@ -1,12 +1,9 @@
 import needs
 import state
 import random
-<<<<<<< HEAD
 import building_types as bt
-=======
 import building_types
 import util
->>>>>>> 6afc155f11c541c8fd4d2d5d90c83d66ae00b69b
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
 MUTATION_PROB = 0.03

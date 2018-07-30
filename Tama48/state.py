@@ -42,7 +42,7 @@ class State(object):
         self.score = self.evaluate_plan_obj.calc_plan_score()
         return self.score
 
-    # TODO: To implement
+    # TODO: Naaama: To implement
     def evaluate_distance_score(self):
         pass
 
