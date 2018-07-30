@@ -1,6 +1,17 @@
 import evaluate_plan
 
 def min_conflict_solution(buildings_data, all_needs):
+
+    # main idea of min-conflict algorithm: in each iteration, check the conflicts, and add a floor to the
+    # building with least conflict. (I think that the right way to do it is to check violations of the
+    # optimal values (for example - 20 kids in a classroom, where each additional child is a conflict)
+
+    # a for loop, iterating over all the residential buildings and counts their conflicts
+
+
+
+
+
     additional_heights = []
     building_residential = []
     building_types = []
