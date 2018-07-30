@@ -1,7 +1,12 @@
 import needs
 import state
 import random
+<<<<<<< HEAD
 import building_types as bt
+=======
+import building_types
+import util
+>>>>>>> 6afc155f11c541c8fd4d2d5d90c83d66ae00b69b
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
 MUTATION_PROB = 0.03
@@ -40,7 +45,7 @@ def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  #
 
     # because we add each time only the integer number of floors, we might end up with less housing units than
     # we need, so here we cover for that
-    units_added = get_units_added(residential_buildings, additional_floors_resd)
+    units_added = util.get_units_added(residential_buildings, additional_floors_resd)
     if units_added < add_housing_units:
         # TODO: Naama: are you sure you want to assign additional_floors_resd again? but I didn't follow it actually..
         additional_floors_resd = add_units(units_added, residential_buildings, additional_floors_resd, add_housing_units)
@@ -68,16 +73,6 @@ selects the top 25% of states, according to their score
 def get_top_individuals(population):
     pass
 
-"""
-creates a random merge of a pair
-"""
-# TODO Rony: is this the right comment for this function?
-# TODO: TO CHECK IMPLEMENTATION
-def get_units_added(residential_buildings, additional_floors):
-    units_added = 0
-    for i in range(len(residential_buildings)):
-        units_added += int(additional_floors[i]*residential_buildings[i].get_area()/needs.METERS_PER_UNIT)
-    return units_added
 
 """
 """
@@ -124,11 +119,11 @@ def merge(pair, add_housing_unit, all_needs, residential_buildings):
         if random.random() > 0.5:
             additional_floors[i] = parent2_heights[i]
     # when merging, we need to make sure that the additional housing units is as required
-    units_added = get_units_added(additional_floors)
+    units_added = util.get_units_added(additional_floors)
 
     # because we randomly combine the different states, we might end up with more or less housing units than
     # we need, so here we cover for that
-    units_added = get_units_added(additional_floors, add_housing_unit)
+    units_added = util.get_units_added(additional_floors, add_housing_unit)
 
     if units_added > add_housing_unit:
         additional_floors = reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit)

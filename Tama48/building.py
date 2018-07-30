@@ -58,8 +58,15 @@ class Location(object):
         self.alt = alt
 
 
+def create_empty_nearest_public_list(pub_type_list):
+    pub_dict = dict()
+    for type in pub_type_list:
+        pub_dict[type] = (None, None)
+    return pub_dict
+
+
 class Building(object):
-    def __init__(self, building_id, building_type, area, location, init_height):
+    def __init__(self, building_id, building_type, area, location, init_height, pub_type_list):
         """
         Constructor
         """
@@ -69,11 +76,14 @@ class Building(object):
         self.location = location
         self.init_height = init_height
         self.extra_height = 0
+        self.nearest_public_buildings = create_empty_nearest_public_list(pub_type_list) # TODO: a dictionary of
+        # TODO {building_type : (closest_building, distance)} for example:
+        # TODO {school : (school_1, 150)} for a school that is 150 meters from the building
 
         # self.building_polygon = building_polygon # on top (roof)
 
     def calc_building_volume(self):
-        return self.building_area*(self.init_height + self.extra_height)
+        return self.area*(self.init_height + self.extra_height)
 
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and self.id == other.id)
@@ -83,6 +93,9 @@ class Building(object):
 
     def __str__(self):
         return "B_" + str(self.building_type) + "_" + str(self.id)
+
+    def add_nearest_public_building(self, type, building_object, dist): #TODO: use this function to load data
+        self.nearest_public_buildings[type] = (building_object, dist)
 
     def get_id(self):
         return self.id
