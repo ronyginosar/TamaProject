@@ -44,7 +44,6 @@ def read_files(buildings_fullpath = '../data'):
                 f.close()
                 num_of_lines = len(lines)
 
-<<<<<<< HEAD
             file_name = os.path.splitext(basename(file))[0]
             if file_name == HEIGHT:
                 lines_cor = lines[1:num_of_lines]
@@ -67,7 +66,7 @@ def read_files(buildings_fullpath = '../data'):
                     x = x[1:len(x)]
                     alt = float(alt.split('.')[0] + '.' + alt.split('.')[1][0:-3])
                     location_lst.append((float(x), float(y), float(alt)))
-=======
+
                 file_name = os.path.splitext(basename(file))[0]
                 if file_name == 'height':
                     lines_cor = lines[1:num_of_lines]
@@ -90,7 +89,6 @@ def read_files(buildings_fullpath = '../data'):
                         x = x[1:len(x)]
                         alt = float(alt.split('.')[0] + '.' + alt.split('.')[1][0:-3])
                         location_lst.append((float(x), float(y), float(alt)))
->>>>>>> cff3e091a67c87fc939cc527c03b054f275fe144
 
         for idx in range(num_of_lines-1):
             # (building_id, building_type, area, location, init_height)

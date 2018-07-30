@@ -20,7 +20,7 @@ if __name__ == '__main__':
     add_housing_units = 100
 
     # calculate needs
-    all_needs_dict = needs.Needs(buildings_data, add_housing_units)
+    all_needs_dict = needs.calc_needs(buildings_data, add_housing_units)
 
     # additional_heights = []
     # building_residential = []
