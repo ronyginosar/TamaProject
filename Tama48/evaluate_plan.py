@@ -105,9 +105,6 @@ def evaluate_plan_needs_for_type(b_type, plan_floors_state, all_residentials, ne
     if sum_m2 < needs_for_type:
         return 0
 
-"""
-for MIN_CONFLICT case: when need to evaluate per building
-"""
 # TODO: implemnt
 def calc_plan_building_score_needs(resd_building_obj):
     building_needs_score = 1
@@ -117,30 +114,27 @@ def calc_plan_building_score_needs(resd_building_obj):
 ########################### COST ##############################
 
 """
-for MIN_CONFLICT case: when need to evaluate per building
-"""
-"""
 example, if I have 10 floors, and added:
   <=2 floors. multiply score by 1 (best score!)
   = 3 floors. multiply score by
   = 12 floors. multiply score by min(COST_MORE_NUM_FLOORS, score*(COST_MORE_PRSTG)^(extra_floors))
 """
 # TODO: TO CHECK IMPLEMENTATION
-def calc_plan_building_score_cost(resd_building_obj):
+def calc_plan_building_score_cost(building_obj):
     building_cost_score = 1
 
-    resd_init_floors = resd_building_obj.init_height
-    resd_extra_floors = resd_building_obj.extra_height
+    init_floors = building_obj.init_height
+    extra_floors = building_obj.extra_height
 
-    ratio = resd_extra_floors/resd_init_floors
+    ratio = extra_floors/init_floors
     floor_prctg_score = 1
 
     if ratio >= FLOORS_PRCTG:
-        extra_extra = resd_extra_floors - PERCENTAGE * FLOORS_PRCTG
+        extra_extra = extra_floors - PERCENTAGE * FLOORS_PRCTG
         cost_more_prct_extra_extra_floor = pow(COST_MORE_PRSTG, extra_extra)
         floor_prctg_score = cost_more_prct_extra_extra_floor
 
-    if resd_extra_floors + resd_init_floors > COST_MORE_NUM_FLOORS:
+    if extra_floors + init_floors > COST_MORE_NUM_FLOORS:
         building_cost_score = min(floor_prctg_score, COST_MORE_NUM_FLOORS)
 
     return building_cost_score
@@ -165,21 +159,22 @@ class EvaluatePlan(object):
         self.plan_distance = -1
         self.plan_cost = -1
 
-    """
-    in this case we do it for min-conflict: we need to evaluate for each building it's score (higher = better value)
-    """
+    # """
+    # in this case we do it for min-conflict: we need to evaluate for each building it's score (higher = better value)
+    # """
     # TODO: TO CHECK IMPLEMENTATION
-    def calc_plan_building(self, resd_building_obj, resd_building_extra_floors):
-
-        score_needs = calc_plan_building_score_needs(resd_building_obj) / self.calc_plan_needs()
-        score_distance = calc_plan_building_score_distance(resd_building_obj) / self.calc_plan_distance()
-        score_cost = calc_plan_building_score_cost(resd_building_obj) * COST_PRCTG / self.calc_plan_cost()
-
-        return (score_needs * NEEDS_PRCTG) + (score_distance * DISTANCE_PERCTG) + (score_cost * COST_PRCTG)
+    # def calc_plan_building(self, resd_building_obj, resd_building_extra_floors):
+    #
+    #     score_needs = calc_plan_building_score_needs(resd_building_obj) / self.calc_plan_needs()
+    #     score_distance = calc_plan_building_score_distance(resd_building_obj) / self.calc_plan_distance()
+    #     score_cost = calc_plan_building_score_cost(resd_building_obj) * COST_PRCTG / self.calc_plan_cost()
+    #
+    #     return (score_needs * NEEDS_PRCTG) + (score_distance * DISTANCE_PERCTG) + (score_cost * COST_PRCTG)
 
     ################################### EVALUATE OVERALL PLAN ###################################
 
     # TODO finish implementation
+
     def __calc_plan_cost(self):
         # already calculated:
         if self.plan_cost != -1:
@@ -231,11 +226,11 @@ class EvaluatePlan(object):
 
         return self.plan_distance
 
-    # TODO: TO CHECK IMPLEMENTATION
+    # TODO: READY
     def calc_plan_score(self):
         # weighted evaluation
-        return self.calc_plan_needs() * NEEDS_PRCTG + \
-               self.calc_plan_distance() * DISTANCE_PERCTG + \
-               self.calc_plan_cost() * COST_PRCTG
+        return self.__calc_plan_needs() * NEEDS_PRCTG + \
+               self.__calc_plan_distance() * DISTANCE_PERCTG + \
+               self.__calc_plan_cost() * COST_PRCTG
 
 
