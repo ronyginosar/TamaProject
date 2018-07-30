@@ -4,6 +4,9 @@ from os import listdir
 from os.path import isfile, join
 from os.path import basename
 
+HEIGHT = 'height'
+AREA = 'area'
+LOCATION = 'location'
 
 def read_files(buildings_fullpath = '../data'):
     prev_id = 0
@@ -41,12 +44,12 @@ def read_files(buildings_fullpath = '../data'):
             num_of_lines = len(lines)
 
             file_name = os.path.splitext(basename(file))[0]
-            if file_name == 'height':
+            if file_name == HEIGHT:
                 lines_cor = lines[1:num_of_lines]
                 for line in lines_cor:
                     height_lst.append(float(line.split('.')[0]+'.' + line.split('.')[1][0:-2]))
 
-            elif file_name == 'area':
+            elif file_name == AREA:
                 lines_cor = lines[1:num_of_lines]
                 for line in lines_cor:
                     area_lst.append(float(line.split('.')[0] + '.' + line.split('.')[1][0:-2]))
@@ -55,7 +58,7 @@ def read_files(buildings_fullpath = '../data'):
                 #     float_data = [s for s in ff.split() if s.isdigit()]
                 #     str_data = data + float_data[0]
                 #     val_data = float(str_data)
-            elif file_name == 'location': # triple values?
+            elif file_name == LOCATION: # triple values?
                 lines_cor = lines[1:num_of_lines]
                 for line in lines_cor:
                     [x, y, alt] = line.split(', ')
@@ -71,17 +74,3 @@ def read_files(buildings_fullpath = '../data'):
         prev_id = prev_id + num_of_lines-1
 
     return buildings_data
-
-# def create_files():
-#     dist_building_data = create_csp_files()
-#
-#     domain_str = "propositions: ["
-#     problem_str = "init_state: ["
-#
-#     for building in dist_building_data:
-#          problem_str += str(building) + " "
-#     problem_str += "]\n"
-#
-#     list_of_volumes = [ for (id, building) in dist_building_data]
-#
-#     return
