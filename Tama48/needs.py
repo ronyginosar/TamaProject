@@ -19,7 +19,7 @@ RESD_METER_PER_UNIT = 90 # TODO: Naama: Temp
 SQMETER_PER_PERSON = 22 # TODO: Naama: it wasn't in the file of AJ. This is what I remember.. is it correct Adi, AJ??
 
 
-def one_unit_in_meters(b_type):
+def one_unit_in_meter_square(b_type):
     # TODO: for AJ or Adi: To implement according to document of excel.
     if b_type == bt.CLINIC:
         # TODO: to check
@@ -56,7 +56,7 @@ def one_unit_in_meters(b_type):
 
 def get_residential_sum_area(building_data):
     resd_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, building_data)
-    all_areas = [resd_building.area for resd_building in resd_buildings]
+    all_areas = [resd_building.get_area() for resd_building in resd_buildings]
     return sum(all_areas)
 
 # elderly_percentage=10, avg_family_size = 3.2, but we didn't use it!
@@ -87,7 +87,7 @@ def calc_needs(buildings_data, add_housing_units, age_percentage18=2.0, religiou
     # POLICE
     previous_police = 0
     for building in bt.find_buildings_in_type(bt.POLICE, buildings_data):
-        previous_police += building.area
+        previous_police += building.get_area()
     if add_population + original_population < 7000:
         police_needs = max(100 - previous_police, 0)
     elif add_population + original_population <15000:
@@ -98,19 +98,19 @@ def calc_needs(buildings_data, add_housing_units, age_percentage18=2.0, religiou
         police_needs = max(3600 - previous_police, 0)
     else:
         police_needs = max(4400 - previous_police, 0)
-    police_needs /= math.ceil(one_unit_in_meters(bt.POLICE))
+    police_needs /= math.ceil(one_unit_in_meter_square(bt.POLICE))
 
     # COMMUNITY CENTER
     previous_community = 0
     for building in bt.find_buildings_in_type(bt.COMMUNITY_CNTR, buildings_data):
-        previous_community += building.area
+        previous_community += building.get_area()
     if add_population + original_population <300:
         community_center_needs = max(250 - previous_community, 0)
     elif add_population + original_population <600:
         community_center_needs = max(400 - previous_community, 0)
     else:
         community_center_needs = max(750 - previous_community, 0)
-    community_center_needs /= one_unit_in_meters(bt.COMMUNITY_CNTR)
+    community_center_needs /= one_unit_in_meter_square(bt.COMMUNITY_CNTR)
 
     # ELDERLY CENTER
     # TODO: Naama: to add according to some percentage of the elderly popultion??
@@ -119,7 +119,7 @@ def calc_needs(buildings_data, add_housing_units, age_percentage18=2.0, religiou
     # CLINIC
     previous_health_clinic = 0
     for building in bt.find_buildings_in_type(bt.CLINIC, buildings_data):
-        previous_health_clinic += building.area
+        previous_health_clinic += building.get_area()
 
     if add_population + original_population <300:
         health_clinic_needs = max(300 - previous_health_clinic, 0)
@@ -127,7 +127,7 @@ def calc_needs(buildings_data, add_housing_units, age_percentage18=2.0, religiou
         health_clinic_needs = max(500 - previous_health_clinic, 0)
     else:
         health_clinic_needs = max(1000 - previous_health_clinic, 0)
-    health_clinic_needs /= one_unit_in_meters(bt.CLINIC)
+    health_clinic_needs /= one_unit_in_meter_square(bt.CLINIC)
 
     # HOSPITAL
     hospital_needs = 0
