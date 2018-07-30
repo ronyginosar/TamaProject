@@ -13,24 +13,9 @@ PERCENTAGE = 100
 
 FLOORS_PRCTG = 0.2
 FLOORS_NUM = 12
-COST_MORE_PRSTG = 0.9
+COST_MORE_PRSTG = 0.95
 COST_MORE_NUM_FLOORS = 0.1
 
-"""
-:param init_buildings_data- initial param data.
-:param additional_floors_resd
-:param b_type, public building type to add units
-:param all_needs
-return: List<int, int>, first int: building_id, second int:number of floors to add.
-is a solution for public public from type b_type
-"""
-# TODO: to implement
-def get_public_floors(init_buildings_data, additional_floors_resd, b_type, all_needs):
-    public_floors_lst = []
-
-    return public_floors_lst
-
-########################### DISTANCE ##############################
 
 """
 evaluate distance of all buildings from all public buildings from one building_type.
@@ -63,7 +48,6 @@ class EvaluatePlan(object):
     :param all_needs: Dist<building_type, int>, building_type: as in building_types.py, int: num of units.
     """
     def __init__(self, init_buildings_data, plan_floors_resd_state, all_needs):
-
         self.__init_buildings_data = init_buildings_data
         self.__init_buildings_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, init_buildings_data)
         self.__buildings_data_public = bt.find_buildings_public(bt.RESIDENTIAL, init_buildings_data)
@@ -73,18 +57,16 @@ class EvaluatePlan(object):
         # TODO: of ONLY residential buildings. the result will be stores in __updated_building_data_resd
         self.__updated_building_data_resd = bt.update_building_data_with_floors_plan(self.init_buildings_data_resd,
                                                                                   plan_floors_resd_state)
-
-        # TODO: TO ADI: do you need this? I mean an updated state of residential and public #(of floors)?
-        self.__plan_floors_state_all = []
-
-        # like __init_building_data, just with the RESIDENTIAL (state) extra floors, and calculated extra PUBLIC floors.
-        self.__updated_building_data_all = []
-
-        self.__calculate_public_plan()
-
         self.__plan_needs_score = -1
         self.__plan_distance_score = -1
         self.__plan_cost_score = -1
+
+        # CALCULATE PUBLIC PLAN, and update retult in __init_building_data
+        # like __init_building_data, updated with extra floors of the given RESIDENTIAL (state), and the calculated PUBLIC
+        self.__updated_building_data_all = []
+        self.__calculate_public_plan()
+
+    ############################## CALCULATE PUBLIC PLAN ##############################
 
     """
     calculate the vector of probabilities for each public type,
@@ -151,39 +133,29 @@ class EvaluatePlan(object):
             if building_type != bt.RESIDENTIAL:
                 building.set_extra_height(add_extra_floors_dict[building_type][building.get_id()])
 
-    # def get_plan_floors_state_all(self):
-    #     return self.__plan_floors_state_all
 
     ############################## EVALUATION AFTER CALCULATION OF PUBLIC PLAN ##############################
 
-    def __calc_plan_cost(self):
+    # TODO TO CHECK IMPLEMENTATION,
+    def __evaluate_plan_cost(self):
         # already calculated:
         if self.__plan_cost_score != -1:
             return self.__plan_cost_score
 
-        # first time, should calculate it
         self.__plan_cost_score = 1
-        for building in self.__plan_floors_state:
-            # TODO implement
-            self.__plan_cost_score *= 1  #max(evaluated_for_type / needs_for_type, 1)
+        for building in self.__updated_building_data_all:
+            original_height = building.get_extra_height()
+            extra_height = building.get_extra_height()
+            extra_extra = max(extra_height - math.ceil(FLOORS_PRCTG * original_height), 0)
+            cost = pow(COST_MORE_PRSTG, extra_extra)
+            if extra_height >= FLOORS_NUM:
+                cost = min(COST_MORE_NUM_FLOORS, cost)
+
+            self.__plan_cost_score *= cost  # max(evaluated_for_type / needs_for_type, 1)
 
         return self.__plan_cost_score
 
-    # TODO TO CHECK IMPLEMENTATION, few questions
     # TODO: TO CHECK IMPLEMENTATION
-    def __evaluate_plan_needs_for_public_type(self, b_type, needs_for_type):
-
-        buildings_in_type = bt.find_buildings_in_type(b_type, self.__init_buildings_data)
-
-        sum_m2 = 0
-        if b_type != bt.RESIDENTIAL:
-            for building in buildings_in_type:
-                sum_m2 += building.area * self.__plan_floors_state[building.get_id()] # * bt.floors_given_buldingID_type(self.__plan_floors_state, building.get_id(), b_type)
-
-        # for now, the requested needs are mandatory!!!
-        if sum_m2 < needs_for_type:
-            return 0
-
     def __evaluate_plan_needs(self):
         # already calculated:
         if self.__plan_needs_score != -1:
@@ -193,17 +165,27 @@ class EvaluatePlan(object):
         self.__plan_needs_score = 1
         # for all buildings, including residential and public!!
         for b_type in bt.all_building_types():
-            # TODO: Naama: Temp untill we have 'Needs' finished, temporarily = 10
-            needs_for_type = 10  # self.__all_needs.get_needs_for_type(b_type)
+            unit_needs_for_type = self.__all_needs[b_type]
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
-            evaluated_for_type = self.__evaluate_plan_needs_for_public_type(b_type, needs_for_type)
+
+            buildings_in_type = bt.find_buildings_in_type(b_type, self.__init_buildings_data)
+            units_for_type = 0
+            for building in buildings_in_type:
+                units_for_type += building.get_area() * self.__plan_floors_state[building.get_id()]
 
             # TODO: Naama: in case of better conditions than what is needed, still having 1 as rank ???
-            # TODO: Naama: maybe if ratio>1, than take ratio-1 ???
-            self.__plan_needs_score *= max(evaluated_for_type / needs_for_type, 1)
+            # TODO: Naama: maybe if ratio>1, than take ratio-1 or just to take max(ratio, 1)???
+            ratio = 0
+            if units_for_type >= unit_needs_for_type:
+                ratio = unit_needs_for_type / units_for_type
+            else:
+                ratio = units_for_type / unit_needs_for_type
+            if unit_needs_for_type > 0:
+                self.__plan_needs_score *= ratio
+
         return self.__plan_needs_score
 
-    # TODO TO CHECK IMPLEMENTATION, few questions
+    # TODO: TO CHECK IMPLEMENTATION, few questions
     def __evaluate_plan_distance(self):
         # if already calculated:
         if self.__plan_distance != -1:
@@ -222,14 +204,16 @@ class EvaluatePlan(object):
             evaluated_for_type = 0.0
             for public_building in buildings_in_type:
                 sum_area_public_building = self.__plan_floors_state[public_building.id] \
-                                           * public_building.area * self.__plan_floors_state[public_building.id]
+                                           * public_building.get_area() * self.__plan_floors_state[public_building.id]
                 evaluated_for_type += sum_avg_dist_lst_prob[i] * sum_area_public_building
-                # TODO: take sum_svg_dist_lst_prob[i] * sum_area_public_building as output maybe
+                # TODO: take sum_avg_dist_lst_prob[i] * sum_area_public_building as output maybe
                 # TODO: so it will be good both for evalation and both calc_public_floors...
 
             self.__plan_distance *= max(evaluated_for_type, 1)
 
         return self.__plan_distance
+
+    ###################################    FOR OUTER USE    ######################################
 
     """
     Evaluate full plan, i.e. after public-plan has been calculated
@@ -237,12 +221,9 @@ class EvaluatePlan(object):
     # TODO: READY
     def evaluate_plan_score(self):
         # weighted evaluation
-        self.__evaluate_plan_needs()
-        self.__evaluate_plan_distance()
-        self.__evaluate_plan_cost()
-        return (self.__plan_needs * NEEDS_PRCTG) +\
-               (self.__plan_distance * DISTANCE_PERCTG) +\
-               (self.__plan_cost * COST_PRCTG)
+        return self.__evaluate_plan_needs() * NEEDS_PRCTG + \
+               self.__evaluate_plan_distance() * DISTANCE_PERCTG + \
+               self.__evaluate_plan_cost() * COST_PRCTG
 
     """
     get the calculated _updated_building_data, updated with residential and public both.
@@ -251,8 +232,5 @@ class EvaluatePlan(object):
     def get_updated_building_data_all(self):
         return self.__updated_building_data_all
 
-    # TODO: READY
-    def get_updated_building_data_floors_state(self):
-        return self.__plan_floors_state_all
 
 
