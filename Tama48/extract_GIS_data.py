@@ -5,13 +5,21 @@ from os.path import isfile, join
 from os.path import basename
 
 
-def read_files(buildings_fullpath = '..\\data'):
+def read_files(buildings_fullpath = '../data'):
     prev_id = 0
     buildings_data = []
 
     type_idx = 0
 
-    all_types_dirs = os.listdir(buildings_fullpath)  # [x[1] for x in os.walk(buildings_fullpath)][0]
+    all_types_dirs = []
+
+    for i in os.listdir(buildings_fullpath):
+        if i != '.DS_Store':
+            all_types_dirs.append(i)
+
+    if all_types_dirs == []:
+        exit() # something went wrong with the directories
+
     for subdir in all_types_dirs:
         location_lst = []
         height_lst = []
