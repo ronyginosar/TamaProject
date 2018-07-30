@@ -96,14 +96,15 @@ class Building(object):
     # TODO: TO Check implementation
     def all_types_nearest_public_building(self, building_data):
         for b_type in bt.all_building_types():
-            closest_building_per_type = None
-            min_distance_per_type = float('inf')
-            for building in bt.find_buildings_in_type(b_type, building_data):
-                dist = util.calc_distance_two_buildings(self, building)
-                if dist < min_distance_per_type:
-                    min_distance_per_type = dist
-                    closest_building_per_type = building
-            self.add_nearest_public_building(b_type, closest_building_per_type, dist)
+            if b_type != bt.RESIDENTIAL:
+                closest_building_per_type = None
+                min_distance_per_type = float('inf')
+                for building in bt.find_buildings_in_type(b_type, building_data):
+                    dist = util.calc_distance_two_buildings(self, building)
+                    if dist < min_distance_per_type:
+                        min_distance_per_type = dist
+                        closest_building_per_type = building
+                self.add_nearest_public_building(b_type, closest_building_per_type, dist)
 
     # TODO: use this function to load data
     def add_nearest_public_building(self, type, building_object, dist):
