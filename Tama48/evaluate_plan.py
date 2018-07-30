@@ -1,4 +1,4 @@
-import building_types
+import building_types as bt
 
 """
 3 main evaluations methods:
@@ -105,13 +105,13 @@ def calc_plan_building_score_distance(self, resd_building_obj):
 # TODO: TO CHECK IMPLEMENTATION
 def evaluate_plan_needs_for_type(b_type, plan_floors_state, all_residentials, needs_for_type):
 
-    buildings_in_type = building_types.find_buildings_in_type()
+    buildings_in_type = bt.find_buildings_in_type()
 
     sum_m2 = 0
-    if b_type != building_types.RESIDENTIAL:
+    if b_type != bt.RESIDENTIAL:
         for building in buildings_in_type:
             sum_m2 += building.area * \
-                      building_types.floors_given_buldingID_type(plan_floors_state, building.get_id(), b_type)
+                      bt.floors_given_buldingID_type(plan_floors_state, building.get_id(), b_type)
 
     # for now, the requested needs are mandatory!!!
     if sum_m2 < needs_for_type:
@@ -168,8 +168,8 @@ class EvaluatePlan(object):
     def __init__(self, buildings_data, plan_floors_state, all_needs):
 
         self.buildings_data = buildings_data
-        self.buildings_data_resd = building_types.find_buildings_in_type(building_types.RESIDENTIAL, buildings_data)
-        self.buildings_data_public = building_types.find_buildings_public(building_types.RESIDENTIAL, buildings_data)
+        self.buildings_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
+        self.buildings_data_public = bt.find_buildings_public(bt.RESIDENTIAL, buildings_data)
         self.plan_floors_state = plan_floors_state
         self.all_needs = all_needs
 
@@ -214,7 +214,7 @@ class EvaluatePlan(object):
         # first time, should calculate it
         self.plan_needs = 1
         # for all buildings, including residential and public!!
-        for b_type in building_types.all_building_types():
+        for b_type in bt.all_building_types():
             # TODO: Naama: Temp untill we have 'Needs' finished, temporarily = 10
             needs_for_type = 10  # self.all_needs.get_needs_for_type(b_type)
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
@@ -235,7 +235,7 @@ class EvaluatePlan(object):
         self.plan_distance = 1
         # loop over only public buildings!!
         for b_type in self.data_buildings_public:
-            buildings_in_type = building_types.find_buildings_in_type(b_type)
+            buildings_in_type = bt.find_buildings_in_type(b_type)
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
             evaluated_for_type = evaluate_buildings_distances_for_type(self.buildings_data_resd, self.plan_floors_state, buildings_in_type)
 

@@ -1,7 +1,7 @@
 import needs
 import state
 import random
-import building_types
+import building_types as bt
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
 MUTATION_PROB = 0.03
@@ -21,7 +21,7 @@ def get_additional_public_floors(buildings_data, additional_floors, all_needs):
 def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  # TODO rony: does min_conf need it??
     additional_floors_resd = []
 
-    residential_buildings = building_types.find_buildings_in_type(building_types.RESIDENTIAL, buildings_data)
+    residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
 
     # an array of division indexes to divide the housing units between the residential(?) buildings
     random_division = []
@@ -155,7 +155,7 @@ creates a new set of states, by reproducing the top states in the population
 # TODO: TO CHECK IMPLEMENTATION
 def reproduce(population, buildings_data, add_housing_unit, all_needs):
     new_pop = []
-    residential_buildings = building_types.find_buildings_in_type(building_types.RESIDENTIAL, buildings_data)
+    residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
     elite = get_top_individuals(population)
     while (len(new_pop) < len(population)):
         new_individual = merge(get_pair(elite), add_housing_unit, all_needs, residential_buildings)

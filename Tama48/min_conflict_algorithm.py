@@ -1,4 +1,5 @@
 import evaluate_plan
+import building_types as bt
 
 def min_conflict_solution(buildings_data, all_needs):
     additional_heights = []
@@ -10,7 +11,7 @@ def min_conflict_solution(buildings_data, all_needs):
             building_residential == building[1]
             break
         else:
-            building_types.append(building[0])
+            bt.append(building[0])
 
     # type algorithm here
     # for ...

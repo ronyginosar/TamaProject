@@ -1,3 +1,7 @@
+
+# TYPES and CONSTANTS
+# including Util Function...
+
 CLINIC = 'clinic'
 COMMUNITY_CNTR = 'community_center'
 ELDERLY_CNTR = 'elderly_center'
@@ -35,31 +39,4 @@ def floors_given_buldingID_type(plan_floors_state, buildingID, b_type):
 #     b_f_in_type = find_buildings_in_type(b_type, plan_floors_state)
 #     return [building_floor[1] for building_floor in b_f_in_type if building_floor[0] == buildingID][0]
 
-
-def one_unit_in_meters(b_type):
-    # TODO: for AJ or Adi: To implement according to document of excel.
-    if b_type == CLINIC:
-        return 100
-    elif b_type == COMMUNITY_CNTR:
-        return 100
-    elif b_type == ELDERLY_CNTR:
-        return 100
-    elif b_type == HIGH_SCHOOL:
-        return 100
-    elif b_type == HOSPITAL:
-        return 100
-    elif b_type == KINDERGARDEN:
-        return 100
-    elif b_type == MIKVE:
-        return 100
-    elif b_type == POLICE:
-        return 100
-    elif b_type == PRIMARY_SCHOOL:
-        return 100
-    elif b_type == RESIDENTIAL:
-        return 100
-    elif b_type == SPORT:
-        return 100
-    elif b_type == SYNAGOUGE:
-        return 100
-
+# recommended area for public buldings
