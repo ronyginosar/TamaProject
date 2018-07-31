@@ -4,6 +4,7 @@ import random
 import building_types as bt
 import building_types
 import util
+import math
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
 MUTATION_PROB = 0.03
@@ -19,33 +20,17 @@ creates a random state
 def get_additional_public_floors(buildings_data, additional_floors, all_needs):
     return 1
 
-# TODO: TO CHECK IMPLEMENTATION, Naama: some comments!
 def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  # TODO rony: does min_conf need it??
-    additional_floors_resd = []
 
     residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
 
-    # an array of division indexes to divide the housing units between the residential(?) buildings
-    random_division = []
-    for i in range(len(residential_buildings)):
-        random_division.append(random.randint(0, add_housing_units))
-    sorted(random_division)
+    additional_floors_resd = [0]*len(residential_buildings)
+    units_added = 0
 
-    prev_apartments = 0
-    for i in range(len(residential_buildings)):
-        num_units = random_division[i] - prev_apartments
-        prev_apartments = random_division[i]
-        floor_size = residential_buildings[i].get_area()
-        needed_area = needs.METERS_PER_UNIT*num_units
-        floors_to_add = int(needed_area/floor_size)
-        additional_floors_resd.append(floors_to_add)
-
-    # because we add each time only the integer number of floors, we might end up with less housing units than
-    # we need, so here we cover for that
-    units_added = util.get_units_added(residential_buildings, additional_floors_resd)
-    if units_added < add_housing_units:
-        # TODO: Naama: are you sure you want to assign additional_floors_resd again? but I didn't follow it actually..
-        additional_floors_resd = add_units(units_added, residential_buildings, additional_floors_resd, add_housing_units)
+    while units_added < add_housing_units:
+        building_to_rise = random.randint(0, add_housing_units)
+        additional_floors_resd[building_to_rise] += 1
+        units_added += util.get_units_added_to_one_building(residential_buildings[building_to_rise], 1)
 
     new_state = state.State(buildings_data, additional_floors_resd, all_needs_dict)
     # TODO: Naama: do not assign additional_public_floors, it will be during the calculation of the state's score.
@@ -76,13 +61,20 @@ def get_top_individuals(population):
 # TODO: TO CHECK IMPLEMENTATION
 def reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit):
     new_add_floors = additional_floors
+    raised_buildings = set()
+    for i in range(len(new_add_floors)):
+        if new_add_floors[i] > 0:
+            raised_buildings.add(i)
 
     # adds floors at random buildings, so that we will meet the housing units requirements
     while units_added > add_housing_unit:
-        building_to_shrink = random.randint(len(residential_buildings) - 1)
-        if new_add_floors[building_to_shrink] > 0:
-            new_add_floors[building_to_shrink] -= 1
-            units_added -= int(residential_buildings[building_to_shrink].get_area()/needs.METERS_PER_UNIT)
+        building_to_shrink = random.sample(raised_buildings, 1)[0]
+        new_add_floors[building_to_shrink] -= 1
+
+        if new_add_floors[building_to_shrink] == 0:
+            raised_buildings.remove(building_to_shrink)
+
+        units_added -= int(residential_buildings[building_to_shrink].get_area()/needs.METERS_PER_UNIT)
 
     return new_add_floors
 
