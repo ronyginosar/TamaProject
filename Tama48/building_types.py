@@ -1,4 +1,4 @@
-
+import copy
 # TYPES and CONSTANTS
 # including Util Function...
 
@@ -45,3 +45,19 @@ def get_building_by_id(building_data, buildingID):
     if buildingID >= len(building_data):
         return None
     return building_data[buildingID]
+
+"""
+@:param plan_floors_state is of the form []
+
+The use of this function-
+First step: plan_floors_state has values only of additional floors of residential buildings
+Second step: plan_floors_state has values of all floors: residential and public buildings.
+Make sure each time to send the init_buildings_data (as extracted from files) and not the init + step1)
+"""
+def update_building_data_with_floors_plan(init_buildings_resd, additional_floors_resd):
+    update_building_data_resd = copy.deepcopy(init_buildings_resd)
+    idx = 0
+    for building in update_building_data_resd:
+        building.extra_height = additional_floors_resd[idx]
+        idx += 1
+    return update_building_data_resd
