@@ -36,6 +36,8 @@ def read_files(buildings_fullpath = '../data'):
         if not onlyfiles:
             continue
         num_of_buildings = 0
+        print(subdir)
+
         for file in onlyfiles:
             if file != '.DS_Store':
                 file_full_path = join(buildings_dirpath, file)
@@ -45,50 +47,24 @@ def read_files(buildings_fullpath = '../data'):
                 num_of_lines = len(lines)
 
             file_name = os.path.splitext(basename(file))[0]
+            lines_cor = lines[1:num_of_lines]
             if file_name == HEIGHT:
-                lines_cor = lines[1:num_of_lines]
                 for line in lines_cor:
                     height_lst.append(float(line.split('.')[0]+'.' + line.split('.')[1][0:-2]))
+                print(HEIGHT + " ")
 
             elif file_name == AREA:
-                lines_cor = lines[1:num_of_lines]
                 for line in lines_cor:
                     area_lst.append(float(line.split('.')[0] + '.' + line.split('.')[1][0:-2]))
-                # for line in it_lines:
-                #     data = line.split('.')[0] + '.' + line.split('.')[1]
-                #     float_data = [s for s in ff.split() if s.isdigit()]
-                #     str_data = data + float_data[0]
-                #     val_data = float(str_data)
-            elif file_name == LOCATION: # triple values?
-                lines_cor = lines[1:num_of_lines]
+                print(AREA + " ")
+
+            elif file_name == LOCATION:
                 for line in lines_cor:
                     [x, y, alt] = line.split(', ')
                     x = x[1:len(x)]
                     alt = float(alt.split('.')[0] + '.' + alt.split('.')[1][0:-3])
                     location_lst.append((float(x), float(y), float(alt)))
-
-                file_name = os.path.splitext(basename(file))[0]
-                if file_name == 'height':
-                    lines_cor = lines[1:num_of_lines]
-                    for line in lines_cor:
-                        height_lst.append(float(line.split('.')[0]+'.' + line.split('.')[1][0:-2]))
-
-                elif file_name == 'area':
-                    lines_cor = lines[1:num_of_lines]
-                    for line in lines_cor:
-                        area_lst.append(float(line.split('.')[0] + '.' + line.split('.')[1][0:-2]))
-                    # for line in it_lines:
-                    #     data = line.split('.')[0] + '.' + line.split('.')[1]
-                    #     float_data = [s for s in ff.split() if s.isdigit()]
-                    #     str_data = data + float_data[0]
-                    #     val_data = float(str_data)
-                elif file_name == 'location': # triple values?
-                    lines_cor = lines[1:num_of_lines]
-                    for line in lines_cor:
-                        [x, y, alt] = line.split(', ')
-                        x = x[1:len(x)]
-                        alt = float(alt.split('.')[0] + '.' + alt.split('.')[1][0:-3])
-                        location_lst.append((float(x), float(y), float(alt)))
+                print(LOCATION + "\n")
 
         for idx in range(num_of_lines-1):
             # (building_id, building_type, area, location, init_height)
