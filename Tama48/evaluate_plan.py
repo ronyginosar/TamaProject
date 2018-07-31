@@ -50,7 +50,7 @@ class EvaluatePlan(object):
     def __init__(self, init_buildings_data, plan_floors_resd_state, all_needs):
         self.__init_buildings_data = init_buildings_data
         self.__init_buildings_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, init_buildings_data)
-        self.__buildings_data_public = bt.find_buildings_public(bt.RESIDENTIAL, init_buildings_data)
+        self.__buildings_data_public = bt.find_buildings_public(init_buildings_data)
         self.__plan_floors_resd_state = plan_floors_resd_state
         self.__all_needs = all_needs
         # TODO: TO ADI: this function is updating the the init_building_data with the new state of additional floors
