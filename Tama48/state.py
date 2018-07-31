@@ -12,10 +12,10 @@ class State(object):
         self.buildings_data = buildings_data
         self.additional_floors_resd = additional_floors_resd
         self.additional_floors_all = []
-        self.score = self.calc_score()
         self.all_needs_dict = all_needs_dict
+        self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, self.additional_floors_resd, self.all_needs_dict)
+        self.score = self.calc_score()
 
-        self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, self.additional_floors, self.all_needs_dict)
 
     # TODO: TO CHECK IMPLEMENTATION
     """
@@ -44,6 +44,9 @@ class State(object):
     def calc_score(self):
         self.score = self.evaluate_plan_obj.evaluate_plan_score()
         return self.score
+
+    def add_floor(self, building_to_increase, num_floors_to_add):
+        self.additional_floors_resd[building_to_increase.get_id()] += num_floors_to_add
 
     # TODO: TO CHECK IMPLEMENTATION
     def get_heights_to_add(self):

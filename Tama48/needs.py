@@ -18,6 +18,9 @@ METERS_PER_UNIT = 90 # TODO: Naama: is it all for both private and ALL pubic uni
 RESD_METER_PER_UNIT = 90 # TODO: Naama: Temp
 SQMETER_PER_PERSON = 22 # TODO: Naama: it wasn't in the file of AJ. This is what I remember.. is it correct Adi, AJ??
 
+BUILDING_TYPES = ['residential', 'clinic', 'community_center', 'elderly_center', 'high_school', 'kindergarten',
+                  'mikve', 'police', 'primary_school', 'sport', 'synagogue']
+
 
 def one_unit_in_meter_square(b_type):
     # TODO: for AJ or Adi: To implement according to document of excel.

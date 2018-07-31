@@ -24,15 +24,15 @@ def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  #
 
     residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
 
-    additional_floors_resd = [0]*len(residential_buildings)
+    added_floors_resd = [0]*len(residential_buildings)
     units_added = 0
 
     while units_added < add_housing_units:
         building_to_rise = random.randint(0, add_housing_units)
-        additional_floors_resd[building_to_rise] += 1
+        added_floors_resd[building_to_rise] += 1
         units_added += util.get_units_added_to_one_building(residential_buildings[building_to_rise], 1)
 
-    new_state = state.State(buildings_data, additional_floors_resd, all_needs_dict)
+    new_state = state.State(buildings_data, added_floors_resd, all_needs_dict)
     # TODO: Naama: do not assign additional_public_floors, it will be during the calculation of the state's score.
     # TODO: Naama: if you need this value please use: new_state.calc_public_state()
     #    additional_public_floors = get_additional_public_floors(buildings_data, additional_floors, all_needs)
@@ -180,6 +180,4 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
     for it in range(num_iterations):
         reproduce(population, buildings_data, add_housing_units, all_needs_dict)
 
-    best_state = get_best_state(population)
-    return 0
-    # return best_state.get_heights_to_add()
+    return get_best_state(population)

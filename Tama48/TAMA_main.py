@@ -25,7 +25,7 @@ if __name__ == '__main__':
     # additional_heights = []
     # building_residential = []
     if is_genetic:
-        new_plan = genetic_algorithm.genetic_solution(buildings_data, all_needs_dict, add_housing_units)
+        new_state = genetic_algorithm.genetic_solution(buildings_data, all_needs_dict, add_housing_units)
     else:
-        new_plan = min_conflict_algorithm.min_conflict_solution(buildings_data, all_needs_dict, add_housing_units)
+        new_state = min_conflict_algorithm.min_conflict_solution(buildings_data, all_needs_dict, add_housing_units)
         # new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)

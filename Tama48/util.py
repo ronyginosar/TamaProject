@@ -13,9 +13,9 @@ adds floors to a given list of additional floors (changes the original list)
 return: number of units added
 """
 # TODO: TO CHECK IMPLEMENTATION
-def add_floors(num_floors_to_add, additional_floors, building_to_increase):
-    additional_floors[building_to_increase.get_id()] += num_floors_to_add
-    return get_units_added_to_one_building(building_to_increase, additional_floors)
+def add_floors(num_floors_to_add, state_to_update, building_to_increase):
+    state_to_update.add_floor(building_to_increase, num_floors_to_add)
+    return get_units_added_to_one_building(building_to_increase, num_floors_to_add)
 
 
 """
