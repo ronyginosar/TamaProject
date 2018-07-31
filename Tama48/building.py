@@ -4,6 +4,8 @@ Created on July 2, 2018
 @author: Naama
 """
 import math
+import util
+import building_types as bt
 
 class Location(object):
     # longitude, latitude represent a location in the globe, altitude represent the altitude in respect to the sea level
@@ -32,7 +34,7 @@ class Building(object):
         self.__init_height = init_height
         self.__extra_height = 0
 
-        #self.__nearest_public_buildings = create_empty_nearest_public_list(pub_type_list)
+        self.__public_buildings_dist_ordered = dict()
         # TODO: a dictionary of {building_type : (closest_building, distance)}
         # TODO: for example: {school : (school_1, 150)} for a school that is 150 meters from the building
 
@@ -46,21 +48,12 @@ class Building(object):
         return "B_" + str(self.__building_type) + "_" + str(self.__id)
 
     # TODO: TO Check implementation
-    # def all_types_nearest_public_building(self, building_data):
-    #     for b_type in bt.all_building_types():
-    #         if b_type != bt.RESIDENTIAL:
-    #             closest_building_per_type = None
-    #             min_distance_per_type = float('inf')
-    #             for building in bt.find_buildings_in_type(b_type, building_data):
-    #                 dist = util.calc_distance_two_buildings(self, building)
-    #                 if dist < min_distance_per_type:
-    #                     min_distance_per_type = dist
-    #                     closest_building_per_type = building
-    #             self.add_nearest_public_building(b_type, closest_building_per_type, dist)
-
-    # TODO: use this function to load data
-    # def add_nearest_public_building(self, type, building_object, dist):
-    #     self.__nearest_public_buildings[type] = (building_object, dist)
+    def calc__public_building_dist_ordered(self, all_building_data):
+        for b_type in bt.all_public_building_types():
+            dist_buildings_in_type = [(building.get_id(), util.calc_distance_two_buildings(self, building))
+                                      for building in bt.find_buildings_in_type(b_type, all_building_data)]
+            # sort public building by distance
+            self.__public_buildings_dist_ordered[b_type] = sorted(dist_buildings_in_type, key=lambda x: x[1])
 
     def get_id(self):
         return self.__id
