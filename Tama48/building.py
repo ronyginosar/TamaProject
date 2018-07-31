@@ -7,6 +7,8 @@ import math
 import util
 import building_types as bt
 
+FLOOR_HEIGHT = 3
+
 class Location(object):
     # longitude, latitude represent a location in the globe, altitude represent the altitude in respect to the sea level
     def __init__(self, x, y, alt):
@@ -31,8 +33,8 @@ class Building(object):
         self.__building_type = building_type
         self.__area = area
         self.__location = location
-        self.__init_height = init_height
-        self.__extra_height = 0
+        self.__init_floors = math.ceil(init_height/FLOOR_HEIGHT)
+        self.__added_floors = 0
 
         self.__public_buildings_dist_ordered = dict()
         # TODO: a dictionary of {building_type : (closest_building, distance)}
@@ -68,15 +70,15 @@ class Building(object):
         return self.__location
 
     def get_init_height(self):
-        return self.__init_height
+        return self.__init_floors
 
     def get_extra_height(self):
-        return self.__extra_height
+        return self.__added_floors
 
     def set_extra_height(self, extra_floors):
-        self.__extra_height = math.ceil(extra_floors)
+        self.__added_floors = math.ceil(extra_floors)
 
     def get_overall_area(self):
-        return (self.__init_height + self.__extra_height) * self.__area
+        return (self.__init_floors + self.__added_floors) * self.__area
 
 

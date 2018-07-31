@@ -4,7 +4,7 @@ import building_types as bt
 PERCENTAGE = 100
 
 # recommended class size (num of student in class)
-CLASS_SIZE = 30
+CLASS_SIZE = 27
 
 # number of grades in group
 KINDERGARDEN_NUM_GRADES = 3
@@ -12,6 +12,8 @@ PRIMARY_NUM_GRADES = 6
 HS_NUM_GRADES = 4
 
 KINDERGATDEN_NUM_GRADES = 3
+
+AVG_FAMILY_SIZE = 3.32
 
 # square meters per housing unit
 METERS_PER_UNIT = 90 # TODO: Naama: is it all for both private and ALL pubic units, Adi, AJ??

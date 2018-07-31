@@ -1,5 +1,6 @@
 import needs
 
+
 """
 returns the number of units added to a building
 """
@@ -60,3 +61,9 @@ def calc_importance_of_building(specific_resd_building, buildings_data_resd):
     overall_resd_volume = get_overall_resd_area(buildings_data_resd)
     building_resd_volume = specific_resd_building.get_overall_area()
     return building_resd_volume/overall_resd_volume
+
+def calc_pop_size(buildings):
+    pop_size = 0
+    for building in buildings:
+        pop_size += int(building.get_overall_area()*needs.AVG_FAMILY_SIZE/needs.METERS_PER_UNIT)
+    return pop_size
