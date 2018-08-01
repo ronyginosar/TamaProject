@@ -50,43 +50,12 @@ def check_synagogue_conflicts(building, prev_state):
     pass
 
 
-
 def calculate_conflicts(building, prev_state):
     conflicts = 0
 
-    # check clinic conflicts
-    conflicts += check_clinic_conflicts(building, prev_state)
-
-    # check community_center conflicts
-    conflicts += check_community_center_conflicts(building, prev_state)
-
-    # check elderly_center conflicts
-    conflicts += check_elderly_center_conflicts(building, prev_state)
-
-    # check high_school conflicts
-    conflicts += check_high_school_conflicts(building, prev_state)
-
-    # check hospital conflicts
-    conflicts += check_hospital_conflicts(building, prev_state)
-
-    # check kindergarten conflicts
-    conflicts += check_kindergarten_conflicts(building, prev_state)
-
-    # check mikve conflicts
-    conflicts += check_mikve_conflicts(building, prev_state)
-
-    # check police conflicts
-    conflicts += check_police_conflicts(building, prev_state)
-
-    # check primary_school conflicts
-    conflicts += check_primary_school_conflicts(building, prev_state)
-
-    # check sport conflicts
-    conflicts += check_sport_conflicts(building, prev_state)
-
-    # check synagogue conflicts
-    conflicts += check_synagogue_conflicts(building, prev_state)
-
+    for pub_building in building.get_used_public_buildings():
+        conflicts += pub_building.calc_conflicts()
+        
     return conflicts
 
 

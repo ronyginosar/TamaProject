@@ -16,7 +16,7 @@ class PublicBuilding(building.Building):
         return self.__users_buildings
 
     '''
-    returs the population size using this public building
+    returns the population size using this public building
     '''
     def get_using_population(self):
         return util.calc_pop_size(self.__users_buildings)
@@ -49,7 +49,7 @@ class Clinic(PublicBuilding):
 ###-------------------------------------------*(**)*---------------------------------------------###
 
 PERCENTAGE_OF_USERS_FROM_POPULATION = 0.2
-IDEAL_AREA_PER_USER = 0.5
+IDEAL_AREA_PER_USER_COMMUNITY = 0.5
 
 class CommunityCenter(PublicBuilding):
 
@@ -57,9 +57,9 @@ class CommunityCenter(PublicBuilding):
         PublicBuilding.__init__(self, building_id, bt.COMMUNITY_CNTR, area, location, init_height, pub_type_list)
 
     def calc_conflicts(self):
-        num_users = int(self.get_using_population()*PERCENTAGE_OF_USERS_FROM_POPULATION)
+        num_users = int(self.get_using_population() * PERCENTAGE_OF_USERS_FROM_POPULATION)
         area_per_person = self.get_overall_area()/num_users
-        conflict_points = int((IDEAL_AREA_PER_USER - area_per_person)*(10/IDEAL_AREA_PER_USER))
+        conflict_points = int((IDEAL_AREA_PER_USER_COMMUNITY - area_per_person)*(10/IDEAL_AREA_PER_USER_COMMUNITY))
         if conflict_points <= 0:
             return 0
         else:
@@ -69,8 +69,8 @@ class CommunityCenter(PublicBuilding):
 ###-------------------------------------------*(**)*---------------------------------------------###
 
 ELDERLY_PERCENTAGE_FROM_POPULATION = 0.11
-PERCENTAGE_OF_USERS_FROM_POPULATION = 0.15*ELDERLY_PERCENTAGE_FROM_POPULATION
-IDEAL_AREA_PER_USER = 1
+PERCENTAGE_OF_ELDERLY_USERS_FROM_POPULATION = 0.15 * ELDERLY_PERCENTAGE_FROM_POPULATION
+IDEAL_AREA_PER_USER_ELDERLY = 1
 
 class ElderlyCenter(PublicBuilding):
 
@@ -78,9 +78,9 @@ class ElderlyCenter(PublicBuilding):
         PublicBuilding.__init__(self, building_id, bt.ELDERLY_CNTR, area, location, init_height, pub_type_list)
 
     def calc_conflicts(self):
-        num_users = int(self.get_using_population()*PERCENTAGE_OF_USERS_FROM_POPULATION)
+        num_users = int(self.get_using_population() * PERCENTAGE_OF_ELDERLY_USERS_FROM_POPULATION)
         area_per_person = self.get_overall_area()/num_users
-        conflict_points = int((IDEAL_AREA_PER_USER - area_per_person)*(10/IDEAL_AREA_PER_USER))
+        conflict_points = int((IDEAL_AREA_PER_USER_ELDERLY - area_per_person)*(10/IDEAL_AREA_PER_USER_ELDERLY))
         if conflict_points <= 0:
             return 0
         else:
