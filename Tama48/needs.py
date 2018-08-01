@@ -162,4 +162,6 @@ def calc_needs(buildings_data, add_housing_units, age_percentage18=2.0, religiou
             all_needs_dict[b_type] = hospital_needs
         elif b_type == bt.SPORT:
             all_needs_dict[b_type] = sport_needs
+        elif b_type == bt.RESIDENTIAL:
+            all_needs_dict[b_type] = add_housing_units
     return all_needs_dict

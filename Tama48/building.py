@@ -51,7 +51,7 @@ class Building(object):
         for b_type in bt.all_public_building_types():
             dist_buildings_in_type = [(building.get_id(), util.calc_distance_two_buildings(self, building))
                                       for building in bt.find_buildings_in_type(b_type, all_building_data)]
-            # sort public building by distance
+            # sort public building by distance, ordered: closest to farther..
             self.__public_buildings_dist_ordered[b_type] = sorted(dist_buildings_in_type, key=lambda x: x[1])
 
     def get_id(self):
