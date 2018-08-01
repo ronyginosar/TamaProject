@@ -20,9 +20,6 @@ METERS_PER_UNIT = 90 # TODO: Naama: is it all for both private and ALL pubic uni
 RESD_METER_PER_UNIT = 90 # TODO: Naama: Temp
 SQMETER_PER_PERSON = 22 # TODO: Naama: it wasn't in the file of AJ. This is what I remember.. is it correct Adi, AJ??
 
-BUILDING_TYPES = ['residential', 'clinic', 'community_center', 'elderly_center', 'high_school', 'kindergarten',
-                  'mikve', 'police', 'primary_school', 'sport', 'synagogue']
-
 
 def one_unit_in_meter_square(b_type):
     # TODO: for AJ or Adi: To implement according to document of excel.
@@ -82,7 +79,7 @@ def calc_needs(buildings_data, add_housing_units, age_percentage18=2.0, religiou
     grade_size = age_percentage18 * add_population
 
     # add units of public services
-    kindergarten_needs = (grade_size * KINDERGATDEN_NUM_GRADES)/ CLASS_SIZE
+    kindergarden_needs = (grade_size * KINDERGARDEN_NUM_GRADES)/ CLASS_SIZE
     primary_needs = (grade_size * PRIMARY_NUM_GRADES)/ CLASS_SIZE
     highschool_needs = (grade_size * HS_NUM_GRADES)/ CLASS_SIZE
 
@@ -144,7 +141,7 @@ def calc_needs(buildings_data, add_housing_units, age_percentage18=2.0, religiou
     # All needs are in area (square meters)
     for b_type in bt.all_building_types():
         if b_type == bt.KINDERGARDEN:
-            all_needs_dict[b_type] = kindergarten_needs
+            all_needs_dict[b_type] = kindergarden_needs
         elif b_type == bt.PRIMARY_SCHOOL:
             all_needs_dict[b_type] = primary_needs
         elif b_type == bt.HIGH_SCHOOL:

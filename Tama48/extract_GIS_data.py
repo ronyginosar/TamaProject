@@ -36,7 +36,7 @@ def read_files(buildings_fullpath = '../data'):
         if not onlyfiles:
             continue
         num_of_buildings = 0
-        print(subdir)
+        #print(subdir)
 
         for file in onlyfiles:
             if file != '.DS_Store':
@@ -51,12 +51,12 @@ def read_files(buildings_fullpath = '../data'):
             if file_name == HEIGHT:
                 for line in lines_cor:
                     height_lst.append(float(line.split('.')[0]+'.' + line.split('.')[1][0:-2]))
-                print(HEIGHT + " ")
+                #print(HEIGHT + " ")
 
             elif file_name == AREA:
                 for line in lines_cor:
                     area_lst.append(float(line.split('.')[0] + '.' + line.split('.')[1][0:-2]))
-                print(AREA + " ")
+                #print(AREA + " ")
 
             elif file_name == LOCATION:
                 for line in lines_cor:
@@ -64,7 +64,7 @@ def read_files(buildings_fullpath = '../data'):
                     x = x[1:len(x)]
                     alt = float(alt.split('.')[0] + '.' + alt.split('.')[1][0:-3])
                     location_lst.append((float(x), float(y), float(alt)))
-                print(LOCATION + "\n")
+                #print(LOCATION + "\n")
 
         for idx in range(num_of_lines-1):
             # (building_id, building_type, area, location, init_height)

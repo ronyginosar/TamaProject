@@ -26,7 +26,7 @@ def check_hospital_conflicts(building, prev_state):
     pass
 
 
-def check_kindergarten_conflicts(building, prev_state):
+def check_kindergarden_conflicts(building, prev_state):
     pass
 
 

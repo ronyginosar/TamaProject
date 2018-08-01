@@ -31,7 +31,7 @@ def evaluate_buildings_distances_for_type(updated_building_data_resd, public_bui
     avg_dist_lst = []
     for public_building in public_buildings_sametype:
         avg_dist = 0.0
-        for resd_building in bt.find_buildings_in_type(bt.RESIDENTIAL, updated_building_data_resd):
+        for resd_building in updated_building_data_resd:
             area = resd_building.get_overall_area()
             avg_dist += util.calc_distance_two_buildings(resd_building, public_building) * area
         avg_dist_lst.append(avg_dist)
@@ -39,6 +39,7 @@ def evaluate_buildings_distances_for_type(updated_building_data_resd, public_bui
     sum_avg_dist_lst_prob = [avg_dist / sum_avg_dist_lst for avg_dist in avg_dist_lst]
 
     return sum_avg_dist_lst_prob
+
 
 class EvaluatePlan(object):
     """
@@ -55,8 +56,8 @@ class EvaluatePlan(object):
         self.__all_needs = all_needs
         # TODO: TO ADI: this function is updating the the init_building_data with the new state of additional floors
         # TODO: of ONLY residential buildings. the result will be stores in __updated_building_data_resd
-        self.__updated_building_data_resd = bt.update_building_data_with_floors_plan(self.init_buildings_data_resd,
-                                                                                  plan_floors_resd_state)
+        self.__updated_building_data_resd = \
+            bt.update_building_data_with_floors_plan(self.__init_buildings_data_resd, plan_floors_resd_state)
         self.__plan_needs_score = -1
         self.__plan_distance_score = -1
         self.__plan_cost_score = -1
@@ -110,20 +111,21 @@ class EvaluatePlan(object):
             floors_importance_for_type = []
             idx = 0
             for public_building in bt.find_buildings_in_type(public_type, self.__buildings_data_public):
-                floors_importance_for_type.append((public_building.get_id(), public_plan_prob_vec_per_type[idx],
-                                                   vec_area_for_type[idx] * public_building.get_area()))
+                floors_importance_for_type.append((public_building.get_id(), public_plan_prob_vec_per_type[public_type][idx],
+                                                   math.ceil(vec_area_for_type[idx] / public_building.get_area())))
                 idx += 1
             # sort by importance
             sorted_floors_importance_for_type = sorted(floors_importance_for_type, key=lambda x: x[1])
+            sorted_floors_importance_for_type = sorted_floors_importance_for_type[::-1]
 
             add_extra_floors_dict[public_type] = dict()
             left_area = area_needed_for_type
             for (id,imp,floors) in sorted_floors_importance_for_type:
                 if left_area <= 0:
-                    add_extra_floors_dict.append((id, 0.0))
+                    add_extra_floors_dict[public_type][id] = 0.0
                 else:
-                    building = bt.find_buildings_in_type(public_building, id)
-                    floors_to_add = min(math.ceil(floors), left_area/building.get_area())
+                    building = bt.get_building_by_type_id(public_type, id, self.__init_buildings_data)
+                    floors_to_add = min(floors, math.ceil(left_area/building.get_area()))
                     add_extra_floors_dict[public_type][id] = floors_to_add
                     left_area -= building.get_area() * floors_to_add
 

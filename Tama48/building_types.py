@@ -25,7 +25,10 @@ def all_public_building_types():
                               POLICE, PRIMARY_SCHOOL, SPORT, SYNAGOUGE]
 
 def find_buildings_in_type(b_type, building_data):
-    return [building[1] for building in building_data if building[0] == b_type][0]
+    for tuple in building_data:
+        if tuple[0] == b_type:
+            return tuple[1]
+    #return [building[1] for building in building_data if building[0] == b_type][0]
 
 
 def find_buildings_public(building_data):
@@ -40,11 +43,12 @@ def floors_given_buldingID_type(plan_floors_state, buildingID, b_type):
     return [building_floor[1] for building_floor in b_f_in_type if building_floor[0] == buildingID][0]
 
 # TODO: TO CHECK INDEXING!!
-def get_building_by_id(building_data, buildingID):
-    # buildingID should start from 0.
-    if buildingID >= len(building_data):
-        return None
-    return building_data[buildingID]
+def get_building_by_type_id(b_type, buildingID, building_data):
+    building_in_type = find_buildings_in_type(b_type, building_data)
+    for building in building_in_type:
+        if building.get_id() == buildingID:
+            return building
+    return None
 
 """
 @:param plan_floors_state is of the form []
@@ -58,6 +62,6 @@ def update_building_data_with_floors_plan(init_buildings_resd, additional_floors
     update_building_data_resd = copy.deepcopy(init_buildings_resd)
     idx = 0
     for building in update_building_data_resd:
-        building.extra_height = additional_floors_resd[idx]
+        building.set_extra_height(additional_floors_resd[idx])
         idx += 1
     return update_building_data_resd

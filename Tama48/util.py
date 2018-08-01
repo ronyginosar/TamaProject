@@ -39,7 +39,7 @@ def calc_distance_two_buildings(buildings_resd, building_public):
     loc1 = buildings_resd.get_location()
     loc2 = building_public.get_location()
 
-    euclid_dist = pow(pow(loc1.x - loc2.x, 2) + pow(loc1.y - loc2.y, 2), 0.5)
+    euclid_dist = pow(pow(loc1[0] - loc2[0], 2) + pow(loc1[1] - loc2[1], 2), 0.5)
     return euclid_dist
 
 """
