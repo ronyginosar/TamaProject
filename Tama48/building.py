@@ -36,9 +36,6 @@ class Building(object):
         self.__init_floors = math.ceil(init_height/FLOOR_HEIGHT)
         self.__added_floors = 0
 
-        self.__public_buildings_dist_ordered = dict()
-        # TODO: a dictionary of {building_type : (closest_building, distance)}
-        # TODO: for example: {school : (school_1, 150)} for a school that is 150 meters from the building
 
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and self.__id == other.__id)
