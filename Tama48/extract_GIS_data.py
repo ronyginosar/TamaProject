@@ -73,4 +73,6 @@ def read_files(buildings_fullpath = '../data'):
         buildings_data.append((subdir, all_building_onetype))
         prev_id = prev_id + num_of_lines-1
 
+        buildings_data = sorted(buildings_data, key=lambda type: type[0])
+
     return buildings_data
