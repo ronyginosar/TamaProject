@@ -117,7 +117,7 @@ class Hospital(PublicBuilding):
 
 
     def calc_conflicts(self):
-        pass #TODO implement
+        return 0 #TODO implement
 
 
 ###-------------------------------------------*(**)*---------------------------------------------###
@@ -129,7 +129,7 @@ class Kindergarden(PublicBuilding):
 
 
     def calc_conflicts(self):
-        pass #TODO implement
+        return 0 #TODO implement
 
 
 ###-------------------------------------------*(**)*---------------------------------------------###
@@ -141,7 +141,7 @@ class Mikve(PublicBuilding):
 
 
     def calc_conflicts(self):
-        pass #TODO implement
+        return 0 #TODO implement
 
 
 ###-------------------------------------------*(**)*---------------------------------------------###
@@ -153,7 +153,7 @@ class Police(PublicBuilding):
 
 
     def calc_conflicts(self):
-        pass #TODO implement
+        return 0 #TODO implement
 
 
 ###-------------------------------------------*(**)*---------------------------------------------###
@@ -165,7 +165,7 @@ class PrimarySchool(PublicBuilding):
 
 
     def calc_conflicts(self):
-        pass #TODO implement
+        return 0 #TODO implement
 
 
 ###-------------------------------------------*(**)*---------------------------------------------###
@@ -177,7 +177,7 @@ class Sport(PublicBuilding):
 
 
     def calc_conflicts(self):
-        pass #TODO implement
+        return 0 #TODO implement
 
 
 ###-------------------------------------------*(**)*---------------------------------------------###
@@ -189,6 +189,6 @@ class Synagogue(PublicBuilding):
 
 
     def calc_conflicts(self):
-        pass #TODO implement
+        return 0 #TODO implement
 
 
