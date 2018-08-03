@@ -170,6 +170,9 @@ class EvaluatePlan(object):
             unit_needs_for_type = self.__all_needs[b_type]
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
 
+            if b_type == 'clinic':
+                x = 0
+
             buildings_in_type = bt.find_buildings_in_type(b_type, self.__updated_building_data_all)
             extra_units_for_type = 0
             for building in buildings_in_type:
