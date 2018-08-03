@@ -39,6 +39,15 @@ class State(object):
                     self.additional_floors_all.append((bt.RESIDENTIAL, self.additional_floors_resd))
         return self.additional_floors_all
 
+    def get_only_floor_lst(self):
+        only_floors = []
+        self.updated_building_data = self.evaluate_plan_obj.get_updated_building_data_all()
+        for b_type in bt.all_building_types():
+            for building in bt.find_buildings_in_type(b_type, self.updated_building_data):
+                only_floors.append(building.get_extra_height())
+
+        return only_floors
+
     def add_floor(self, building_to_increase, num_floors_to_add):
         self.additional_floors_resd[building_to_increase.get_id()] += num_floors_to_add
 

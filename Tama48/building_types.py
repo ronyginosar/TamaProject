@@ -81,3 +81,10 @@ def update_building_data_with_floors_plan(init_buildings_data_all, additional_fl
     update_building_data_all[resd_idx] = (RESIDENTIAL, update_resd_building_data_with_floors_plan(buildings_resd, additional_floors_resd))
 
     return update_building_data_all
+
+# def get_building_additional_height_only(updated_building_data):
+#     lst_heights = []
+#     for tuple in updated_building_data:
+#         for building in tuple[1]:
+#             lst_heights.append(building.get_extra_height())
+#     return lst_heights
