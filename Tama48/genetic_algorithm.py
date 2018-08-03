@@ -53,7 +53,18 @@ selects the top 25% of states, according to their score
 """
 #TODO: to implement. don't forget to return at least 2 individuals
 def get_top_individuals(population):
-    pass
+    scores = []
+    top_individuals = []
+    for individual in population:
+        scores.append((individual.get_score(), individual))
+    scores = sorted(scores, key=lambda score: score[0])
+    scores = scores[::-1]
+
+    for i in range(math.ceil(len(population)/4)):
+        top_individuals.append(scores[i][1])
+
+    return top_individuals
+
 
 
 """
@@ -108,11 +119,11 @@ def merge(pair, add_housing_unit, all_needs, residential_buildings):
         if random.random() > 0.5:
             additional_floors[i] = parent2_heights[i]
     # when merging, we need to make sure that the additional housing units is as required
-    units_added = util.get_units_added(additional_floors)
+    units_added = util.get_units_added(residential_buildings, additional_floors)
 
     # because we randomly combine the different states, we might end up with more or less housing units than
     # we need, so here we cover for that
-    units_added = util.get_units_added(additional_floors, add_housing_unit)
+    # units_added = util.get_units_added(additional_floors, add_housing_unit)
 
     if units_added > add_housing_unit:
         additional_floors = reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit)
@@ -127,7 +138,8 @@ def merge(pair, add_housing_unit, all_needs, residential_buildings):
 """
 # TODO: TO CHECK IMPLEMENTATION
 def get_pair(elite):
-    first, second = elite[random.randint(0,len(elite)-1)]
+    first = elite[random.randint(0,len(elite)-1)]
+    second = elite[random.randint(0,len(elite)-1)]
     while first == second:
         second = elite[random.randint(0,len(elite)-1)]
     return (first, second)
