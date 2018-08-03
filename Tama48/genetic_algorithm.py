@@ -184,15 +184,16 @@ the main algorithm structure
 def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, num_iterations=20):
 
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
+
     idx = 1
+    try_name = "first try"
+    result_file_path = '../results/' + try_name + ".txt"
+    file = open(result_file_path, "w")
     for it in range(num_iterations):
         new_population = reproduce(population, buildings_data, add_housing_units, all_needs_dict)
         iter_state_result = get_best_state(new_population)
-
         lst_extra_heights = iter_state_result.get_only_floor_lst()
 
-        result_file_path = '../results/' + datetime.datetime.now()
-        file = open(result_file_path, "w")
         file.write(idx + "\t")
         for item in lst_extra_heights:
             file.write(item + "\t")
