@@ -231,12 +231,12 @@ class EvaluatePlan(object):
                self.__evaluate_plan_distance() * DISTANCE_PERCTG + \
                self.__evaluate_plan_cost() * COST_PRCTG
 
-    """
-    get the calculated _updated_building_data, updated with residential and public both.
-    """
-    # TODO: READY
-    def get_updated_building_data_all(self):
-        return self.__updated_building_data_all
+    # """
+    # get the calculated _updated_building_data, updated with residential and public both.
+    # """
+    # # TODO: READY
+    # def get_updated_building_data_all(self):
+    #     return self.__updated_building_data_all
 
 
 
