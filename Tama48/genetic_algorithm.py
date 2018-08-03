@@ -28,7 +28,7 @@ def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  #
     units_added = 0
 
     while units_added < add_housing_units:
-        building_to_rise = random.randint(0, add_housing_units)
+        building_to_rise = random.randint(0, len(residential_buildings)-1)
         added_floors_resd[building_to_rise] += 1
         units_added += util.get_units_added_to_one_building(residential_buildings[building_to_rise], 1)
 
