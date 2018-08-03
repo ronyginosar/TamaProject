@@ -18,7 +18,7 @@ AVG_FAMILY_SIZE = 3.32
 # square meters per housing unit
 # METER_PER_UNIT = 90 # TODO: Naama: Temp
 SQ_METER_PER_PERSON = 22 # TODO: Naama: it wasn't in the file of AJ. This is what I remember.. is it correct Adi, AJ??
-
+METERS_PER_UNIT = SQ_METER_PER_PERSON * AVG_FAMILY_SIZE
 
 def one_unit_in_meter_square(b_type):
     # TODO: for AJ or Adi: To implement according to document of excel.
