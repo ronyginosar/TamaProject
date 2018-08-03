@@ -12,13 +12,13 @@ TYPE = 0
 BUILDINGS = 1
 
 
-"""
-creates a random state
-"""
-# TODO rony: does min_conf need it??
-# TODO: Naama: I don't understand what is the reason for that here. please talk to me- I'll implement it inside state!!
-def get_additional_public_floors(buildings_data, additional_floors, all_needs):
-    return 1
+# """
+# creates a random state
+# """
+# # TODO rony: does min_conf need it??
+# # TODO: Naama: I don't understand what is the reason for that here. please talk to me- I'll implement it inside state!!
+# def get_additional_public_floors(buildings_data, additional_floors, all_needs):
+#     return 1
 
 def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  # TODO rony: does min_conf need it??
 
@@ -33,10 +33,6 @@ def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  #
         units_added += util.get_units_added_to_one_building(residential_buildings[building_to_rise], 1)
 
     new_state = state.State(buildings_data, added_floors_resd, all_needs_dict)
-    # TODO: Naama: do not assign additional_public_floors, it will be during the calculation of the state's score.
-    # TODO: Naama: if you need this value please use: new_state.calc_public_state()
-    #    additional_public_floors = get_additional_public_floors(buildings_data, additional_floors, all_needs)
-    #new_state = state.State(buildings_data, additional_floors, additional_public_floors, all_needs)
 
     return new_state
 
@@ -106,7 +102,7 @@ def add_units(units_added, residential_buildings, additional_floors, add_housing
 """
 """
 # TODO: TO CHECK IMPLEMENTATION
-def merge(pair, add_housing_unit, all_needs, residential_buildings):
+def merge_elite(pair, add_housing_unit, all_needs, residential_buildings):
     parent1 = pair[0]
     parent2 = pair[1]
     buildings_data = parent1.get_building_data()
@@ -129,8 +125,8 @@ def merge(pair, add_housing_unit, all_needs, residential_buildings):
         additional_floors = reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit)
     if units_added < add_housing_unit:
         additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_unit)
-
-    new_state = state.State(buildings_data, additional_floors, get_additional_public_floors(buildings_data, additional_floors, all_needs))
+    # get_additional_public_floors(buildings_data, additional_floors, all_needs)
+    new_state = state.State(buildings_data, additional_floors, all_needs)
 
     return new_state
 
@@ -154,7 +150,7 @@ def reproduce(population, buildings_data, add_housing_unit, all_needs):
     residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
     elite = get_top_individuals(population)
     while (len(new_pop) < len(population)):
-        new_individual = merge(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
+        new_individual = merge_elite(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
         if (random.random() < MUTATION_PROB):
             new_individual = generate_random_state(buildings_data, add_housing_unit, all_needs)
         new_pop.append(new_individual)

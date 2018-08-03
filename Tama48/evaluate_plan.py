@@ -103,7 +103,7 @@ class EvaluatePlan(object):
 
         add_extra_floors_dict = dict()
         for public_type in bt.all_public_building_types():
-            units_needed_for_type = self.__all_needs[public_type]                          # ex: 3 units
+            units_needed_for_type = self.__all_needs[public_type]                        # ex: 3 units
             area_per_unit_for_type = needs.one_unit_in_meter_square(public_type)         # ex: 100 m^2 per unit
             area_needed_for_type = units_needed_for_type * area_per_unit_for_type        # ex: 300 m^2 overall
             vec_area_for_type = [prob * area_needed_for_type
