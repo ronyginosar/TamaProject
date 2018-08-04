@@ -3,52 +3,11 @@ Created on July 2, 2018
 
 @author: Naama
 """
-#from enum import Enum
-#import copy
-#import numpy as np
-#import math
+import math
+import util
+import building_types as bt
 
-# class BuildingType(Enum):
-#     # TODO: edit more in details, like different types of public buildings..
-#     Private = 0
-#     PUBLIC = 1
-#     DO_NOT_BUILD = 2
-#     PARK = 3
-#     OTHER = 4
-
-# class Polygon:
-#     def __init__(self):
-#          self.polygon_pts = []
-#
-#     def set_polygon(self, other):
-#         self.polygon_pt = copy.deepcopy(other.polygon_pts)
-#
-#     def get_polygon(self):
-#         if (self.polygon_pts):
-#             return self.polygon_pts
-#         else:
-#             return None
-#
-#     # shoelace formula
-#     def polygon_area(self):
-#         corners = self.polygon_pts
-#         n = len() # of corners
-#         area = 0.0
-#         for i in range(n):
-#             j = (i + 1) % n
-#             area += corners[i][0] * corners[j][1]
-#             area -= corners[j][0] * corners[i][1]
-#         area = abs(area) / 2.0
-#         return area
-#
-#     # Shoelace formula, in Numpy
-#     # def polyArea(self, x,y):
-#     #     return 0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1)))
-#     #
-#     # # Another option for area
-#     # def area_polygon(self, n, s):
-#     #     return 0.25 * n * s**2 / math.tan(math.pi/n)
-
+FLOOR_HEIGHT = 3
 
 class Location(object):
     # longitude, latitude represent a location in the globe, altitude represent the altitude in respect to the sea level
@@ -57,50 +16,66 @@ class Location(object):
         self.y = y
         self.alt = alt
 
+# # TODO: Naama
+# def create_empty_nearest_public_list(pub_type_list):
+#     pub_dict = dict()
+#     for type in pub_type_list:
+#         pub_dict[type] = (None, None)
+#     return pub_dict
+
 
 class Building(object):
-    def __init__(self, building_id, building_type, area, location, init_height):
+    def __init__(self, building_id, building_type, area, location, init_height, pub_type_list):
         """
         Constructor
         """
-        self.id = building_id
-        self.building_type = building_type
-        self.area = area
-        self.location = location
-        self.init_height = init_height
-        self.extra_height = 0
+        self.__id = building_id
+        self.__building_type = building_type
+        self.__area = area
+        self.__location = location
+        self.__init_floors = math.ceil(init_height/FLOOR_HEIGHT)
+        self.__added_floors = 0
 
-        # self.building_polygon = building_polygon # on top (roof)
-
-    def calc_building_volume(self):
-        return self.building_area*(self.init_height + self.extra_height)
 
     def __eq__(self, other):
-        return (isinstance(other, self.__class__) and self.id == other.id)
+        return (isinstance(other, self.__class__) and self.__id == other.__id)
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __str__(self):
-        return "B_" + str(self.building_type) + "_" + str(self.id)
+        return "B_" + str(self.__building_type) + "_" + str(self.__id)
+
+    # TODO: TO Check implementation
+    def calc__public_building_dist_ordered(self, all_building_data):
+        for b_type in bt.all_public_building_types():
+            dist_buildings_in_type = [(building.get_id(), util.calc_distance_two_buildings(self, building))
+                                      for building in bt.find_buildings_in_type(b_type, all_building_data)]
+            # sort public building by distance, ordered: closest to farther..
+            self.__public_buildings_dist_ordered[b_type] = sorted(dist_buildings_in_type, key=lambda x: x[1])
 
     def get_id(self):
-        return self.id
+        return self.__id
 
     def get_type(self):
-        return self.building_type
+        return self.__building_type
 
     def get_area(self):
-        return self.area
+        return self.__area
 
     def get_location(self):
-        return self.location
+        return self.__location
 
     def get_init_height(self):
-        return self.init_height
+        return self.__init_floors
 
     def get_extra_height(self):
-        return self.extra_height
+        return self.__added_floors
 
-    # def __hash__(self):
-    #     return hash(self.id)
+    def set_extra_height(self, extra_floors):
+        self.__added_floors = math.ceil(extra_floors)
+
+    def get_overall_area(self):
+        return (self.__init_floors + self.__added_floors) * self.__area
+
+

@@ -1,5 +1,5 @@
 import evaluate_plan as ep
-import building_types
+import building_types as bt
 
 class State(object):
     """
@@ -11,10 +11,10 @@ class State(object):
     def __init__(self, buildings_data, additional_floors_resd, all_needs_dict):
         self.buildings_data = buildings_data
         self.additional_floors_resd = additional_floors_resd
-        self.additional_floors = []
-        self.evaluate_plan_obj = None
-        self.score = self.calc_score()
+        self.additional_floors_all = []
         self.all_needs_dict = all_needs_dict
+        self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, self.additional_floors_resd, self.all_needs_dict)
+        self.score = self.evaluate_plan_obj.evaluate_plan_score()
 
     # TODO: TO CHECK IMPLEMENTATION
     """
@@ -27,24 +27,29 @@ class State(object):
     """
     return List< building_type, List<(String:building_id, int:num_of_floors)>>
     """
-    def calc_public_state(self):
-        for b_type in building_types.all_building_types():
-            if b_type != building_types.RESIDENTIAL:
-                b_public_floors = ep.calc_public_floors(self.buildings_data, self.additional_floors_resd, b_type)
-                self.additional_floors.append((b_type, b_public_floors))
-            else:
-                self.additional_floors.append((building_types.RESIDENTIAL, self.additional_floors_resd))
+    def get_floor_state(self):
+        if not self.additional_floors_all:
+            self.updated_building_data = self.evaluate_plan_obj.get_updated_building_data_all()
+            for b_type in bt.all_building_types():
+                if b_type != bt.RESIDENTIAL:
+                    additional_floors_for_type = [building.get_extra_height()
+                                      for building in bt.find_buildings_in_type(b_type, self.updated_building_data)]
+                    self.additional_floors_all.append((b_type, additional_floors_for_type))
+                else:
+                    self.additional_floors_all.append((bt.RESIDENTIAL, self.additional_floors_resd))
+        return self.additional_floors_all
 
-    # TODO: TO CHECK IMPLEMENTATION
-    def calc_score(self):
-        self.calc_public_state()
-        self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, self.additional_floors, self.all_needs_dict)
-        self.score = self.evaluate_plan_obj.calc_plan_score()
-        return self.score
+    def get_only_floor_lst(self):
+        only_floors = []
+        self.updated_building_data = self.evaluate_plan_obj.get_updated_building_data_all()
+        for b_type in bt.all_building_types():
+            for building in bt.find_buildings_in_type(b_type, self.updated_building_data):
+                only_floors.append(building.get_extra_height())
 
-    # TODO: To implement
-    def evaluate_distance_score(self):
-        pass
+        return only_floors
+
+    def add_floor(self, building_to_increase, num_floors_to_add):
+        self.additional_floors_resd[building_to_increase.get_id()] += num_floors_to_add
 
     # TODO: TO CHECK IMPLEMENTATION
     def get_heights_to_add(self):
