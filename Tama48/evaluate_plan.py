@@ -170,7 +170,7 @@ class EvaluatePlan(object):
             unit_needs_for_type = self.__all_needs[b_type]
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
 
-            if b_type == 'clinic':
+            if b_type == bt.CLINIC:
                 x = 0
 
             buildings_in_type = bt.find_buildings_in_type(b_type, self.__updated_building_data_all)
@@ -234,12 +234,12 @@ class EvaluatePlan(object):
                self.__evaluate_plan_distance() * DISTANCE_PERCTG + \
                self.__evaluate_plan_cost() * COST_PRCTG
 
-    # """
-    # get the calculated _updated_building_data, updated with residential and public both.
-    # """
-    # # TODO: READY
-    # def get_updated_building_data_all(self):
-    #     return self.__updated_building_data_all
+    """
+    get the calculated _updated_building_data, updated with residential and public both.
+    """
+    # TODO: READY
+    def get_updated_building_data_all(self):
+        return self.__updated_building_data_all
 
 
 

@@ -27,13 +27,13 @@ if __name__ == '__main__':
 
 
     # dir_path = '..\\..\\data'
-    # buildings_data - List < (string, List < Building >>, string:building_type
+    # buildings_data - List < (string, List < Building>>, string:building_type
     init_building_data = ext_data.read_files()
 
     # updated_random_building_data_for_rony = generate_random_result_for_Rony(init_building_data)
 
     is_genetic = 1
-    add_housing_units = 100
+    add_housing_units = 300
 
     # calculate needs
     all_needs_dict = needs.calc_needs(init_building_data, add_housing_units)
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # additional_heights = []
     # building_residential = []
     if is_genetic:
-        new_state = genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units)
+        (iter_score, lst_extra_heights) = genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units)
     else:
-        new_state = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
-        # new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
+        (iter_score, lst_extra_heights) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
+        # simulated_annealing.find_solution(buildings_data, add_housing_unit)

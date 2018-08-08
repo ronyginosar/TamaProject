@@ -15,6 +15,10 @@ KINDERGATDEN_NUM_GRADES = 5
 
 AVG_FAMILY_SIZE = 3.32
 
+AGE_GROUP18_PRCTG = 2.0
+
+RELIGION_PRCTG = 20.0
+
 # square meters per housing unit
 # METER_PER_UNIT = 90 # TODO: Naama: Temp
 SQ_METER_PER_PERSON = 22 # TODO: Naama: it wasn't in the file of AJ. This is what I remember.. is it correct Adi, AJ??
@@ -61,7 +65,7 @@ def get_residential_sum_area(building_data):
     return sum(all_areas)
 
 # elderly_percentage=10, avg_family_size = 3.2, but we didn't use it!
-def calc_needs(buildings_data, add_housing_units, age_percentage18=2.5, religious_percentage=20.0):
+def calc_needs(buildings_data, add_housing_units):
     #TODO: Naama: all these default parameters should stay here or should it be constant variables like above Adi?
     add_population = math.ceil(add_housing_units * one_unit_in_meter_square(bt.RESIDENTIAL) / SQ_METER_PER_PERSON)
     original_population = math.ceil(get_residential_sum_area(buildings_data) / SQ_METER_PER_PERSON)
@@ -75,15 +79,15 @@ def calc_needs(buildings_data, add_housing_units, age_percentage18=2.5, religiou
     # number of kids in a certain age (for ex. 102 kids in the age of 10 yo)
     # TODO: I don't see population_increase, I guess it is add_population, I don't understand why it is perctg
     # grade_size = age_percentage18 * population_increase / PERCENTAGE
-    grade_size = age_percentage18 * add_population / PERCENTAGE
+    grade_size = AGE_GROUP18_PRCTG * add_population / PERCENTAGE
 
     # add units of public services
     kindergarden_needs = (grade_size * KINDERGARDEN_NUM_GRADES)/ CLASS_SIZE
     primary_needs = (grade_size * PRIMARY_NUM_GRADES)/ CLASS_SIZE
     highschool_needs = (grade_size * HS_NUM_GRADES)/ CLASS_SIZE
 
-    synagogue_needs = math.ceil(((add_population*religious_percentage/PERCENTAGE)*0.49)*1.1)/one_unit_in_meter_square(bt.SYNAGOUGE)
-    mikve_needs = math.ceil(((add_population * religious_percentage/PERCENTAGE)/22.5)*0.07)/one_unit_in_meter_square(bt.MIKVE)
+    synagogue_needs = math.ceil(((add_population*RELIGION_PRCTG/PERCENTAGE)*0.49)*1.1)/one_unit_in_meter_square(bt.SYNAGOUGE)
+    mikve_needs = math.ceil(((add_population * RELIGION_PRCTG/PERCENTAGE)/22.5)*0.07)/one_unit_in_meter_square(bt.MIKVE)
 
     # POLICE
     previous_police = 0
