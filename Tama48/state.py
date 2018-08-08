@@ -13,8 +13,11 @@ class State(object):
         self.additional_floors_resd = additional_floors_resd
         self.additional_floors_all = []
         self.all_needs_dict = all_needs_dict
-        self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, self.additional_floors_resd, self.all_needs_dict)
-        self.score = self.evaluate_plan_obj.evaluate_plan_score()
+
+        self.evaluate_plan_obj = None
+        self.update_floors(self.additional_floors_resd)
+        self.score = -1
+        self.calc_plan_score(self.evaluate_plan_obj)
 
     # TODO: TO CHECK IMPLEMENTATION
     """
@@ -58,3 +61,10 @@ class State(object):
     # TODO: TO CHECK IMPLEMENTATION
     def get_building_data(self):
         return self.buildings_data
+
+    def update_floors(self, resd_added_floors):
+        # TODO: Naama: only to update the floors of evaluate_plan_obj.updated... including the
+        return ep.EvaluatePlan(self.buildings_data, resd_added_floors, self.all_needs_dict)
+
+    def calc_plan_score(self, evaluate_plan_obj):
+        return evaluate_plan_obj.evaluate_plan_score()

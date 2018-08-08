@@ -25,7 +25,7 @@ class Location(object):
 
 
 class Building(object):
-    def __init__(self, building_id, building_type, area, location, init_height, pub_type_list):
+    def __init__(self, building_id, building_type, area, location, init_height):
         """
         Constructor
         """
