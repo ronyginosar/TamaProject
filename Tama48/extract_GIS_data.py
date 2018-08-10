@@ -2,6 +2,7 @@
 import public_building as pb
 import building_residential as br
 import building_types as bt
+import copy
 
 import os
 from os import listdir
@@ -11,26 +12,37 @@ from os.path import basename
 HEIGHT = 'height'
 AREA = 'area'
 LOCATION = 'location'
+POINT1 = 'points1'
+POINT2 = 'points2'
 
 def find_polygon_from_points(start_lst, end_lst):
 
     num_of_pts = len(start_lst)
-    polygon_lst = [start_lst[0]]
-
-    search_in_end = True
     next_idx = 0
-    for t in range(num_of_pts - 1):
-        if search_in_end:
-            next_pt = end_lst[next_idx]
-            next_idx = start_lst.index(next_pt)
-            search_in_end = False
-        else:
-            next_pt = start_lst[next_idx]
-            next_idx = end_lst.index(next_pt)
-            search_in_end = True
+    next_pt = copy.deepcopy(start_lst[0])
+    polygon_lst = [next_pt]
+    for t in range(num_of_pts):
+        next_pt = end_lst[next_idx]
         polygon_lst.append(next_pt)
+        next_idx = start_lst.index(next_pt)
 
     return polygon_lst
+
+"""
+list of list-of-points
+"""
+def parse_points_file(lines_cor):
+    all_polygons = []
+    polygon = []
+    for line in lines_cor:
+        if line.startswith('            {') and polygon:
+            all_polygons.append(polygon)
+            polygon = []
+        else:
+            [x, y, alt] = line.split('{')[1].split('}')[0].split(', ')
+            polygon.append((float(x), float(y), float(alt)))
+    all_polygons.append(polygon)
+    return all_polygons
 
 
 # creates building according to it's type.
@@ -80,6 +92,8 @@ def read_files(buildings_fullpath = '../data'):
         location_lst = []
         height_lst = []
         area_lst = []
+        polygon_lst = []
+
         all_building_onetype = []
 
         buildings_dirpath = os.path.join(buildings_fullpath, subdir)
@@ -89,6 +103,8 @@ def read_files(buildings_fullpath = '../data'):
         if not onlyfiles:
             continue
 
+        start_lst = []
+        end_lst = []
         for file in onlyfiles:
             if file != '.DS_Store':
                 file_full_path = join(buildings_dirpath, file)
@@ -102,17 +118,29 @@ def read_files(buildings_fullpath = '../data'):
                 num_of_buildings = len(lines) - 1
                 for line in lines_cor:
                     height_lst.append(float(line.split('.')[0]+'.' + line.split('.')[1][0:-2]))
+
             elif file_name == AREA:
                 for line in lines_cor:
                     area_lst.append(float(line.split('.')[0] + '.' + line.split('.')[1][0:-2]))
+
             elif file_name == LOCATION:
                 for line in lines_cor:
                     [x, y, alt] = line.split(', ')
                     x = x[1:len(x)]
                     alt = float(alt.split('.')[0] + '.' + alt.split('.')[1][0:-3])
                     location_lst.append((float(x), float(y), float(alt)))
-            else: # point 1, point2
-                continue
+
+            elif file_name == POINT1:
+                start_lst = parse_points_file(lines_cor)
+
+            elif file_name == POINT2:
+                end_lst = parse_points_file(lines_cor)
+
+            # if lists are not empty
+            if start_lst and end_lst:
+                for group_idx in range(len(end_lst)):
+                    polygon = find_polygon_from_points(start_lst[group_idx], end_lst[group_idx])
+                    polygon_lst.append(polygon)
 
         for idx in range(num_of_buildings):
             # (building_id, building_type, area, location, init_height)
