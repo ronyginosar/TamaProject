@@ -34,7 +34,10 @@ list of list-of-points
 def parse_points_file(lines_cor):
     all_polygons = []
     polygon = []
+    idx = 0
     for line in lines_cor:
+        print(idx)
+        idx += 1
         if line.startswith('            {') and polygon:
             all_polygons.append(polygon)
             polygon = []
@@ -46,33 +49,33 @@ def parse_points_file(lines_cor):
 
 
 # creates building according to it's type.
-def create_building(id, b_type, area, location, height):
+def create_building(id, b_type, area, location, height, polygon):
     if b_type == bt.RESIDENTIAL:
-        return br.Residential(id, area, location, height)
+        return br.Residential(id, area, location, height, polygon)
     elif b_type == bt.CLINIC:
-        return pb.Clinic(id, area, location, height)
+        return pb.Clinic(id, area, location, height, polygon)
     elif b_type == bt.COMMUNITY_CNTR:
-        return pb.CommunityCenter(id, area, location, height)
+        return pb.CommunityCenter(id, area, location, height, polygon)
     elif b_type == bt.ELDERLY_CNTR:
-        return pb.ElderlyCenter(id, area, location, height)
+        return pb.ElderlyCenter(id, area, location, height, polygon)
     elif b_type == bt.HIGH_SCHOOL:
-        return pb.HighSchool(id, area, location, height)
+        return pb.HighSchool(id, area, location, height, polygon)
     elif b_type == bt.KINDERGARDEN:
-        return pb.Kindergarden(id, area, location, height)
+        return pb.Kindergarden(id, area, location, height, polygon)
     elif b_type == bt.HIGH_SCHOOL:
-        return pb.HighSchool(id, area, location, height)
+        return pb.HighSchool(id, area, location, height, polygon)
     elif b_type == bt.PRIMARY_SCHOOL:
-        return pb.PrimarySchool(id, area, location, height)
+        return pb.PrimarySchool(id, area, location, height, polygon)
     elif b_type == bt.MIKVE:
-        return pb.Mikve(id, area, location, height)
+        return pb.Mikve(id, area, location, height, polygon)
     elif b_type == bt.HOSPITAL:
-        return pb.Hospital(id, area, location, height)
+        return pb.Hospital(id, area, location, height, polygon)
     elif b_type == bt.SYNAGOUGE:
-        return pb.Synagogue(id, area, location, height)
+        return pb.Synagogue(id, area, location, height, polygon)
     elif b_type == bt.SPORT:
-        return pb.Sport(id, area, location, height)
+        return pb.Sport(id, area, location, height, polygon)
     elif b_type == bt.POLICE:
-        return pb.Police(id, area, location, height)
+        return pb.Police(id, area, location, height, polygon)
 
 
 def read_files(buildings_fullpath = '../data'):
@@ -144,7 +147,7 @@ def read_files(buildings_fullpath = '../data'):
 
         for idx in range(num_of_buildings):
             # (building_id, building_type, area, location, init_height)
-            building = create_building(prev_id + idx, subdir, area_lst[idx], location_lst[idx], height_lst[idx])
+            building = create_building(prev_id + idx, subdir, area_lst[idx], location_lst[idx], height_lst[idx], polygon_lst[idx])
             all_building_onetype.append(building)
         buildings_data.append((subdir, all_building_onetype))
         prev_id = prev_id + num_of_buildings

@@ -25,7 +25,7 @@ class Location(object):
 
 
 class Building(object):
-    def __init__(self, building_id, building_type, area, location, init_height):
+    def __init__(self, building_id, building_type, area, location, init_height, polygon):
         """
         Constructor
         """
@@ -33,9 +33,10 @@ class Building(object):
         self.__building_type = building_type
         self.__area = area
         self.__location = location
+        # List of triples: (x,y,alt)
+        self.__polygon = polygon
         self.__init_floors = math.ceil(init_height/FLOOR_HEIGHT)
         self.__added_floors = 0
-
 
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and self.__id == other.__id)
@@ -65,6 +66,9 @@ class Building(object):
 
     def get_location(self):
         return self.__location
+
+    def get_polygon(self):
+        return self.__polygon
 
     def get_init_height(self):
         return self.__init_floors

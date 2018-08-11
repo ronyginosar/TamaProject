@@ -5,8 +5,8 @@ import building_types as bt
 
 class PublicBuilding(building.Building):
 
-    def __init__(self, building_id, b_type, area, location, init_height):
-        building.Building.__init__(self, building_id, b_type, area, location, init_height)
+    def __init__(self, building_id, b_type, area, location, init_height, polygon):
+        building.Building.__init__(self, building_id, b_type, area, location, init_height, polygon)
         # list of residential building which are using this public building (among other public building in this type)
         self.__users_buildings = []
 
@@ -35,8 +35,8 @@ IDEAL_SIZE_PER_PERSON = 0.1
 
 class Clinic(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.CLINIC, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.CLINIC, area, location, init_height, polygon)
 
     # conflicts calculation will be done as follows:
     # more than 0.1 m^2 per person = 0
@@ -57,8 +57,8 @@ IDEAL_AREA_PER_USER_COMMUNITY = 0.5
 
 class CommunityCenter(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.COMMUNITY_CNTR, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.COMMUNITY_CNTR, area, location, init_height, polygon)
 
     def calc_conflicts(self):
         num_users = int(self.get_using_population() * PERCENTAGE_OF_USERS_FROM_POPULATION)
@@ -78,8 +78,8 @@ IDEAL_AREA_PER_USER_ELDERLY = 1
 
 class ElderlyCenter(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.ELDERLY_CNTR, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.ELDERLY_CNTR, area, location, init_height, polygon)
 
     def calc_conflicts(self):
         num_users = int(self.get_using_population() * PERCENTAGE_OF_ELDERLY_USERS_FROM_POPULATION)
@@ -97,8 +97,8 @@ IDEAL_CLASS_SIZE = needs.CLASS_SIZE
 
 class HighSchool(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.HIGH_SCHOOL, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.HIGH_SCHOOL, area, location, init_height, polygon)
 
 
     def get_class_size(self):
@@ -116,8 +116,8 @@ class HighSchool(PublicBuilding):
 
 class Hospital(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.HOSPITAL, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.HOSPITAL, area, location, init_height, polygon)
 
 
     def calc_conflicts(self):
@@ -128,8 +128,8 @@ class Hospital(PublicBuilding):
 
 class Kindergarden(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.KINDERGARDEN, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.KINDERGARDEN, area, location, init_height, polygon)
 
 
     def calc_conflicts(self):
@@ -140,8 +140,8 @@ class Kindergarden(PublicBuilding):
 
 class Mikve(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.MIKVE, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.MIKVE, area, location, init_height, polygon)
 
 
     def calc_conflicts(self):
@@ -152,8 +152,8 @@ class Mikve(PublicBuilding):
 
 class Police(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.POLICE, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.POLICE, area, location, init_height, polygon)
 
 
     def calc_conflicts(self):
@@ -164,8 +164,8 @@ class Police(PublicBuilding):
 
 class PrimarySchool(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.PRIMARY_SCHOOL, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.PRIMARY_SCHOOL, area, location, init_height, polygon)
 
 
     def calc_conflicts(self):
@@ -176,8 +176,8 @@ class PrimarySchool(PublicBuilding):
 
 class Sport(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.SPORT, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.SPORT, area, location, init_height, polygon)
 
 
     def calc_conflicts(self):
@@ -188,8 +188,8 @@ class Sport(PublicBuilding):
 
 class Synagogue(PublicBuilding):
 
-    def __init__(self, building_id, area, location, init_height):
-        PublicBuilding.__init__(self, building_id, bt.SYNAGOUGE, area, location, init_height)
+    def __init__(self, building_id, area, location, init_height, polygon):
+        PublicBuilding.__init__(self, building_id, bt.SYNAGOUGE, area, location, init_height, polygon)
 
 
     def calc_conflicts(self):
