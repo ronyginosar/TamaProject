@@ -28,8 +28,9 @@ class PublicBuilding(building.Building):
     def calc_building_score(self, building_type_needs_meters):
         # (all using-resd-building * their area ) * this public area
         using_area = [using_rsd.get_overall_area() for using_rsd in self.get_users_buildings()]
-        used_area_meters = sum(using_area)
-        return min(float(used_area_meters/building_type_needs_meters), float(building_type_needs_meters/used_area_meters))
+        using_area_meters = sum(using_area)
+        area_ratio_score = self.get_overall_area()/using_area_meters
+        return area_ratio_score / (self.get_extra_height() + self.get_init_height())
 
     def calc_conflicts(self):
         pass
@@ -56,7 +57,7 @@ class Clinic(PublicBuilding):
             return conflict_points
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.CLINIC)
+        this_needs = all_needs.get(bt.CLINIC)*needs.one_unit_in_meter_square(bt.CLINIC)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 ###-------------------------------------------*(**)*---------------------------------------------###
@@ -79,7 +80,7 @@ class CommunityCenter(PublicBuilding):
             return conflict_points
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.COMMUNITY_CNTR)
+        this_needs = all_needs.get(bt.COMMUNITY_CNTR)*needs.one_unit_in_meter_square(bt.COMMUNITY_CNTR)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 
@@ -104,7 +105,7 @@ class ElderlyCenter(PublicBuilding):
             return conflict_points
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.ELDERLY_CNTR)
+        this_needs = all_needs.get(bt.ELDERLY_CNTR)*needs.one_unit_in_meter_square(bt.ELDERLY_CNTR)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 ###-------------------------------------------*(**)*---------------------------------------------###
@@ -128,7 +129,7 @@ class HighSchool(PublicBuilding):
             return conflict_points
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.HIGH_SCHOOL)
+        this_needs = all_needs.get(bt.HIGH_SCHOOL)*needs.one_unit_in_meter_square(bt.HIGH_SCHOOL)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 
@@ -144,7 +145,7 @@ class Hospital(PublicBuilding):
         return 0 #TODO implement
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.HOSPITAL)
+        this_needs = all_needs.get(bt.HOSPITAL)*needs.one_unit_in_meter_square(bt.HOSPITAL)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 
@@ -160,7 +161,7 @@ class Kindergarden(PublicBuilding):
         return 0 #TODO implement
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.KINDERGARDEN)
+        this_needs = all_needs.get(bt.KINDERGARDEN)*needs.one_unit_in_meter_square(bt.KINDERGARDEN)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 
@@ -176,7 +177,7 @@ class Mikve(PublicBuilding):
         return 0 #TODO implement
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.MIKVE)
+        this_needs = all_needs.get(bt.MIKVE)*needs.one_unit_in_meter_square(bt.MIKVE)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 
@@ -192,7 +193,7 @@ class Police(PublicBuilding):
         return 0 #TODO implement
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.POLICE)
+        this_needs = all_needs.get(bt.POLICE)*needs.one_unit_in_meter_square(bt.POLICE)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 
@@ -208,7 +209,7 @@ class PrimarySchool(PublicBuilding):
         return 0 #TODO implement
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.PRIMARY_SCHOOL)
+        this_needs = all_needs.get(bt.PRIMARY_SCHOOL)*needs.one_unit_in_meter_square(bt.PRIMARY_SCHOOL)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 
@@ -224,7 +225,7 @@ class Sport(PublicBuilding):
         return 0 #TODO implement
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.SPORT)
+        this_needs = all_needs.get(bt.SPORT)*needs.one_unit_in_meter_square(bt.SPORT)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 
@@ -239,7 +240,7 @@ class Synagogue(PublicBuilding):
         return 0 #TODO implement
 
     def calc_building_score(self, all_needs):
-        this_needs = all_needs.get(bt.SYNAGOUGE)
+        this_needs = all_needs.get(bt.SYNAGOUGE)*needs.one_unit_in_meter_square(bt.SYNAGOUGE)
         return PublicBuilding.calc_building_score(self, this_needs)
 
 

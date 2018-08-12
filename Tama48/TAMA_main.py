@@ -55,8 +55,8 @@ if __name__ == '__main__':
     link_public_private_buildings(init_building_data)
 
     is_genetic = 1
-    add_housing_units = 300
-    add_housing_units = 10000
+    #add_housing_units =0
+    add_housing_units = 1000
 
     # calculate needs
     all_needs_dict = needs.calc_needs(init_building_data, add_housing_units)
@@ -64,12 +64,12 @@ if __name__ == '__main__':
     # additional_heights = []
     # building_residential = []
     if is_genetic:
-        (iter_score, lst_extra_heights) = genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units)
+        (iter_score, updated_building_data) = genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units)
     else:
-        (iter_score, lst_extra_heights) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
+        (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
         # simulated_annealing.find_solution(buildings_data, add_housing_unit)
-        new_state = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
+        #new_state = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
         # new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
     print('the end!')
-    print('score = ' + str(new_state.get_score()))
-    print(new_state.get_heights_to_add())
+    print('score = ' + str(iter_score))
+    #print(updated_building_data.get_heights_to_add())

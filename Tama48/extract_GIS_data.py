@@ -36,7 +36,7 @@ def parse_points_file(lines_cor):
     polygon = []
     idx = 0
     for line in lines_cor:
-        print(idx)
+        #print(idx)
         idx += 1
         if line.startswith('            {') and polygon:
             all_polygons.append(polygon)

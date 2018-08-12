@@ -30,9 +30,13 @@ def find_buildings_in_type(b_type, building_data):
             return tuple[1]
     #return [building[1] for building in building_data if building[0] == b_type][0]
 
-
 def find_buildings_public(building_data):
     return [building for building in building_data if building[0] != RESIDENTIAL]
+
+def find_overall_area_buildings_in_type(b_type, building_data):
+    buildings_in_type = find_buildings_in_type(b_type, building_data)
+    area_lst = [buildng.get_overall_area() for buildng in buildings_in_type]
+    return sum(area_lst)
 
 """
 plan_floors_state is a state [(building_id = 1, floors = f1), (building_id = 2, floors = f2), ..], of all building types
@@ -74,7 +78,7 @@ First step: plan_floors_state has values only of additional floors of residentia
 Second step: plan_floors_state has values of all floors: residential and public buildings.
 Make sure each time to send the init_buildings_data (as extracted from files) and not the init + step1)
 """
-def update_building_data_with_floors_plan(init_buildings_data_all, additional_floors_resd):
+def update_building_resd_with_floors_plan(init_buildings_data_all, additional_floors_resd):
     update_building_data_all = copy.deepcopy(init_buildings_data_all)
     buildings_resd = find_buildings_in_type(RESIDENTIAL, init_buildings_data_all)
     resd_idx = all_building_types().index(RESIDENTIAL)

@@ -57,7 +57,7 @@ class EvaluatePlan(object):
         # TODO: TO ADI: this function is updating the the init_building_data with the new state of additional floors
         # TODO: of ONLY residential buildings. the result will be stores in __updated_building_data_resd
         self.__updated_building_data_all = \
-            bt.update_building_data_with_floors_plan(self.__init_buildings_data, plan_floors_resd_state)
+            bt.update_building_resd_with_floors_plan(self.__init_buildings_data, plan_floors_resd_state)
         self.__plan_needs_score = -1
         self.__plan_distance_score = -1
         self.__plan_cost_score = -1
@@ -103,22 +103,31 @@ class EvaluatePlan(object):
             units_needed_for_type = self.__all_needs[public_type]  # ex: 3 units
             area_per_unit_for_type = needs.one_unit_in_meter_square(public_type)  # ex: 100 m^2 per unit
             area_needed_for_type = units_needed_for_type * area_per_unit_for_type  # ex: 300 m^2 overall
-            public_in_type = bt.find_buildings_in_type(public_type, self.__buildings_data_public)
+            public_in_type = bt.find_buildings_in_type(public_type, self.__updated_building_data_all)
             left_area = area_needed_for_type
-            while left_area > 0:
+            idx = 0
+            search_more = True
+            while left_area > 0 and search_more:
                 building_score_type = [(public_building.calc_building_score(self.__all_needs), public_building)
                                        for public_building in public_in_type]
 
-                building_score_type_sorted = sorted(building_score_type, key=lambda x: x[1])
+                building_score_type_sorted = sorted(building_score_type, key=lambda x: x[0])
                 # take the building with the lowest score
-                first_to_build = building_score_type_sorted[0][0]
-                building_area = first_to_build.getArea()
-                if left_area - building_area > building_area:
-                    # not worth to add anymore!
-                    break
-                # otherwise (if worth to add)
-                first_to_build.add_extra_height(1)
-                left_area -= building_area
+                while idx < len(building_score_type_sorted):
+                    first_to_build = building_score_type_sorted[idx][1]
+                    building_area = first_to_build.get_area()
+                    if left_area - (0.5 * building_area) > building_area:
+                        # if worth to add a floor
+                        first_to_build.add_extra_height(1)
+                        left_area -= building_area
+                        break
+                    else:
+                        idx += 1
+                        if idx == len(building_score_type_sorted):
+                            search_more = False
+
+
+
 
     """
     def __calculate_public_plan(self):
