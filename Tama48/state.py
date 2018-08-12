@@ -15,6 +15,7 @@ class State(object):
         self.all_needs_dict = all_needs_dict
 
         self.evaluate_plan_obj = None
+        self.updated_building_data = None
         self.update_floors(self.additional_floors_resd)
         self.score = -1
         self.calc_plan_score(self.evaluate_plan_obj)
@@ -62,9 +63,13 @@ class State(object):
     def get_building_data(self):
         return self.buildings_data
 
+    def get_updated_building_data(self):
+        return self.updated_building_data
+
     def update_floors(self, resd_added_floors):
         # TODO: Naama: only to update the floors of evaluate_plan_obj.updated... including the
-        return ep.EvaluatePlan(self.buildings_data, resd_added_floors, self.all_needs_dict)
+        self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, resd_added_floors, self.all_needs_dict)
+        return self.evaluate_plan_obj
 
     def calc_plan_score(self, evaluate_plan_obj):
         return evaluate_plan_obj.evaluate_plan_score()

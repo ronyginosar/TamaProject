@@ -85,9 +85,8 @@ def min_conflict_solution(buildings_data, all_needs, housing_units_to_add):
         building_to_increase = conflicts[0][1]
         num_added_units += util.add_floors(1, prev_state, building_to_increase) # returns the number of units added
 
-    return prev_state
-
-
+    # score ?
+    return (0, prev_state.get_updated_building_data())
 
 
     # additional_heights = []

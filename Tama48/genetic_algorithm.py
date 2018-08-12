@@ -204,5 +204,6 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
         file.write("\n")
         idx += 1
     file.close()
+    updated_building_data = iter_state_result.get_updated_building_data()
 
-    return (iter_score, lst_extra_heights)
+    return (iter_score, updated_building_data)
