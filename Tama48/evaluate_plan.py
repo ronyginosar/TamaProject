@@ -96,7 +96,31 @@ class EvaluatePlan(object):
     and calculate the number of floors to add for each public building based on this vector,
     as the number of units as required, or more (using ceil for this)
     """
+
     # TODO CHECK IMPLEMENTATION
+    def __calculate_public_plan(self):
+        for public_type in bt.all_public_building_types():
+            units_needed_for_type = self.__all_needs[public_type]  # ex: 3 units
+            area_per_unit_for_type = needs.one_unit_in_meter_square(public_type)  # ex: 100 m^2 per unit
+            area_needed_for_type = units_needed_for_type * area_per_unit_for_type  # ex: 300 m^2 overall
+            public_in_type = bt.find_buildings_in_type(public_type, self.__buildings_data_public)
+            left_area = area_needed_for_type
+            while left_area > 0:
+                building_score_type = [(public_building.calc_building_score(self.__all_needs), public_building)
+                                       for public_building in public_in_type]
+
+                building_score_type_sorted = sorted(building_score_type, key=lambda x: x[1])
+                # take the building with the lowest score
+                first_to_build = building_score_type_sorted[0][0]
+                building_area = first_to_build.getArea()
+                if left_area - building_area > building_area:
+                    # not worth to add anymore!
+                    break
+                # otherwise (if worth to add)
+                first_to_build.add_extra_height(1)
+                left_area -= building_area
+
+    """
     def __calculate_public_plan(self):
         # only for public
         public_plan_prob_vec_per_type = self.__calculate_public_plan_prob_importance()  # ex: <0.5,0.2,0.3> for one type
@@ -133,10 +157,9 @@ class EvaluatePlan(object):
         for tuple in bt.find_buildings_public(self.__updated_building_data_all):
             for building in tuple[1]:
                 building.set_extra_height(add_extra_floors_dict[tuple[0]][building.get_id()])
-
+    """
 
     ############################## EVALUATION AFTER CALCULATION OF PUBLIC PLAN ##############################
-
     # TODO TO CHECK IMPLEMENTATION,
     def __evaluate_plan_cost(self):
         # already calculated:

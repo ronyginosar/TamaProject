@@ -79,6 +79,9 @@ class Building(object):
     def set_extra_height(self, extra_floors):
         self.__added_floors = math.ceil(extra_floors)
 
+    def add_extra_height(self, extra_extra_floors):
+        self.__added_floors += math.ceil(extra_extra_floors)
+
     def get_overall_area(self):
         return (self.__init_floors + self.__added_floors) * self.__area
 
