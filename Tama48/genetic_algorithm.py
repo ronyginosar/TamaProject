@@ -179,12 +179,15 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
     file = open(result_file_path, "w")
     file.write("iter-idx\titer-score\titer-result-vec\n")
     iter_score = -1.0
+    all_iter_state_results = []
     for it in range(num_iterations):
         new_population = reproduce(population, buildings_data, add_housing_units, all_needs_dict)
         iter_state_result = get_best_state(new_population)
         iter_score = iter_state_result.get_score()
-        lst_extra_heights = iter_state_result.get_only_floor_lst()
 
+        all_iter_state_results.append((iter_score, iter_state_result))
+
+        lst_extra_heights = iter_state_result.get_only_floor_lst()
         file.write(str(idx) + "\t")
         file.write(str(iter_score)+"\t")
         for item in lst_extra_heights:
@@ -192,6 +195,7 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
         file.write("\n")
         idx += 1
     file.close()
-    updated_building_data = iter_state_result.get_updated_building_data()
+    best_iter = sorted(all_iter_state_results, key=lambda x: x[0])[0]
+    updated_building_data = best_iter[1].get_updated_building_data()
 
-    return (iter_score, updated_building_data)
+    return (best_iter[0], updated_building_data)
