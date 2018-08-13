@@ -127,8 +127,6 @@ class EvaluatePlan(object):
                             search_more = False
 
 
-
-
     """
     def __calculate_public_plan(self):
         # only for public

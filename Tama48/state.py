@@ -17,8 +17,7 @@ class State(object):
         self.evaluate_plan_obj = None
         self.updated_building_data = None
         self.update_floors(self.additional_floors_resd)
-        self.score = -1
-        self.calc_plan_score(self.evaluate_plan_obj)
+        self.score = self.calc_plan_score(self.evaluate_plan_obj)
 
     # TODO: TO CHECK IMPLEMENTATION
     """
