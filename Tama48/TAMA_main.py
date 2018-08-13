@@ -58,6 +58,7 @@ if __name__ == '__main__':
     #add_housing_units =0
     #add_housing_units = 100
     add_housing_units = 10000
+    add_housing_units = 1000
 
     # calculate needs
     all_needs_dict = needs.calc_needs(init_building_data, add_housing_units)
