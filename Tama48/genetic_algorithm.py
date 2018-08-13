@@ -8,7 +8,7 @@ import math
 import datetime
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
-MUTATION_PROB = 0.1
+MUTATION_PROB = 0.05
 TYPE = 0
 BUILDINGS = 1
 import datetime
@@ -180,7 +180,7 @@ def write_to_file(file, idx, iter_score, lst_extra_heights):
     file.write("\n")
 
 
-def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, num_iterations=20):
+def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=32, num_iterations=20):
 
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
