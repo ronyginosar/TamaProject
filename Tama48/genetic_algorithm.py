@@ -2,16 +2,15 @@ import needs
 import state
 import random
 import building_types as bt
-import building_types
 import util
 import math
-import datetime
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
-MUTATION_PROB = 0.05
+#MUTATION_PROB = 0.1
+
 TYPE = 0
 BUILDINGS = 1
-import datetime
+#import datetime
 
 # """
 # creates a random state
@@ -130,13 +129,13 @@ def get_pair(elite):
 creates a new set of states, by reproducing the top states in the population
 """
 # TODO: TO CHECK IMPLEMENTATION
-def reproduce(population, buildings_data, add_housing_unit, all_needs):
+def reproduce(population, buildings_data, add_housing_unit, all_needs, mutatio_prob):
     residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
     elite = get_top_individuals(population)
     new_pop = elite
     while (len(new_pop) < len(population)*4):
         random_val = random.random()
-        if (random_val < MUTATION_PROB):
+        if (random_val < mutatio_prob):
             new_individual = generate_random_state(buildings_data, add_housing_unit, all_needs)
         else:
             new_individual = merge_elite(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
@@ -159,6 +158,13 @@ def get_best_state(population):
 
 ################################################################
 
+def write_to_file(file, idx, iter_score, lst_extra_heights):
+    file.write(str(idx) + "\t")
+    file.write(str(iter_score)+"\t")
+    for item in lst_extra_heights:
+        file.write(str(item) + "\t")
+    file.write("\n")
+
 """
 the main algorithm structure
 
@@ -168,35 +174,35 @@ the main algorithm structure
 @:param k- int:num of children in each iterations??
 @:param num_iterations- int: not of iteration of the algorithm.
 """
-# TODO: TO CHECK IMPLEMENTATION
-def write_to_file(file, idx, iter_score, lst_extra_heights):
-    file.write(str(idx) + "\t")
-    file.write(str(iter_score)+"\t")
-    for item in lst_extra_heights:
-        file.write(str(item) + "\t")
-    file.write("\n")
-
-
-def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=32, num_iterations=20):
-
+def genetic_solution(buildings_data, all_needs_dict, add_housing_units , k, num_iterations, mutatio_prob , time_folder):
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     idx = 1
-    try_name = str(add_housing_units) + "_units" + ('{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now()))
-    result_file_path = '../results/' + try_name + ".txt"
+    # ('{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now()))
+    try_name = str(add_housing_units) + "units" + str(k)+"k" + str(num_iterations) + "iters" + str(mutatio_prob) + "mut-prob"
+    result_file_path = '../results/' + try_name + ".txt" # ToAdd: time_folder + "/"
     file = open(result_file_path, "w")
-    file.write("iter-idx\titer-score\titer-result-vec\n")
-    iter_score = -1.0
+    file.write("iter-idx\titer-score\t")
+    for building_in_type in buildings_data:
+        for building in building_in_type[1]:
+            file.write(str(building) + "\t")
+    file.write("\n")
     all_iter_state_results = []
+
     for it in range(num_iterations):
-        new_population = reproduce(population, buildings_data, add_housing_units, all_needs_dict)
+        new_population = reproduce(population, buildings_data, add_housing_units, all_needs_dict, mutatio_prob)
         iter_state_result = get_best_state(new_population)
         iter_score = iter_state_result.get_score()
 
         all_iter_state_results.append((iter_score, iter_state_result))
 
         lst_extra_heights = iter_state_result.get_only_floor_lst()
-        write_to_file(file, idx, iter_score, lst_extra_heights)
+        file.write(str(idx) + "\t" + str(iter_score) + "\t")
+        for item in lst_extra_heights:
+            file.write(str(item) + "\t")
+        file.write("\n")
+        #write_to_file(file, idx, iter_score, lst_extra_heights)
+
         population = new_population
         idx += 1
         print('iteration ' + str(it) + ', score: ' + str(iter_score))

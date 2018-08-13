@@ -12,6 +12,7 @@ import min_conflict_algorithm
 import needs
 import copy
 import random # for Rony
+import datetime
 
 
 def generate_random_result_for_Rony(init_building_data):
@@ -55,23 +56,29 @@ if __name__ == '__main__':
     link_public_private_buildings(init_building_data)
 
     is_genetic = 1
-    #add_housing_units =0
-    #add_housing_units = 100
-    #add_housing_units = 10000
-    add_housing_units = 10000
+    time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
 
-    # calculate needs
-    all_needs_dict = needs.calc_needs(init_building_data, add_housing_units)
+    add_units_lst = [100] #, 1000]
+    k_lst = [16] #, 40]
+    iters_lst = [10] #, 20]
+    mut_prob_lst = [0.05]#, 0.1]
 
-    # additional_heights = []
-    # building_residential = []
+    #(buildings_data, all_needs_dict, add_housing_units, k, num_iterations, mutatio_prob , time_folder):
     if is_genetic:
-        (iter_score, updated_building_data) = genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units)
-    else:
-        (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
-        # simulated_annealing.find_solution(buildings_data, add_housing_unit)
-        #new_state = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
-        # new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
+        for add_housing_units in add_units_lst:
+            # calculate needs
+            all_needs_dict = needs.calc_needs(init_building_data, add_housing_units)
+            for k in k_lst:
+                for iters in iters_lst:
+                    for mut_prob in mut_prob_lst:
+                        (iter_score, updated_building_data) =\
+                            genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units,
+                                                               k, iters, mut_prob, time_folder)
+    # else:
+    #     (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
+    #     # simulated_annealing.find_solution(buildings_data, add_housing_unit)
+    #     #new_state = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
+    #     # new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
     print('the end!')
     print('score = ' + str(iter_score))
     #print(updated_building_data.get_heights_to_add())
