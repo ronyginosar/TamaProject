@@ -205,7 +205,7 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
         print('iteration ' + str(it) + ', score: ' + str(iter_score))
     file.close()
 
-    best_iter = sorted(all_iter_state_results, key=lambda x: x[0])[0]
+    best_iter = sorted(all_iter_state_results, key=lambda x: x[0])[::-1][0]
     updated_building_data = best_iter[1].get_updated_building_data()
 
     return (best_iter[0], updated_building_data)
