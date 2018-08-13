@@ -104,16 +104,12 @@ def merge_elite(pair, add_housing_unit, all_needs, residential_buildings):
 
     # because we randomly combine the different states, we might end up with more or less housing units than
     # we need, so here we cover for that
-    # units_added = util.get_units_added(additional_floors, add_housing_unit)
     if units_added < add_housing_unit:
         comparator = lambda x,y: x < y
         calibrate_num_units(units_added, residential_buildings, additional_floors, add_housing_unit, comparator, max_floor_value)
-        # additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_unit)
     if units_added > add_housing_unit:
         comparator = lambda x,y: x > y
         calibrate_num_units(units_added, residential_buildings, additional_floors, add_housing_unit, comparator, min_floor_value)
-        # additional_floors = reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit)
-    # get_additional_public_floors(buildings_data, additional_floors, all_needs)
     new_state = state.State(buildings_data, additional_floors, all_needs)
 
     return new_state
@@ -137,13 +133,14 @@ def reproduce(population, buildings_data, add_housing_unit, all_needs, mutatio_p
     residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
     elite = get_top_individuals(population)
     new_pop = elite
-    while (len(new_pop) < len(population)):
+    while (len(new_pop) < len(population)*4):
         random_val = random.random()
         if (random_val < mutatio_prob):
             new_individual = generate_random_state(buildings_data, add_housing_unit, all_needs)
         else:
             new_individual = merge_elite(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
         new_pop.append(new_individual)
+    new_pop = get_top_individuals(new_pop)
     return new_pop
 
 
