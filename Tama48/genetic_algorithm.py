@@ -139,7 +139,8 @@ def reproduce(population, buildings_data, add_housing_unit, all_needs):
     elite = get_top_individuals(population)
     new_pop = elite
     while (len(new_pop) < len(population)):
-        if (random.random() < MUTATION_PROB):
+        random_val = random.random()
+        if (random_val < MUTATION_PROB):
             new_individual = generate_random_state(buildings_data, add_housing_unit, all_needs)
         else:
             new_individual = merge_elite(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
@@ -171,6 +172,14 @@ the main algorithm structure
 @:param num_iterations- int: not of iteration of the algorithm.
 """
 # TODO: TO CHECK IMPLEMENTATION
+def write_to_file(file, idx, iter_score, lst_extra_heights):
+    file.write(str(idx) + "\t")
+    file.write(str(iter_score)+"\t")
+    for item in lst_extra_heights:
+        file.write(str(item) + "\t")
+    file.write("\n")
+
+
 def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, num_iterations=20):
 
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
@@ -190,14 +199,12 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
         all_iter_state_results.append((iter_score, iter_state_result))
 
         lst_extra_heights = iter_state_result.get_only_floor_lst()
-        file.write(str(idx) + "\t")
-        file.write(str(iter_score)+"\t")
-        for item in lst_extra_heights:
-            file.write(str(item) + "\t")
-        file.write("\n")
+        write_to_file(file, idx, iter_score, lst_extra_heights)
+        population = new_population
         idx += 1
         print('iteration ' + str(it) + ', score: ' + str(iter_score))
     file.close()
+
     best_iter = sorted(all_iter_state_results, key=lambda x: x[0])[0]
     updated_building_data = best_iter[1].get_updated_building_data()
 
