@@ -80,5 +80,5 @@ if __name__ == '__main__':
     #     #new_state = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
     #     # new_plan = simulated_annealing.find_solution(buildings_data, add_housing_unit)
     print('the end!')
-    print('score = ' + str(iter_score*add_units_lst[0]))
+    print('score = ' + str(iter_score))
     #print(updated_building_data.get_heights_to_add())
