@@ -5,9 +5,10 @@ import building_types as bt
 import building_types
 import util
 import math
+import datetime
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
-MUTATION_PROB = 0.03
+MUTATION_PROB = 0.1
 TYPE = 0
 BUILDINGS = 1
 import datetime
@@ -134,13 +135,14 @@ creates a new set of states, by reproducing the top states in the population
 """
 # TODO: TO CHECK IMPLEMENTATION
 def reproduce(population, buildings_data, add_housing_unit, all_needs):
-    new_pop = []
     residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
     elite = get_top_individuals(population)
+    new_pop = elite
     while (len(new_pop) < len(population)):
-        new_individual = merge_elite(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
         if (random.random() < MUTATION_PROB):
             new_individual = generate_random_state(buildings_data, add_housing_unit, all_needs)
+        else:
+            new_individual = merge_elite(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
         new_pop.append(new_individual)
     return new_pop
 
@@ -174,7 +176,7 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     idx = 1
-    try_name = str(add_housing_units) + "_units"
+    try_name = str(add_housing_units) + "_units" + ('{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now()))
     result_file_path = '../results/' + try_name + ".txt"
     file = open(result_file_path, "w")
     file.write("iter-idx\titer-score\titer-result-vec\n")
@@ -191,6 +193,7 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
             file.write(str(item) + "\t")
         file.write("\n")
         idx += 1
+        print('iteration ' + str(it) + ', score: ' + str(iter_score))
     file.close()
     updated_building_data = iter_state_result.get_updated_building_data()
 
