@@ -56,7 +56,14 @@ if __name__ == '__main__':
     link_public_private_buildings(init_building_data)
 
     is_genetic = 1
+<<<<<<< HEAD
     time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
+=======
+    #add_housing_units =0
+    #add_housing_units = 100
+    #add_housing_units = 10000
+    add_housing_units = 10000
+>>>>>>> 1d72682ad3a916b1dac387acee013a7b5d858b17
 
     add_units_lst = [100, 1000]
     k_lst = [16, 40]
