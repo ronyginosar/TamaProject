@@ -111,15 +111,17 @@ class ElderlyCenter(PublicBuilding):
 ###-------------------------------------------*(**)*---------------------------------------------###
 
 IDEAL_CLASS_SIZE = needs.CLASS_SIZE
+NUM_AGE_GROUPS = 6
 
 class HighSchool(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.HIGH_SCHOOL, area, location, init_height, polygon)
 
-
     def get_class_size(self):
-        pass #TODO implement
+        age_group_size = self.get_using_population()*needs.AGE_GROUP18_PRCTG*0.01*NUM_AGE_GROUPS
+        num_classes = int(self.get_overall_area()/needs.one_unit_in_meter_square(bt.HIGH_SCHOOL))
+        return age_group_size / num_classes
 
     def calc_conflicts(self):
         conflict_points = IDEAL_CLASS_SIZE - self.get_class_size()
@@ -140,9 +142,9 @@ class Hospital(PublicBuilding):
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.HOSPITAL, area, location, init_height, polygon)
 
-
+    # Hospital is not needed in the neighborhood level
     def calc_conflicts(self):
-        return 0 #TODO implement
+        return 0
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.HOSPITAL)*needs.one_unit_in_meter_square(bt.HOSPITAL)
@@ -151,14 +153,28 @@ class Hospital(PublicBuilding):
 
 ###-------------------------------------------*(**)*---------------------------------------------###
 
+IDEAL_K_CLASS_SIZE = needs.CLASS_SIZE
+NUM_K_AGE_GROUPS = 3
+
 class Kindergarden(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.KINDERGARDEN, area, location, init_height, polygon)
 
 
+    def get_class_size(self):
+        age_group_size = self.get_using_population()*needs.AGE_GROUP18_PRCTG*0.01*NUM_K_AGE_GROUPS
+        num_classes = int(self.get_overall_area()/needs.one_unit_in_meter_square(bt.KINDERGARDEN))
+        return age_group_size / num_classes
+
+
     def calc_conflicts(self):
-        return 0 #TODO implement
+        conflict_points = IDEAL_K_CLASS_SIZE - self.get_class_size()
+        if conflict_points <= 0:
+            return 0
+        else:
+            return conflict_points
+
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.KINDERGARDEN)*needs.one_unit_in_meter_square(bt.KINDERGARDEN)
@@ -167,6 +183,8 @@ class Kindergarden(PublicBuilding):
 
 ###-------------------------------------------*(**)*---------------------------------------------###
 
+IDEAL_USERS_PER_PIT = 500
+
 class Mikve(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
@@ -174,7 +192,16 @@ class Mikve(PublicBuilding):
 
 
     def calc_conflicts(self):
-        return 0 #TODO implement
+        num_using_units = self.get_using_population()/needs.AVG_FAMILY_SIZE
+        num_pits = int(self.get_overall_area() / 65)
+        people_per_pit = num_using_units / num_pits
+        # needs a pit for 500 users
+        conflict_points = (IDEAL_USERS_PER_PIT - people_per_pit)*(10/IDEAL_USERS_PER_PIT)
+        if conflict_points <= 0:
+            return 0
+        else:
+            return conflict_points
+
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.MIKVE)*needs.one_unit_in_meter_square(bt.MIKVE)
@@ -183,6 +210,8 @@ class Mikve(PublicBuilding):
 
 ###-------------------------------------------*(**)*---------------------------------------------###
 
+IDEAL_POLICE_SIZE_PER_PERSON = 0.1
+
 class Police(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
@@ -190,7 +219,12 @@ class Police(PublicBuilding):
 
 
     def calc_conflicts(self):
-        return 0 #TODO implement
+        area_per_person = self.get_overall_area()/self.get_using_population()
+        conflict_points = int((IDEAL_POLICE_SIZE_PER_PERSON - area_per_person)*(10/IDEAL_POLICE_SIZE_PER_PERSON))
+        if conflict_points <= 0:
+            return 0
+        else:
+            return conflict_points
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.POLICE)*needs.one_unit_in_meter_square(bt.POLICE)
@@ -199,14 +233,27 @@ class Police(PublicBuilding):
 
 ###-------------------------------------------*(**)*---------------------------------------------###
 
+IDEAL_P_CLASS_SIZE = needs.CLASS_SIZE
+NUM_P_AGE_GROUPS = 6
+
 class PrimarySchool(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.PRIMARY_SCHOOL, area, location, init_height, polygon)
 
+    def get_class_size(self):
+        age_group_size = self.get_using_population()*needs.AGE_GROUP18_PRCTG*0.01*NUM_P_AGE_GROUPS
+        num_classes = int(self.get_overall_area()/needs.one_unit_in_meter_square(bt.PRIMARY_SCHOOL))
+        return age_group_size / num_classes
+
 
     def calc_conflicts(self):
-        return 0 #TODO implement
+        conflict_points = IDEAL_P_CLASS_SIZE - self.get_class_size()
+        if conflict_points <= 0:
+            return 0
+        else:
+            return conflict_points
+
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.PRIMARY_SCHOOL)*needs.one_unit_in_meter_square(bt.PRIMARY_SCHOOL)
@@ -220,9 +267,9 @@ class Sport(PublicBuilding):
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.SPORT, area, location, init_height, polygon)
 
-
+    # no special needs for sports facilities in the neighborhood level - later to be added to the parks area
     def calc_conflicts(self):
-        return 0 #TODO implement
+        return 0
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.SPORT)*needs.one_unit_in_meter_square(bt.SPORT)
@@ -231,13 +278,23 @@ class Sport(PublicBuilding):
 
 ###-------------------------------------------*(**)*---------------------------------------------###
 
+PERCENTAGE_OF_RELIGIOUS_FROM_POPULATION = 0.01*needs.RELIGION_PRCTG
+IDEAL_AREA_PER_USER_SYNAGOGUE = 1.1
+
+
 class Synagogue(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.SYNAGOUGE, area, location, init_height, polygon)
 
     def calc_conflicts(self):
-        return 0 #TODO implement
+        num_users = int(self.get_using_population() * PERCENTAGE_OF_RELIGIOUS_FROM_POPULATION)
+        area_per_person = self.get_overall_area()/num_users
+        conflict_points = int((IDEAL_AREA_PER_USER_SYNAGOGUE - area_per_person)*(10/IDEAL_AREA_PER_USER_SYNAGOGUE))
+        if conflict_points <= 0:
+            return 0
+        else:
+            return conflict_points
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.SYNAGOUGE)*needs.one_unit_in_meter_square(bt.SYNAGOUGE)
