@@ -6,14 +6,11 @@ import util
 import math
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
-<<<<<<< HEAD
 #MUTATION_PROB = 0.1
-=======
-MUTATION_PROB = 0.05
->>>>>>> 1d72682ad3a916b1dac387acee013a7b5d858b17
+
 TYPE = 0
 BUILDINGS = 1
-import datetime
+#import datetime
 
 # """
 # creates a random state
@@ -141,12 +138,8 @@ def reproduce(population, buildings_data, add_housing_unit, all_needs, mutatio_p
     elite = get_top_individuals(population)
     new_pop = elite
     while (len(new_pop) < len(population)):
-<<<<<<< HEAD
-        if (random.random() < mutatio_prob):
-=======
         random_val = random.random()
-        if (random_val < MUTATION_PROB):
->>>>>>> 1d72682ad3a916b1dac387acee013a7b5d858b17
+        if (random_val < mutatio_prob):
             new_individual = generate_random_state(buildings_data, add_housing_unit, all_needs)
         else:
             new_individual = merge_elite(get_pair(elite), add_housing_unit, all_needs, residential_buildings)
@@ -168,6 +161,13 @@ def get_best_state(population):
 
 ################################################################
 
+def write_to_file(file, idx, iter_score, lst_extra_heights):
+    file.write(str(idx) + "\t")
+    file.write(str(iter_score)+"\t")
+    for item in lst_extra_heights:
+        file.write(str(item) + "\t")
+    file.write("\n")
+
 """
 the main algorithm structure
 
@@ -177,21 +177,7 @@ the main algorithm structure
 @:param k- int:num of children in each iterations??
 @:param num_iterations- int: not of iteration of the algorithm.
 """
-# TODO: TO CHECK IMPLEMENTATION
-<<<<<<< HEAD
-def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k, num_iterations, mutatio_prob , time_folder):
-=======
-def write_to_file(file, idx, iter_score, lst_extra_heights):
-    file.write(str(idx) + "\t")
-    file.write(str(iter_score)+"\t")
-    for item in lst_extra_heights:
-        file.write(str(item) + "\t")
-    file.write("\n")
-
-
-def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=32, num_iterations=20):
->>>>>>> 1d72682ad3a916b1dac387acee013a7b5d858b17
-
+def genetic_solution(buildings_data, all_needs_dict, add_housing_units , k, num_iterations, mutatio_prob , time_folder):
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     idx = 1
@@ -204,8 +190,8 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=32, nu
         for building in building_in_type[1]:
             file.write(str(building) + "\t")
     file.write("\n")
-    iter_score = -1.0
     all_iter_state_results = []
+
     for it in range(num_iterations):
         new_population = reproduce(population, buildings_data, add_housing_units, all_needs_dict, mutatio_prob)
         iter_state_result = get_best_state(new_population)
@@ -214,7 +200,12 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=32, nu
         all_iter_state_results.append((iter_score, iter_state_result))
 
         lst_extra_heights = iter_state_result.get_only_floor_lst()
-        write_to_file(file, idx, iter_score, lst_extra_heights)
+        file.write(str(idx) + "\t" + str(iter_score) + "\t")
+        for item in lst_extra_heights:
+            file.write(str(item) + "\t")
+        file.write("\n")
+        #write_to_file(file, idx, iter_score, lst_extra_heights)
+
         population = new_population
         idx += 1
         print('iteration ' + str(it) + ', score: ' + str(iter_score))
