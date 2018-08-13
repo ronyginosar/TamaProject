@@ -44,6 +44,7 @@ def generate_random_population(pop_size, buildings_data, add_housing_unit, all_n
         population.append(generate_random_state(buildings_data, add_housing_unit, all_needs))
     return population
 
+
 """
 selects the top 25% of states, according to their score
 """
@@ -62,56 +63,40 @@ def get_top_individuals(population):
     return top_individuals
 
 
-
 """
 """
 # TODO: TO CHECK IMPLEMENTATION
-def reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit):
-    new_add_floors = additional_floors
-    raised_buildings = set()
-    for i in range(len(new_add_floors)):
-        if new_add_floors[i] > 0:
-            raised_buildings.add(i)
+def calibrate_num_units(units_added, residential_buildings, additional_floors, add_housing_unit, comparator,
+                        max_min_floor_value):
 
-    # adds floors at random buildings, so that we will meet the housing units requirements
-    while units_added > add_housing_unit:
-        building_to_shrink = random.sample(raised_buildings, 1)[0]
-        new_add_floors[building_to_shrink] -= 1
+    untouched_buildings = set()
+    for i in range(len(max_min_floor_value)):
+        untouched_buildings.add(i)
 
-        if new_add_floors[building_to_shrink] == 0:
-            raised_buildings.remove(building_to_shrink)
+    while comparator(add_housing_unit, units_added):
+        building_to_manipulate = untouched_buildings.pop()
+        additional_floors[building_to_manipulate] = max_min_floor_value[building_to_manipulate]
+        units_added += int(residential_buildings[building_to_manipulate].get_area()/needs.METERS_PER_UNIT)
+    return
 
-        units_added -= int(residential_buildings[building_to_shrink].get_area()/needs.METERS_PER_UNIT)
 
-    return new_add_floors
-
-"""
-"""
-# TODO: TO CHECK IMPLEMENTATION
-def add_units(units_added, residential_buildings, additional_floors, add_housing_unit):
-    new_add_floors = additional_floors
-
-    # adds floors at random buildings, so that we will meet the housing units requirements
-    while units_added < add_housing_unit:
-        building_to_enlarge = random.randint(0, len(residential_buildings) - 1)
-        new_add_floors[building_to_enlarge] += 1
-        units_added += int(residential_buildings[building_to_enlarge].get_area()/needs.METERS_PER_UNIT)
-
-    return new_add_floors
-
-"""
-"""
-# TODO: TO CHECK IMPLEMENTATION
 def merge_elite(pair, add_housing_unit, all_needs, residential_buildings):
     parent1 = pair[0]
     parent2 = pair[1]
     buildings_data = parent1.get_building_data()
-
     parent2_heights = parent2.get_heights_to_add()
-
     additional_floors = parent1.get_heights_to_add()
+
+    # the max value between parent_1 and parent_2
+    max_floor_value = [0]*len(additional_floors)
+    # the min value between parent_1 and parent_2
+    min_floor_value = [0]*len(additional_floors)
+
     for i in range(len(additional_floors)):
-        #why 0.5??
+
+        max_floor_value[i] = max(additional_floors[i], parent2_heights[i])
+        min_floor_value[i] = min(additional_floors[i], parent2_heights[i])
+
         if random.random() > 0.5:
             additional_floors[i] = parent2_heights[i]
     # when merging, we need to make sure that the additional housing units is as required
@@ -120,11 +105,14 @@ def merge_elite(pair, add_housing_unit, all_needs, residential_buildings):
     # because we randomly combine the different states, we might end up with more or less housing units than
     # we need, so here we cover for that
     # units_added = util.get_units_added(additional_floors, add_housing_unit)
-
-    if units_added > add_housing_unit:
-        additional_floors = reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit)
     if units_added < add_housing_unit:
-        additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_unit)
+        comparator = lambda x,y: x < y
+        calibrate_num_units(units_added, residential_buildings, additional_floors, add_housing_unit, comparator, max_floor_value)
+        # additional_floors = add_units(units_added, residential_buildings, additional_floors, add_housing_unit)
+    if units_added > add_housing_unit:
+        comparator = lambda x,y: x > y
+        calibrate_num_units(units_added, residential_buildings, additional_floors, add_housing_unit, comparator, min_floor_value)
+        # additional_floors = reduce_units(units_added, residential_buildings, additional_floors, add_housing_unit)
     # get_additional_public_floors(buildings_data, additional_floors, all_needs)
     new_state = state.State(buildings_data, additional_floors, all_needs)
 
@@ -186,7 +174,7 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, nu
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     idx = 1
-    try_name = "300_units"
+    try_name = str(add_housing_units) + "_units"
     result_file_path = '../results/' + try_name + ".txt"
     file = open(result_file_path, "w")
     file.write("iter-idx\titer-score\titer-result-vec\n")
