@@ -4,9 +4,9 @@ import copy
 import needs
 import math
 
-NEEDS_PRCTG = 0.5
-DISTANCE_PERCTG = 0.25
-COST_PRCTG = 0.25
+NEEDS_PRCTG = 0.0
+DISTANCE_PERCTG = 0.0
+COST_PRCTG = 1.0
 
 # for extra floors we reduce the score according to cost..
 PERCENTAGE = 100
