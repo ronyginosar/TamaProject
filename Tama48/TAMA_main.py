@@ -57,7 +57,7 @@ if __name__ == '__main__':
     is_genetic = 1
     #add_housing_units =0
     #add_housing_units = 100
-    add_housing_units = 10000
+    #add_housing_units = 10000
     add_housing_units = 1000
 
     # calculate needs

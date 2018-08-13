@@ -171,7 +171,7 @@ the main algorithm structure
 @:param num_iterations- int: not of iteration of the algorithm.
 """
 # TODO: TO CHECK IMPLEMENTATION
-def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=30, num_iterations=80):
+def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=30, num_iterations=20):
 
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
@@ -198,7 +198,7 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=30, nu
         idx += 1
         print('iteration ' + str(it) + ', score: ' + str(iter_score))
     file.close()
-    best_iter = sorted(all_iter_state_results, key=lambda x: x[0])[0]
+    best_iter = sorted(all_iter_state_results, key=lambda x: x[0])[::-1][0]
     updated_building_data = best_iter[1].get_updated_building_data()
 
     return (best_iter[0], updated_building_data)
