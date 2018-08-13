@@ -7,7 +7,7 @@ import util
 import math
 
 # TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
-MUTATION_PROB = 0.03
+MUTATION_PROB = 0.1
 TYPE = 0
 BUILDINGS = 1
 import datetime
@@ -169,7 +169,7 @@ the main algorithm structure
 @:param num_iterations- int: not of iteration of the algorithm.
 """
 # TODO: TO CHECK IMPLEMENTATION
-def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=16, num_iterations=20):
+def genetic_solution(buildings_data, all_needs_dict, add_housing_units, k=30, num_iterations=80):
 
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
