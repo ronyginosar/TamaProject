@@ -53,6 +53,7 @@ class State(object):
 
     def add_floor(self, building_to_increase, num_floors_to_add):
         self.additional_floors_resd[building_to_increase.get_id()] += num_floors_to_add
+        self.score = self.calc_plan_score(self.evaluate_plan_obj)
 
     # TODO: TO CHECK IMPLEMENTATION
     def get_heights_to_add(self):
