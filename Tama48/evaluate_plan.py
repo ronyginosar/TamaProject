@@ -4,9 +4,9 @@ import copy
 import needs
 import math
 
-NEEDS_PRCTG = 0.0
-DISTANCE_PERCTG = 0.0
-COST_PRCTG = 1.0
+NEEDS_PRCTG = 0.5
+DISTANCE_PERCTG = 0.4
+COST_PRCTG = 0.1
 
 # for extra floors we reduce the score according to cost..
 PERCENTAGE = 100
@@ -96,7 +96,6 @@ class EvaluatePlan(object):
     and calculate the number of floors to add for each public building based on this vector,
     as the number of units as required, or more (using ceil for this)
     """
-
     # TODO CHECK IMPLEMENTATION
     def __calculate_public_plan(self):
         for public_type in bt.all_public_building_types():
@@ -221,6 +220,23 @@ class EvaluatePlan(object):
             self.__plan_needs_score *= ratio
 
         return self.__plan_needs_score
+
+    def __evaluate_plan_linked_distance(self):
+        if self.__plan_distance_score != -1:
+            return self.__plan_distance_score
+
+        # first time, should calculate it
+        self.__plan_distance_score = 1
+        # loop over only public buildings!!
+        for b_type in bt.all_public_building_types():
+            buildings_in_type = bt.find_buildings_in_type(b_type, self.__updated_building_data_all)
+            # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
+            updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.__updated_building_data_all)
+            updated_building_data_public_type = bt.find_buildings_in_type(b_type, self.__updated_building_data_all)
+            for p_building in updated_building_data_public_type:
+                for building_resd_used in p_building.get_users_buildings():
+                    pass
+
 
     # TODO: TO CHECK IMPLEMENTATION, few questions
     def __evaluate_plan_distance(self):

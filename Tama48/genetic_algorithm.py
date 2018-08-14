@@ -174,13 +174,13 @@ the main algorithm structure
 @:param k- int:num of children in each iterations??
 @:param num_iterations- int: not of iteration of the algorithm.
 """
-def genetic_solution(buildings_data, all_needs_dict, add_housing_units , k, num_iterations, mutatio_prob , time_folder):
+def genetic_solution(buildings_data, all_needs_dict, add_housing_units , k, num_iterations, mutatio_prob , folder_type):
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     idx = 1
     # ('{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now()))
     try_name = str(add_housing_units) + "units" + str(k)+"k" + str(num_iterations) + "iters" + str(mutatio_prob) + "mut-prob"
-    result_file_path = '../results/' + try_name + ".txt" # ToAdd: time_folder + "/"
+    result_file_path = '../results/' + folder_type + '/' + try_name + ".txt" # ToAdd: time_folder + "/"
     file = open(result_file_path, "w")
     file.write("iter-idx\titer-score\t")
     for building_in_type in buildings_data:

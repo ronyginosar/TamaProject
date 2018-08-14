@@ -56,24 +56,26 @@ if __name__ == '__main__':
     link_public_private_buildings(init_building_data)
 
     is_genetic = 1
-    time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
+    #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
+    folder_types = ["only_cost", "only_distance", "only_needs"]
 
     add_units_lst = [10000] #, 1000]
-    k_lst = [30] #, 40]
-    iters_lst = [10] #, 20]
-    mut_prob_lst = [0.1] #, 0.03]
+    k_lst = [16, 30] #, 40]
+    iters_lst = [30] #, 25]
+    mut_prob_lst = [0.3] #, 0.03]
 
     #(buildings_data, all_needs_dict, add_housing_units, k, num_iterations, mutatio_prob , time_folder):
     if is_genetic:
         for add_housing_units in add_units_lst:
             # calculate needs
             all_needs_dict = needs.calc_needs(init_building_data, add_housing_units)
+            #for folder_type in folder_types:
             for k in k_lst:
                 for iters in iters_lst:
                     for mut_prob in mut_prob_lst:
                         (iter_score, updated_building_data) =\
                             genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units,
-                                                               k, iters, mut_prob, time_folder)
+                                                                   k, iters, mut_prob, "5needs_4sidt_1cost")
     # else:
     #     (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
     #     # simulated_annealing.find_solution(buildings_data, add_housing_unit)
