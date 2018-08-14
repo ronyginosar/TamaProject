@@ -4,8 +4,6 @@ Created on July 2, 2018
 @author: Naama
 """
 import math
-import util
-import building_types as bt
 
 FLOOR_HEIGHT = 3
 
@@ -47,7 +45,6 @@ class Building(object):
     def __str__(self):
         return "B_" + str(self.__building_type) + "_" + str(self.__id)
 
-    # # TODO: TO Check implementation
     # def calc__public_building_dist_ordered(self, all_building_data):
     #     for b_type in bt.ALL_PUBLIC_BUILDING_TYPES:
     #         dist_buildings_in_type = [(building.get_id(), util.calc_distance_two_buildings(self, building))
