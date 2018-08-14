@@ -9,10 +9,6 @@ class Residential(building.Building):
         # TODO: for example: {school : (school_1, 150)} for a school that is 150 meters from the building
         self.used_public_buildings = [] #TODO - implement the choosing of one building per type
 
-
-    def calculate_used_public_buildings(self):
-        pass #TODO implement
-
     def add_used_public_building(self, public_building):
         self.used_public_buildings.append(public_building)
 

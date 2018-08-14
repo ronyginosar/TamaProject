@@ -13,6 +13,30 @@ import needs
 import copy
 import random # for Rony
 import datetime
+import json
+
+
+def convert_to_json_and_save(state):
+    state_dict = {}
+    for i in range(len(state)):
+        buildings_list = []
+        for j in range(len(state[i][1])):
+            curr_building = state[i][1][j]
+            buildings_list.append([{
+                'building': {
+                    'id': curr_building.get_id(),
+                    'area': curr_building.get_area(),
+                    'location': curr_building.get_location(),
+                    'polygon': curr_building.get_polygon(),
+                    'init_height': curr_building.get_init_height(),
+                    'extra_height': curr_building.get_extra_height(),
+                }
+            }])
+
+        state_dict[state[i][0]] = buildings_list
+    with open('data.json', 'w') as outfile:
+        json.dump(state_dict, outfile)
+
 
 
 def generate_random_result_for_Rony(init_building_data):
