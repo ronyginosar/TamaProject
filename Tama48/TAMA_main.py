@@ -85,7 +85,8 @@ if __name__ == '__main__':
                                                                    k, iters, mut_prob, "5needs_4sidt_1cost")
     # else:
     #     (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
-                                                               k, iters, mut_prob, time_folder)
+    #                                                           k, iters, mut_prob, time_folder)
+
     else:
         all_needs_dict = needs.calc_needs(init_building_data, add_units_lst[0])
         (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_units_lst[0])
