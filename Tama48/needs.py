@@ -72,8 +72,8 @@ def calc_needs(buildings_data, add_housing_units):
 
     # TODO: Naama: Not in use yet!!
     type_importance_dict = {}
-    avg_imp = 1/(len(bt.all_building_types())-1) # -1 for not considering the residential
-    for building in bt.all_building_types():
+    avg_imp = 1/(len(bt.ALL_BUILDING_TYPES)-1) # -1 for not considering the residential
+    for building in bt.ALL_BUILDING_TYPES:
         type_importance_dict[str(building)] = avg_imp
 
     # number of kids in a certain age (for ex. 102 kids in the age of 10 yo)
@@ -87,7 +87,7 @@ def calc_needs(buildings_data, add_housing_units):
     highschool_needs = (grade_size * HS_NUM_GRADES)/ CLASS_SIZE
 
     synagogue_needs = math.ceil(((add_population*RELIGION_PRCTG/PERCENTAGE)*0.49)*1.1)/one_unit_in_meter_square(bt.SYNAGOUGE)
-    mikve_needs = math.ceil(((add_population * RELIGION_PRCTG/PERCENTAGE)/22.5)*0.07)/one_unit_in_meter_square(bt.MIKVE)
+    mikve_needs = math.ceil(((add_population * RELIGION_PRCTG/PERCENTAGE)/22.5)*0.35)/one_unit_in_meter_square(bt.MIKVE) # 0.35 instead of 0.007
 
     # POLICE
     previous_police = 0
@@ -143,7 +143,7 @@ def calc_needs(buildings_data, add_housing_units):
 
     all_needs_dict = dict()
     # All needs are in area (square meters)
-    for b_type in bt.all_building_types():
+    for b_type in bt.ALL_BUILDING_TYPES:
         if b_type == bt.KINDERGARDEN:
             all_needs_dict[b_type] = kindergarden_needs
         elif b_type == bt.PRIMARY_SCHOOL:

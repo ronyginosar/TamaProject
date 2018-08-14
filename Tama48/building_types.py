@@ -12,17 +12,16 @@ MIKVE = 'mikve'
 POLICE = 'police'
 PRIMARY_SCHOOL = 'primary_school'
 RESIDENTIAL = 'residential'
-SPORT =  'sport'
+SPORT = 'sport'
 SYNAGOUGE = 'synagogue'
 
-
-def all_building_types():
-    return [CLINIC, COMMUNITY_CNTR, ELDERLY_CNTR, HIGH_SCHOOL, HOSPITAL, KINDERGARDEN, MIKVE,
+ALL_BUILDING_TYPES = [CLINIC, COMMUNITY_CNTR, ELDERLY_CNTR, HIGH_SCHOOL, HOSPITAL, KINDERGARDEN, MIKVE,
                               POLICE, PRIMARY_SCHOOL, RESIDENTIAL, SPORT, SYNAGOUGE]
 
-def all_public_building_types():
-    return [CLINIC, COMMUNITY_CNTR, ELDERLY_CNTR, HIGH_SCHOOL, HOSPITAL, KINDERGARDEN, MIKVE,
+ALL_PUBLIC_BUILDING_TYPES = [CLINIC, COMMUNITY_CNTR, ELDERLY_CNTR, HIGH_SCHOOL, HOSPITAL, KINDERGARDEN, MIKVE,
                               POLICE, PRIMARY_SCHOOL, SPORT, SYNAGOUGE]
+
+MAX_HEIGHTS_DICT = dict(zip(ALL_BUILDING_TYPES, [30, 30, 20, 8, 15, 6, 4, 10, 7, 12, 20, 4]))
 
 def find_buildings_in_type(b_type, building_data):
     for tuple in building_data:
@@ -47,6 +46,7 @@ plan_floors_state is a state [(building_id = 1, floors = f1), (building_id = 2, 
 #     return [building_floor[1] for building_floor in b_f_in_type if building_floor[0] == buildingID][0]
 
 # TODO: TO CHECK INDEXING!!
+
 def get_building_by_type_id(b_type, buildingID, building_data):
     building_in_type = find_buildings_in_type(b_type, building_data)
     for building in building_in_type:
@@ -81,7 +81,7 @@ Make sure each time to send the init_buildings_data (as extracted from files) an
 def update_building_resd_with_floors_plan(init_buildings_data_all, additional_floors_resd):
     update_building_data_all = copy.deepcopy(init_buildings_data_all)
     buildings_resd = find_buildings_in_type(RESIDENTIAL, init_buildings_data_all)
-    resd_idx = all_building_types().index(RESIDENTIAL)
+    resd_idx = ALL_BUILDING_TYPES.index(RESIDENTIAL)
     update_building_data_all[resd_idx] = (RESIDENTIAL, update_resd_building_data_with_floors_plan(buildings_resd, additional_floors_resd))
 
     return update_building_data_all

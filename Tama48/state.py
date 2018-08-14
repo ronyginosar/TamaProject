@@ -33,7 +33,7 @@ class State(object):
     def get_floor_state(self):
         if not self.additional_floors_all:
             self.updated_building_data = self.evaluate_plan_obj.get_updated_building_data_all()
-            for b_type in bt.all_building_types():
+            for b_type in bt.ALL_BUILDING_TYPES:
                 if b_type != bt.RESIDENTIAL:
                     additional_floors_for_type = [building.get_extra_height()
                                       for building in bt.find_buildings_in_type(b_type, self.updated_building_data)]
@@ -45,7 +45,7 @@ class State(object):
     def get_only_floor_lst(self):
         only_floors = []
         self.updated_building_data = self.evaluate_plan_obj.get_updated_building_data_all()
-        for b_type in bt.all_building_types():
+        for b_type in bt.ALL_BUILDING_TYPES:
             for building in bt.find_buildings_in_type(b_type, self.updated_building_data):
                 only_floors.append(building.get_extra_height())
 

@@ -44,7 +44,10 @@ class Clinic(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.CLINIC, area, location, init_height, polygon)
-        self.__max_height = 30
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.CLINIC)
+
+    def get_max_height(self):
+        return self.__max_height
 
     # conflicts calculation will be done as follows:
     # more than 0.1 m^2 per person = 0
@@ -70,7 +73,10 @@ class CommunityCenter(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.COMMUNITY_CNTR, area, location, init_height, polygon)
-        self.__max_height = 30
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.COMMUNITY_CNTR)
+
+    def get_max_height(self):
+        return self.__max_height
 
     def calc_conflicts(self):
         num_users = int(self.get_using_population() * PERCENTAGE_OF_USERS_FROM_POPULATION)
@@ -96,7 +102,10 @@ class ElderlyCenter(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.ELDERLY_CNTR, area, location, init_height, polygon)
-        self.__max_height = 20
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.ELDERLY_CNTR)
+
+    def get_max_height(self):
+        return self.__max_height
 
     def calc_conflicts(self):
         num_users = int(self.get_using_population() * PERCENTAGE_OF_ELDERLY_USERS_FROM_POPULATION)
@@ -120,7 +129,10 @@ class HighSchool(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.HIGH_SCHOOL, area, location, init_height, polygon)
-        self.__max_height = 8
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.HIGH_SCHOOL)
+
+    def get_max_height(self):
+        return self.__max_height
 
     def get_class_size(self):
         age_group_size = self.get_using_population()*needs.AGE_GROUP18_PRCTG*0.01*NUM_AGE_GROUPS
@@ -145,7 +157,10 @@ class Hospital(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.HOSPITAL, area, location, init_height, polygon)
-        self.__max_height = 15
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.HOSPITAL)
+
+    def get_max_height(self):
+        return self.__max_height
 
     # Hospital is not needed in the neighborhood level
     def calc_conflicts(self):
@@ -165,7 +180,10 @@ class Kindergarden(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.KINDERGARDEN, area, location, init_height, polygon)
-        self.__max_height = 6
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.KINDERGARDEN)
+
+    def get_max_height(self):
+        return self.__max_height
 
 
     def get_class_size(self):
@@ -195,7 +213,10 @@ class Mikve(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.MIKVE, area, location, init_height, polygon)
-        self.__max_height = 4
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.MIKVE)
+
+    def get_max_height(self):
+        return self.__max_height
 
 
     def calc_conflicts(self):
@@ -223,7 +244,10 @@ class Police(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.POLICE, area, location, init_height, polygon)
-        self.__max_height = 10
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.POLICE)
+
+    def get_max_height(self):
+        return self.__max_height
 
 
     def calc_conflicts(self):
@@ -248,7 +272,10 @@ class PrimarySchool(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.PRIMARY_SCHOOL, area, location, init_height, polygon)
-        self.__max_height = 6
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.PRIMARY_SCHOOL)
+
+    def get_max_height(self):
+        return self.__max_height
 
     def get_class_size(self):
         age_group_size = self.get_using_population()*needs.AGE_GROUP18_PRCTG*0.01*NUM_P_AGE_GROUPS
@@ -275,7 +302,10 @@ class Sport(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.SPORT, area, location, init_height, polygon)
-        self.__max_height = 15
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.SPORT)
+
+    def get_max_height(self):
+        return self.__max_height
 
     # no special needs for sports facilities in the neighborhood level - later to be added to the parks area
     def calc_conflicts(self):
@@ -296,7 +326,10 @@ class Synagogue(PublicBuilding):
 
     def __init__(self, building_id, area, location, init_height, polygon):
         PublicBuilding.__init__(self, building_id, bt.SYNAGOUGE, area, location, init_height, polygon)
-        self.__max_height = 4
+        self.__max_height = bt.MAX_HEIGHTS_DICT.get(bt.SYNAGOUGE)
+
+    def get_max_height(self):
+        return self.__max_height
 
     def calc_conflicts(self):
         num_users = int(self.get_using_population() * PERCENTAGE_OF_RELIGIOUS_FROM_POPULATION)

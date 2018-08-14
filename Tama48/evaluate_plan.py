@@ -95,7 +95,7 @@ class EvaluatePlan(object):
     as the number of units as required, or more (using ceil for this)
     """
     def __calculate_public_plan(self):
-        for public_type in bt.all_public_building_types():
+        for public_type in bt.ALL_PUBLIC_BUILDING_TYPES:
             units_needed_for_type = self.__all_needs[public_type]  # ex: 3 units
             area_per_unit_for_type = needs.one_unit_in_meter_square(public_type)  # ex: 100 m^2 per unit
             area_needed_for_type = units_needed_for_type * area_per_unit_for_type  # ex: 300 m^2 overall
@@ -116,7 +116,7 @@ class EvaluatePlan(object):
                     max_height = first_to_build.get_max_height()
                     if (building_height > max_height):
                         idx += 1
-                    elif left_area - (0.5 * building_area) > building_area:
+                    elif left_area > 0.5 * building_area:
                         # if worth to add a floor
                         first_to_build.add_extra_height(1)
                         left_area -= building_area
@@ -126,14 +126,13 @@ class EvaluatePlan(object):
                         if idx == len(building_score_type_sorted):
                             search_more = False
 
-
     """
     def __calculate_public_plan(self):
         # only for public
         public_plan_prob_vec_per_type = self.__calculate_public_plan_prob_importance()  # ex: <0.5,0.2,0.3> for one type
 
         add_extra_floors_dict = dict()
-        for public_type in bt.all_public_building_types():
+        for public_type in bt.ALL_PUBLIC_BUILDING_TYPES:
             units_needed_for_type = self.__all_needs[public_type]                        # ex: 3 units
             area_per_unit_for_type = needs.one_unit_in_meter_square(public_type)         # ex: 100 m^2 per unit
             area_needed_for_type = units_needed_for_type * area_per_unit_for_type        # ex: 300 m^2 overall
@@ -174,7 +173,7 @@ class EvaluatePlan(object):
             return self.__plan_cost_score
 
         self.__plan_cost_score = 1
-        for b_type in bt.all_building_types():
+        for b_type in bt.ALL_BUILDING_TYPES :
             for building in bt.find_buildings_in_type(b_type, self.updated_building_data_all):
                 original_height = building.get_init_height()
                 extra_height = building.get_extra_height()
@@ -195,7 +194,7 @@ class EvaluatePlan(object):
         # first time, should calculate it
         self.__plan_needs_score = 1
         # for all buildings, including residential and public!!
-        for b_type in bt.all_building_types():
+        for b_type in bt.ALL_BUILDING_TYPES:
             unit_needs_for_type = self.__all_needs[b_type]
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
 
@@ -229,7 +228,7 @@ class EvaluatePlan(object):
         # first time, should calculate it
         self.__plan_distance_score = 1
         # loop over only public buildings!!
-        for b_type in bt.all_public_building_types():
+        for b_type in bt.ALL_PUBLIC_BUILDING_TYPES:
             buildings_in_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
             updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.updated_building_data_all)
@@ -246,7 +245,7 @@ class EvaluatePlan(object):
         # first time, should calculate it
         self.__plan_distance_score = 1
         # loop over only public buildings!!
-        for b_type in bt.all_public_building_types():
+        for b_type in bt.ALL_PUBLIC_BUILDING_TYPES:
             buildings_in_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
             updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.updated_building_data_all)

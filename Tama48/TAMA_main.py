@@ -28,7 +28,7 @@ def generate_random_result_for_Rony(init_building_data):
 
 def link_public_private_buildings(building_data):
     for resd_building in bt.find_buildings_in_type(bt.RESIDENTIAL, building_data):
-        for type in bt.all_public_building_types():
+        for type in bt.ALL_PUBLIC_BUILDING_TYPES:
             public_buildings_in_type = bt.find_buildings_in_type(type, building_data)
 
             dist_lst = [(public_in_type, util.calc_distance_two_buildings(resd_building, public_in_type))
@@ -60,10 +60,10 @@ if __name__ == '__main__':
     folder_types = ["only_cost", "only_distance", "only_needs"]
 
     add_units_lst = [10000] #, 1000]
-    k_lst = [16, 30] #, 40]
+    k_lst = [16] #, 40]
     iters_lst = [30] #, 25]
     mut_prob_lst = [0.3] #, 0.03]
-    is_genetic = 0
+    is_genetic = 1
     time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
 
     #(buildings_data, all_needs_dict, add_housing_units, k, num_iterations, mutatio_prob , time_folder):
@@ -77,7 +77,7 @@ if __name__ == '__main__':
                     for mut_prob in mut_prob_lst:
                         (iter_score, updated_building_data) =\
                             genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units,
-                                                                   k, iters, mut_prob, "5needs_4distt_1cost")
+                                                                   k, iters, mut_prob, "5needs_4dist_1cost-new_public")
     # else:
     #     (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
     #                                                           k, iters, mut_prob, time_folder)
