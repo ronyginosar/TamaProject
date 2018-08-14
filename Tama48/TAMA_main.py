@@ -66,11 +66,6 @@ if __name__ == '__main__':
     is_genetic = 0
     time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
 
-    add_units_lst = [10] #, 1000]
-    k_lst = [16] #, 40]
-    iters_lst = [30] #, 20]
-    mut_prob_lst = [0.05]#, 0.1]
-
     #(buildings_data, all_needs_dict, add_housing_units, k, num_iterations, mutatio_prob , time_folder):
     if is_genetic:
         for add_housing_units in add_units_lst:
@@ -82,7 +77,7 @@ if __name__ == '__main__':
                     for mut_prob in mut_prob_lst:
                         (iter_score, updated_building_data) =\
                             genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units,
-                                                                   k, iters, mut_prob, "5needs_4sidt_1cost")
+                                                                   k, iters, mut_prob, "5needs_4distt_1cost")
     # else:
     #     (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_housing_units)
     #                                                           k, iters, mut_prob, time_folder)
