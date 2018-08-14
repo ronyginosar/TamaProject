@@ -125,7 +125,7 @@ class Person(object):
     def get_child_satisfaction(self):
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
-        
+
         for (building,distance) in used_buildings:
             if building.get_type() == KINDERGARDEN:
                 if distance < 300:

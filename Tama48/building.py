@@ -47,13 +47,13 @@ class Building(object):
     def __str__(self):
         return "B_" + str(self.__building_type) + "_" + str(self.__id)
 
-    # TODO: TO Check implementation
-    def calc__public_building_dist_ordered(self, all_building_data):
-        for b_type in bt.all_public_building_types():
-            dist_buildings_in_type = [(building.get_id(), util.calc_distance_two_buildings(self, building))
-                                      for building in bt.find_buildings_in_type(b_type, all_building_data)]
-            # sort public building by distance, ordered: closest to farther..
-            self.__public_buildings_dist_ordered[b_type] = sorted(dist_buildings_in_type, key=lambda x: x[1])
+    # # TODO: TO Check implementation
+    # def calc__public_building_dist_ordered(self, all_building_data):
+    #     for b_type in bt.all_public_building_types():
+    #         dist_buildings_in_type = [(building.get_id(), util.calc_distance_two_buildings(self, building))
+    #                                   for building in bt.find_buildings_in_type(b_type, all_building_data)]
+    #         # sort public building by distance, ordered: closest to farther..
+    #         self.__public_buildings_dist_ordered[b_type] = sorted(dist_buildings_in_type, key=lambda x: x[1])
 
     def get_id(self):
         return self.__id
@@ -83,6 +83,9 @@ class Building(object):
         self.__added_floors += math.ceil(extra_extra_floors)
 
     def get_overall_area(self):
-        return (self.__init_floors + self.__added_floors) * self.__area
+        return self.get_overall_height() * self.__area
+
+    def get_overall_height(self):
+        return (self.__init_floors + self.__added_floors)
 
 

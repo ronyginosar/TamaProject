@@ -5,8 +5,8 @@ import needs
 import math
 
 NEEDS_PRCTG = 0.5
-DISTANCE_PERCTG = 0.25
-COST_PRCTG = 0.25
+DISTANCE_PERCTG = 0.4
+COST_PRCTG = 0.1
 
 # for extra floors we reduce the score according to cost..
 PERCENTAGE = 100
@@ -26,7 +26,6 @@ we return a probability vector over the public building from this type, which is
 all residential building' new area (of the new state) * all distances of them to this specific building
 normalized to 0-1, for probability preferences.
 """
-# TODO: TO CHECK IMPLEMENTATION
 def evaluate_buildings_distances_for_type(updated_building_data_resd, public_buildings_sametype):
     avg_dist_lst = []
     for public_building in public_buildings_sametype:
@@ -56,7 +55,7 @@ class EvaluatePlan(object):
         self.__all_needs = all_needs
         # TODO: TO ADI: this function is updating the the init_building_data with the new state of additional floors
         # TODO: of ONLY residential buildings. the result will be stores in __updated_building_data_resd
-        self.__updated_building_data_all = \
+        self.updated_building_data_all = \
             bt.update_building_resd_with_floors_plan(self.__init_buildings_data, plan_floors_resd_state)
         self.__plan_needs_score = -1
         self.__plan_distance_score = -1
@@ -73,7 +72,6 @@ class EvaluatePlan(object):
     :return: public_plan_prob_vec_per_type_dist is a Dict<Key = public_type, Value = List<float, float, ..>>
     the number of values in the list is as the number of public building from this specific public_type.
     """
-    # TODO CHECK IMPLEMENTATION
     def __calculate_public_plan_prob_importance(self):
         # in current situation (before building more floors), we don't know the cost, because it depends on the num
         # of floors, and the needs are mandatory for us. so importance is based on distance only.
@@ -84,7 +82,7 @@ class EvaluatePlan(object):
             # it doesnt' matter if it is self.__init_buildings_data or updated_building_data_resd,
             # because the public buildings are not updated anyway..
             public_buildings_sametype = bt.find_buildings_in_type(public_type, self.__init_buildings_data)
-            updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.__updated_building_data_all)
+            updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.updated_building_data_all)
             public_plan_prob_vec_per_type_dist[public_type] = evaluate_buildings_distances_for_type\
                 (updated_building_data_resd, public_buildings_sametype)
 
@@ -96,14 +94,12 @@ class EvaluatePlan(object):
     and calculate the number of floors to add for each public building based on this vector,
     as the number of units as required, or more (using ceil for this)
     """
-
-    # TODO CHECK IMPLEMENTATION
     def __calculate_public_plan(self):
         for public_type in bt.all_public_building_types():
             units_needed_for_type = self.__all_needs[public_type]  # ex: 3 units
             area_per_unit_for_type = needs.one_unit_in_meter_square(public_type)  # ex: 100 m^2 per unit
             area_needed_for_type = units_needed_for_type * area_per_unit_for_type  # ex: 300 m^2 overall
-            public_in_type = bt.find_buildings_in_type(public_type, self.__updated_building_data_all)
+            public_in_type = bt.find_buildings_in_type(public_type, self.updated_building_data_all)
             left_area = area_needed_for_type
             idx = 0
             search_more = True
@@ -116,7 +112,11 @@ class EvaluatePlan(object):
                 while idx < len(building_score_type_sorted):
                     first_to_build = building_score_type_sorted[idx][1]
                     building_area = first_to_build.get_area()
-                    if left_area - (0.5 * building_area) > building_area:
+                    building_height = first_to_build.get_overall_height()
+                    max_height = first_to_build.get_max_height()
+                    if (building_height > max_height):
+                        idx += 1
+                    elif left_area - (0.5 * building_area) > building_area:
                         # if worth to add a floor
                         first_to_build.add_extra_height(1)
                         left_area -= building_area
@@ -167,7 +167,7 @@ class EvaluatePlan(object):
     """
 
     ############################## EVALUATION AFTER CALCULATION OF PUBLIC PLAN ##############################
-    # TODO TO CHECK IMPLEMENTATION,
+
     def __evaluate_plan_cost(self):
         # already calculated:
         if self.__plan_cost_score != -1:
@@ -175,7 +175,7 @@ class EvaluatePlan(object):
 
         self.__plan_cost_score = 1
         for b_type in bt.all_building_types():
-            for building in bt.find_buildings_in_type(b_type, self.__updated_building_data_all):
+            for building in bt.find_buildings_in_type(b_type, self.updated_building_data_all):
                 original_height = building.get_init_height()
                 extra_height = building.get_extra_height()
                 extra_extra = max(extra_height - math.ceil(FLOORS_PRCTG * original_height), 0)
@@ -187,7 +187,6 @@ class EvaluatePlan(object):
 
         return self.__plan_cost_score
 
-    # TODO: TO CHECK IMPLEMENTATION
     def __evaluate_plan_needs(self):
         # already calculated:
         if self.__plan_needs_score != -1:
@@ -203,7 +202,7 @@ class EvaluatePlan(object):
             if b_type == bt.CLINIC:
                 x = 0
 
-            buildings_in_type = bt.find_buildings_in_type(b_type, self.__updated_building_data_all)
+            buildings_in_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
             extra_units_for_type = 0
             for building in buildings_in_type:
                 extra_units_for_type += building.get_area() * building.get_extra_height()
@@ -222,7 +221,23 @@ class EvaluatePlan(object):
 
         return self.__plan_needs_score
 
-    # TODO: TO CHECK IMPLEMENTATION, few questions
+    # TODO!
+    def __evaluate_plan_linked_distance(self):
+        if self.__plan_distance_score != -1:
+            return self.__plan_distance_score
+
+        # first time, should calculate it
+        self.__plan_distance_score = 1
+        # loop over only public buildings!!
+        for b_type in bt.all_public_building_types():
+            buildings_in_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
+            # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
+            updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.updated_building_data_all)
+            updated_building_data_public_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
+            for p_building in updated_building_data_public_type:
+                for building_resd_used in p_building.get_users_buildings():
+                    pass
+
     def __evaluate_plan_distance(self):
         # if already calculated:
         if self.__plan_distance_score != -1:
@@ -232,9 +247,9 @@ class EvaluatePlan(object):
         self.__plan_distance_score = 1
         # loop over only public buildings!!
         for b_type in bt.all_public_building_types():
-            buildings_in_type = bt.find_buildings_in_type(b_type, self.__updated_building_data_all)
+            buildings_in_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
             # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
-            updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.__updated_building_data_all)
+            updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.updated_building_data_all)
             sum_avg_dist_lst_prob = evaluate_buildings_distances_for_type(updated_building_data_resd, buildings_in_type)
 
             # finally, duplicate the probability (importance) of the PUBLIC buildings with its extra height
@@ -257,7 +272,6 @@ class EvaluatePlan(object):
     """
     Evaluate full plan, i.e. after public-plan has been calculated
     """
-    # TODO: READY
     def evaluate_plan_score(self):
         # weighted evaluation
         return self.__evaluate_plan_needs() * NEEDS_PRCTG + \
@@ -267,9 +281,8 @@ class EvaluatePlan(object):
     """
     get the calculated _updated_building_data, updated with residential and public both.
     """
-    # TODO: READY
     def get_updated_building_data_all(self):
-        return self.__updated_building_data_all
+        return self.updated_building_data_all
 
 
 
