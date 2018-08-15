@@ -116,6 +116,8 @@ class EvaluatePlan(object):
                     max_height = first_to_build.get_max_height()
                     if (building_height > max_height):
                         idx += 1
+                        if idx == len(building_score_type_sorted):
+                            search_more = False
                     elif left_area > 0.5 * building_area:
                         # if worth to add a floor
                         first_to_build.add_extra_height(1)

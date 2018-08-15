@@ -86,11 +86,11 @@ if __name__ == '__main__':
     iters_lst = [30] #, 25]
     mut_prob_lst = [0.3] #, 0.03]
     is_genetic = 1
-    time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
+    #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
 
     add_units_lst = [10] #, 1000]
-    k_lst = [16] #, 40]
-    iters_lst = [30] #, 20]
+    k_lst = [8] #, 40]
+    iters_lst = [10] #, 20]
     mut_prob_lst = [0.05]#, 0.1]
 
     if is_genetic:
