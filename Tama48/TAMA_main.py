@@ -14,28 +14,24 @@ import copy
 import random
 import datetime
 import json
+import evaluate_personal_satisfaction as eps
 
 
 def convert_to_json_and_save(state):
-    state_dict = {}
+    all_buildings_list = []
     for i in range(len(state)):
-        buildings_list = []
         for j in range(len(state[i][1])):
-            curr_building = state[i][1][j]
-            buildings_list.append([{
-                'building': {
+            curr_building = (state[i][1])[j]           
+            all_buildings_list.append({
                     'id': curr_building.get_id(),
                     'area': curr_building.get_area(),
                     'location': curr_building.get_location(),
                     'polygon': curr_building.get_polygon(),
                     'init_height': curr_building.get_init_height(),
-                    'extra_height': curr_building.get_extra_height(),
-                }
-            }])
-
-        state_dict[state[i][0]] = buildings_list
+                    'extra_height': curr_building.get_extra_height()
+            })
     with open('data.json', 'w') as outfile:
-        json.dump(state_dict, outfile)
+        json.dump(all_buildings_list, outfile)
 
 
 # def generate_random_result_for_Rony(init_building_data):
@@ -57,12 +53,15 @@ def link_public_private_buildings(building_data):
                      for public_in_type in public_buildings_in_type]
             dist_lst_sorted = sorted(dist_lst, key=lambda x: x[1])
             # closest public, take the first argument of the tuple (building, dist)
-            closest_public = dist_lst_sorted[0][0]
+
+            # closest_public = dist_lst_sorted[0]
+            closest_public= dist_lst_sorted[0][0]
+            dist = dist_lst_sorted[0][1]
 
             # link residential to public
             closest_public.add_user_buildings(resd_building)
             # link public to residential
-            resd_building.add_used_public_building(closest_public)
+            resd_building.add_used_public_building(closest_public, dist)
 
     return building_data
 
@@ -90,7 +89,7 @@ if __name__ == '__main__':
 
     add_units_lst = [10] #, 1000]
     k_lst = [8] #, 40]
-    iters_lst = [10] #, 20]
+    iters_lst = [5] #, 20]
     mut_prob_lst = [0.05]#, 0.1]
 
     if is_genetic:
@@ -106,6 +105,10 @@ if __name__ == '__main__':
     else:
         all_needs_dict = needs.calc_needs(init_building_data, add_units_lst[0])
         (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_units_lst[0])
+
+    satisfaction = eps.evaluate_personal_satisfaction(updated_building_data)
+    print(satisfaction)
+    convert_to_json_and_save(updated_building_data)
     print('the end!')
     print('score = ' + str(iter_score))
     #print(updated_building_data.get_heights_to_add())

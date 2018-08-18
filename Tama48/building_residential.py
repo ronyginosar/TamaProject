@@ -10,8 +10,8 @@ class Residential(building.Building):
     def calculate_used_public_buildings(self):
         pass #TODO implement
 
-    def add_used_public_building(self, public_building):
-        self.used_public_buildings.append(public_building)
+    def add_used_public_building(self, public_building, dist):
+        self.used_public_buildings.append((public_building,dist))
 
     def set_used_public_buildings(self, public_buildings):
         self.used_public_buildings = public_buildings

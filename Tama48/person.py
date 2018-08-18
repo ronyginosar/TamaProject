@@ -26,22 +26,16 @@ SYNAGOUGE = 'synagogue'
 
 person_types = []
 
-#     return [CLINIC, COMMUNITY_CNTR, ELDERLY_CNTR, HIGH_SCHOOL, HOSPITAL, KINDERGARDEN, MIKVE,
-#                               POLICE, PRIMARY_SCHOOL, SPORT, SYNAGOUGE]
-
 
 class Person(object):
-    def __init__(self, person_id, person_type, religious = False):
+    def __init__(self, person_type, religious = False):
         """
         Constructor
         """
-        self.__id = person_id
         self.__person_type = person_type
         self.__religious = religious
         self.__satisfaction = 1
 
-    def get_id(self):
-        return self.__id
 
     def get_type(self):
         return self.__person_type
@@ -49,6 +43,7 @@ class Person(object):
     def get_satisfaction(self):
         return self.__satisfaction
 
+    #residence is the building where the person resides
     def set_residence(self, residence):
         self.__residence = residence
 
@@ -64,12 +59,12 @@ class Person(object):
 
         if self.__religious:
             self.update_if_religious_satisfaction()
+        return self.__satisfaction
 
     #single people need community, sport, clinic
     def set_single_satisfaction(self):
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
-
         for (building,distance) in used_buildings:
             if building.get_type() == CLINIC:
                 if distance < 300:
@@ -89,7 +84,7 @@ class Person(object):
         self.__satisfaction = satisfaction
 
     #parent need all schools, clinic, police
-    def get_parent_satisfaction(self):
+    def set_parent_satisfaction(self):
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
 
@@ -122,10 +117,9 @@ class Person(object):
         self.__satisfaction = satisfaction
 
     #child needs at least one school, sport, community
-    def get_child_satisfaction(self):
+    def set_child_satisfaction(self):
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
-
         for (building,distance) in used_buildings:
             if building.get_type() == KINDERGARDEN:
                 if distance < 300:
@@ -155,7 +149,7 @@ class Person(object):
         self.__satisfaction = satisfaction
 
     #elderly needs hospital, elderly, community
-    def get_elderly_satisfaction(self):
+    def set_elderly_satisfaction(self):
 
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
