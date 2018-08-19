@@ -9,7 +9,7 @@ def calculate_conflicts(building, prev_state):
     conflicts = 0
 
     for pub_building in building.get_used_public_buildings():
-        conflicts += pub_building.calc_conflicts()
+        conflicts += pub_building[0].calc_conflicts()
         
     return conflicts
 
@@ -44,40 +44,5 @@ def min_conflict_solution(buildings_data, all_needs, housing_units_to_add):
         num_added_units += util.add_floors(1, new_state, residential_buildings[building_to_increase]) # returns the number of units added
         new_state.update_floors(added_floors_resd)
 
-    # score ?
+    # score
     return (new_state.get_score(), new_state.get_updated_building_data())
-
-
-    # additional_heights = []
-    # building_residential = []
-    # building_types = []
-    # # TODO implement algorithm, implement
-    # for building in buildings_data:
-    #     if building[0] == 'residential':
-    #         building_residential == building[1]
-    #         break
-    #     else:
-    #         building_types.append(building[0])
-
-    # type algorithm here
-    # for ...
-    #   new_plan_state = ...
-    #   additional_heights = evaluate_plan.EvaluatePlan(init_state, new_plan_state, all_needs)
-    # ...
-
-
-
-    # iter until max_iter
-    # for i=1 to ____ :
-        # if current_state is a solution of csp then return current_state
-        # we return a solution set of values for the variable
-        # var <-- a randomly chosen variable from the set of conflicted variables CONFLICTED[csp]
-        # value <-- the value v for var that minimizes CONFLICTS(var,v,current_state,csp)
-        # set var = value in current_state
-    # return fail
-
-    # current_state, an initial assignment of values for the variables in the csp
-    # csp, a constraint satisfaction problem: <variables> , <constraints> ,
-
-
-

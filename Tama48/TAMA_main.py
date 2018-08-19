@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
     link_public_private_buildings(init_building_data)
 
-    is_genetic = 1
+    is_genetic = 0
     #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
     folder_types = ["only_cost", "only_distance", "only_needs"]
 
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     k_lst = [16] #, 40]
     iters_lst = [30] #, 25]
     mut_prob_lst = [0.3] #, 0.03]
-    is_genetic = 1
+    is_genetic = 0
     #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
 
     add_units_lst = [10] #, 1000]
