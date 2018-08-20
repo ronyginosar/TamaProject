@@ -36,11 +36,12 @@ def upload():
     ## otherwise
     else:
         # Run TAMA with requested algorithm and units, print to Terminal
-        print("alg recived" , alg)
-        print("units recived" , units)
-        # tama.makeMyTama(alg,units) # TODO run :)
+        # print("alg recived" , alg)
+        # print("units recived" , units)
+        s = tama.makeMyTama(alg,units)
         # Using "jsonify" makes it easy to read the data back in p5
-        return jsonify(status='ran alg') # todo return score
+        # print("score is: " , s)
+        return jsonify(status='ran alg',id=s) # todo return score
 
 # Run app:
 if __name__ == '__main__':

@@ -61,17 +61,16 @@ class Building {
     strokeWeight(1);
 		for (var s = 0 ; s < this.sections.length ; s++){
 			push();
-			if (s){ // new section has index 1
+			if (s && this.sections[s].getHeight()){ // new section has index 1
         noFill();
-				stroke(this.funcColor);
+				stroke('deeppink');
 				translate(0,this.sections[s-1].getHeight(),0); // place on the top of the old section
 			}
 			else {
         stroke(0);
         ambientMaterial(this.funcColor); // change from framework to fill
-				this.sections[s].constructSection(); //TODO
       }
-			// this.sections[s].constructSection(); //TODO
+			this.sections[s].constructSection();
 			pop();
 		}
 	}

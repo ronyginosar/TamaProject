@@ -12,6 +12,7 @@ function updateData(data) {
   buildingData = data;
   parseData();
   parseScore();
+  redraw();
 }
 
 function parseData() {

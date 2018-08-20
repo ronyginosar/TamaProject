@@ -3,7 +3,7 @@
 
 var amazingAlgorithm; // alg selection radio input
 var submitButton;
-var score = 0;
+var score = 0.0;
 var scores = [1, 0.5, 1, 1, 0.25]; // init values
 var satisfaction; // element
 var algscore; // element
@@ -28,6 +28,12 @@ var unitsToAdd = 300;
 // var KforGenetic = 8; // rename population
 // var iterationsOfAlgorithm = 5;
 // var mutationProbability = 0.5;
+//user satisfaction scores
+var sec_child; // id = 0
+var sec_single; // id = 1
+var rel_single; // id = 2
+var sec_parent; // id = 3
+var rel_elder; // id = 4
 
 function setup() {
   var canvas = createCanvas(windowWidth,windowHeight-300,WEBGL);
@@ -68,7 +74,8 @@ function setup() {
   amazingAlgorithm.style('margin-bottom','10px');
 
   // show score
-  algscore = createElement("algscore", "current score: "+score).style('margin-left','40px');
+  algscore = createElement("algscore", "current score: ");
+  algscore.style('margin-left','40px');
   algscore.parent(amazingAlgorithm);
   algscore.hide(); // stay hidden until code run
 
@@ -99,17 +106,22 @@ function setup() {
   satisfaction = createElement("uss","user satisfaction scores:");
   satisfaction.parent('sketch-holder');
   satisfaction.hide(); // stay hidden until code run
-  createElement("uss","secular child "+scores[0]).parent(satisfaction);
-  createElement("uss","secular single "+scores[1]).parent(satisfaction);
-  createElement("uss","religious single "+scores[2]).parent(satisfaction);
-  createElement("uss","secular parent "+scores[3]).parent(satisfaction);
-  createElement("uss","religious elderly "+scores[4]).parent(satisfaction);
+  // createElement("uss","secular child "+scores[0]).parent(satisfaction);
+  // .parent(satisfaction);
+  // createElement("uss","religious single "+scores[2]).parent(satisfaction);
+  // createElement("uss","secular parent "+scores[3]).parent(satisfaction);
+  // createElement("uss","religious elderly "+scores[4]).parent(satisfaction);
 
-  // var sec_child = 0; // id = 0
-  // var sec_single = 0; // id = 1
-  // var rel_single = 0; // id = 2
-  // var sec_parent = 0; // id = 3
-  // var rel_elder = 0; // id = 4
+  sec_child = createElement("uss","secular child "+scores[0]); // id = 0
+  sec_child.parent(satisfaction);
+  sec_single = createElement("uss","secular single "+scores[1]); // id = 1
+  sec_single.parent(satisfaction);
+  rel_single = createElement("uss","religious single "+scores[2]); // id = 2
+  rel_single.parent(satisfaction);
+  sec_parent = createElement("uss","secular parent "+scores[3]); // id = 3
+  sec_parent.parent(satisfaction);
+  rel_elder = createElement("uss","religious elderly "+scores[4]); // id = 4
+  rel_elder.parent(satisfaction);
 
   createDiv("<br>").parent('sketch-holder');
 }
@@ -130,13 +142,10 @@ function submit() {
 // Reply back from flask server
 function success(data) {
   console.log(data);
-  // TODO updated building data
+  // updated building data
   loadJSON('data.json',updateData);
-  //TODO update score in dom
-  // score = ;
-  // algscore.value(score);
-
-  // update user scores - happens with updateData? TODO
+  score = data['id'];
+  // display scores
   satisfaction.show();
   algscore.show();
   algscore.style("display", "inline-block");
@@ -147,12 +156,17 @@ function error(reply) {
 }
 
 function draw(){
+
   background(0);
   ambientLight(255, 255, 255);
   for (var b = 0 ; b < buildingsToBuild.length ; b++){
     buildingsToBuild[b].constructBuilding();
   }
-  //TODO update score in dom
-  // algscore.value(score);
-
+  //update scores in dom
+  algscore.html("current score: "+score);
+  sec_child.html("secular child "+scores[0]); // id = 0
+  sec_single.html("secular single "+scores[1]); // id = 1
+  rel_single.html("religious single "+scores[2]); // id = 2
+  sec_parent.html("secular parent "+scores[3]); // id = 3
+  rel_elder.html("religious elderly "+scores[4]); // id = 4
 }
