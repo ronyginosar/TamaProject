@@ -46,24 +46,19 @@ class Section {
 }
 
 class Building {
-	constructor(x,y,z,sections,functionality) { //sections is an array
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	constructor(sections,functionality) { //sections is an array, location in polygon data
 		this.sections = sections;
 		this.func = functionality;
 		this.funcColor = 255; // init on white for debugging
 	}
 
 	setfuncColor(){
-		// this.funcColor = color(functionalityColors[this.func]); TODO
-    this.funcColor = color("pink");  // TODO
+		this.funcColor = color(functionalityColors[this.func]);
 	}
 
 	constructBuilding(){
 		this.setfuncColor();
-    strokeWeight(1); //TODO check width
-		// translate(this.x,this.y,this.z); TODO remove
+    strokeWeight(1);
 		for (var s = 0 ; s < this.sections.length ; s++){
 			push();
 			if (s){ // new section has index 1

@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>tama full test 2</title>
+	<title>tama full test 4</title>
 
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.dom.js"></script>
@@ -19,20 +19,23 @@
 	<script src="libraries/quicksettings.js"></script>
 	<script src="libraries/p5.gui.js"></script>
 	<script src="libraries/p5.easycam.js"></script>
+
 	<script src="sketch.js"></script>
 	<script src="buildclasses.js"></script>
 	<script src="dataReader.js"></script>
 
 	<style>
 		body {
-			background-color: black;
+			background-color: white;
 			margin:0;
 			padding:0;
-			overflow: hidden;
+			overflow: scroll;
 			color: white;
 			font-family: sans-serif;
 			font-size: 12pt;
 			font-weight: 100;
+    	overflow-x: hidden;
+			outline: 0;
 		}
 
 		button {
@@ -45,14 +48,55 @@
 			font-size: 12pt;
 			font-weight: 100;
 	    display: inline-block;
+			/* margin-bottom: 20px; */
 		}
 
-		/* input { */
-			/* move with the styling in sketch */
-			/* margin-left: 10px;
-		  margin-bottom: 10px; */
+		.sketchholder {
+			background-color: black;
+		}
+
+		h3{
+			color: black;
+			font-weight: 600;
+			margin:40px;
+			margin-bottom: 0px;
+		}
+
+		p {
+			color: black;
+			margin-left:40px;
+			margin-top: 10px;
+			width: 90%;
+			line-height: 20px;
+		}
+
+		mik {
+			background-color: black;
+			font-size: 10pt;
+			display:inline-block;
+			padding: 5px 5px;
+	    text-align: center;
+			/* margin:40px; */
 			/* width: 50px; */
-		/* } */
+		}
+
+		a {
+			margin-left:40px;
+		}
+
+		h6{
+			color: black;
+			font-weight: 100;
+			margin:40px;
+			margin-bottom: 50px;
+		}
+
+		uss{
+			color: white;
+			font-size: 10pt;
+			margin-left:40px;
+			margin-bottom: 10px;
+		}
 
 		canvas {
 			margin:auto;
@@ -60,5 +104,19 @@
 	</style>
 </head>
 <body>
+	<div class="sketchholder" id="sketch-holder" >
+      <!-- Our sketch will go here! -->
+  </div>
+	<!-- <div class="mik" id="mik-holder"> -->
+			<!-- Our sketch will go here! -->
+	<!-- </div> -->
+	<div>
+		<h3>Welcome to TAMA48</h3>
+		<p>In the next 30 years, by 2048, the population of Israel is projected to double, from 8.5M to 15M. Land is a finite resource; while new towns and cities can be developed, the vast majority of citizens will live in already existing cities.  Therefore, new residences must conform to the constraints that result from the geography of pre-existing towns and cities.</p>
+		<p>Our goal is to develop an intelligent solution that will allow to add population to inhabit a specific neighborhood, while satisfying the social, environmental, and economic constraints.</p>
+		<a href="report.html">read the full report</a>
+		<!-- TODO add link to static html report, SANS id -->
+		<h6> a project by : Adi Ashkenazi, Ariel J Bruce, Naama Glauber and Rony Ginosar</h6>
+	</div>
 </body>
 </html>

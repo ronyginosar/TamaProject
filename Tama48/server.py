@@ -28,16 +28,19 @@ def upload():
     # Get the "alg" value sent from p5, parsed as json
     alg = request.get_json()['alg']
     alg = str(alg) # lose the unicode
+    units = request.get_json()['units']
+    # units = str(alg) # lose the unicode
     # If nothing was sent
     if alg is None:
         return jsonify(status='no name');
     ## otherwise
     else:
-        # Run TAMA with requested algorithm
+        # Run TAMA with requested algorithm and units, print to Terminal
         print("alg recived" , alg)
-        # tama.makeMyTama(alg) # TODO run :)
+        print("units recived" , units)
+        # tama.makeMyTama(alg,units) # TODO run :)
         # Using "jsonify" makes it easy to read the data back in p5
-        return jsonify(status='ran alg')
+        return jsonify(status='ran alg') # todo return score
 
 # Run app:
 if __name__ == '__main__':
