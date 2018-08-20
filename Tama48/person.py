@@ -7,8 +7,6 @@ PARENT = "parent"
 CHILD = "child"
 ELDERLY = "elderly"
 
-
-
 CLINIC = 'clinic'
 COMMUNITY_CNTR = 'community_center'
 ELDERLY_CNTR = 'elderly_center'
@@ -19,16 +17,14 @@ MIKVE = 'mikve'
 POLICE = 'police'
 PRIMARY_SCHOOL = 'primary_school'
 RESIDENTIAL = 'residential'
-SPORT =  'sport'
+SPORT = 'sport'
 SYNAGOUGE = 'synagogue'
-
-
 
 person_types = []
 
 
 class Person(object):
-    def __init__(self, person_type, religious = False):
+    def __init__(self, person_type, religious=False):
         """
         Constructor
         """
@@ -36,16 +32,21 @@ class Person(object):
         self.__religious = religious
         self.__satisfaction = 1
 
-
     def get_type(self):
         return self.__person_type
 
     def get_satisfaction(self):
         return self.__satisfaction
 
-    #residence is the building where the person resides
+    def get_religious(self):
+        return self.__religious
+
+    # residence is the building where the person resides
     def set_residence(self, residence):
         self.__residence = residence
+
+    def get_residence(self):
+        return self.__residence.get_id()
 
     def set_satisfaction(self):
         if self.__person_type == SINGLE:
@@ -61,135 +62,128 @@ class Person(object):
             self.update_if_religious_satisfaction()
         return self.__satisfaction
 
-    #single people need community, sport, clinic
+    # single people need community, sport, clinic
     def set_single_satisfaction(self):
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
-        for (building,distance) in used_buildings:
+        for (building, distance) in used_buildings:
             if building.get_type() == CLINIC:
-                if distance < 300:
+                if distance < 400:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == COMMUNITY_CNTR:
-                if distance < 300:
+                if distance < 1000:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == SPORT:
-                if distance < 300:
+                if distance < 1000:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
         self.__satisfaction = satisfaction
 
-    #parent need all schools, clinic, police
+    # parent need all schools, clinic, police
     def set_parent_satisfaction(self):
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
 
-        for (building,distance) in used_buildings:
+        for (building, distance) in used_buildings:
             if building.get_type() == KINDERGARDEN:
-                if distance < 300:
+                if distance < 600:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == PRIMARY_SCHOOL:
-                if distance < 300:
+                if distance < 800:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == HIGH_SCHOOL:
-                if distance < 300:
+                if distance < 1000:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == CLINIC:
-                if distance < 300:
+                if distance < 400:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == POLICE:
-                if distance < 300:
+                if distance < 1000:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
         self.__satisfaction = satisfaction
 
-    #child needs at least one school, sport, community
+    # child needs school, sport, community
     def set_child_satisfaction(self):
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
-        for (building,distance) in used_buildings:
+        for (building, distance) in used_buildings:
             if building.get_type() == KINDERGARDEN:
                 if distance < 300:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == PRIMARY_SCHOOL:
-                if distance < 300:
+                if distance < 500:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == HIGH_SCHOOL:
-                if distance < 300:
+                if distance < 1000:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == COMMUNITY_CNTR:
-                if distance < 300:
+                if distance < 800:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == SPORT:
-                if distance < 300:
+                if distance < 1000:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
         self.__satisfaction = satisfaction
 
-    #elderly needs hospital, elderly, community
+    # elderly needs hospital, elderly, community
     def set_elderly_satisfaction(self):
 
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
 
-        for (building,distance) in used_buildings:
+        for (building, distance) in used_buildings:
             if building.get_type() == HOSPITAL:
-                if distance < 300:
+                if distance < 1000:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == ELDERLY_CNTR:
                 if distance < 300:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
             if building.get_type() == COMMUNITY_CNTR:
-                if distance < 300:
+                if distance < 700:
                     satisfaction *= 1
                 else:
-                    satisfaction *=.5
+                    satisfaction *= .5
         self.__satisfaction = satisfaction
 
     def update_if_religious_satisfaction(self):
         used_buildings = self.__residence.get_used_public_buildings()
 
-        for (building,distance) in used_buildings:
+        for (building, distance) in used_buildings:
             if building.get_type() == MIKVE:
-                if distance < 300:
+                if distance < 2000:
                     self.__satisfaction *= 1
                 else:
-                    self.__satisfaction *=.5
+                    self.__satisfaction *= .5
             if building.get_type() == SYNAGOUGE:
-                if distance < 300:
+                if distance < 1000:
                     self.__satisfaction *= 1
                 else:
-                    self.__satisfaction *=.5
-
-
-
-
-
-
-
+                    self.__satisfaction *= .5

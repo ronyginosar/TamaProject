@@ -10,7 +10,7 @@ def calculate_conflicts(building, prev_state):
 
     for pub_building in building.get_used_public_buildings():
         conflicts += pub_building[0].calc_conflicts()
-        
+
     return conflicts
 
 
@@ -40,6 +40,7 @@ def min_conflict_solution(buildings_data, all_needs, housing_units_to_add):
 
         sorted_conflicts = sorted(conflicts, key=lambda building: building[0]) #TODO check if it works properly
         building_to_increase = sorted_conflicts[0][1]
+        
         added_floors_resd[building_to_increase] += 1
         num_added_units += util.add_floors(1, new_state, residential_buildings[building_to_increase]) # returns the number of units added
         new_state.update_floors(added_floors_resd)

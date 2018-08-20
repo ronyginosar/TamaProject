@@ -17,21 +17,33 @@ import json
 import evaluate_personal_satisfaction as eps
 
 
-def convert_to_json_and_save(state):
+def convert_to_json_and_save(state, satisfaction):
     all_buildings_list = []
     for i in range(len(state)):
         for j in range(len(state[i][1])):
             curr_building = (state[i][1])[j]           
             all_buildings_list.append({
                     'id': curr_building.get_id(),
+                    'type':curr_building.get_type(),
                     'area': curr_building.get_area(),
                     'location': curr_building.get_location(),
                     'polygon': curr_building.get_polygon(),
                     'init_height': curr_building.get_init_height(),
                     'extra_height': curr_building.get_extra_height()
             })
+    satisfaction_list = []
+    for k in range(len(satisfaction)):
+        satisfaction_list.append({
+            'person_type': satisfaction[k][0],
+            'religious': satisfaction[k][1],
+            'residence_id': satisfaction[k][2],
+            'satisfaction': satisfaction[k][3]
+        })
+    final_dict = {}
+    final_dict['building'] = all_buildings_list
+    final_dict['satisfaction_evaluation_results'] = satisfaction_list
     with open('data.json', 'w') as outfile:
-        json.dump(all_buildings_list, outfile)
+        json.dump(final_dict, outfile)
 
 
 # def generate_random_result_for_Rony(init_building_data):
@@ -106,9 +118,9 @@ if __name__ == '__main__':
         all_needs_dict = needs.calc_needs(init_building_data, add_units_lst[0])
         (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_units_lst[0])
 
+
     satisfaction = eps.evaluate_personal_satisfaction(updated_building_data)
-    print(satisfaction)
-    convert_to_json_and_save(updated_building_data)
+    convert_to_json_and_save(updated_building_data, satisfaction)
     print('the end!')
     print('score = ' + str(iter_score))
     #print(updated_building_data.get_heights_to_add())
