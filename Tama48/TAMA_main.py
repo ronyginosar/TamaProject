@@ -23,24 +23,27 @@ def convert_to_json_and_save(state, satisfaction):
         for j in range(len(state[i][1])):
             curr_building = (state[i][1])[j]           
             all_buildings_list.append({
-                    'id': curr_building.get_id(),
-                    'type':curr_building.get_type(),
-                    'area': curr_building.get_area(),
-                    'location': curr_building.get_location(),
-                    'polygon': curr_building.get_polygon(),
-                    'init_height': curr_building.get_init_height(),
-                    'extra_height': curr_building.get_extra_height()
+                    'building':
+                        {'id': curr_building.get_id(),
+                        'type':curr_building.get_type(),
+                        'area': curr_building.get_area(),
+                        'location': curr_building.get_location(),
+                        'polygon': curr_building.get_polygon(),
+                        'init_height': curr_building.get_init_height(),
+                        'extra_height': curr_building.get_extra_height()}
+
             })
     satisfaction_list = []
     for k in range(len(satisfaction)):
         satisfaction_list.append({
-            'person_type': satisfaction[k][0],
-            'religious': satisfaction[k][1],
-            'residence_id': satisfaction[k][2],
-            'satisfaction': satisfaction[k][3]
+            'person':
+                {'person_type': satisfaction[k][0],
+                'religious': satisfaction[k][1],
+                'residence_id': satisfaction[k][2],
+                'satisfaction': satisfaction[k][3]}
         })
     final_dict = {}
-    final_dict['building'] = all_buildings_list
+    final_dict['buildings'] = all_buildings_list
     final_dict['satisfaction_evaluation_results'] = satisfaction_list
     with open('data.json', 'w') as outfile:
         json.dump(final_dict, outfile)
@@ -88,7 +91,7 @@ if __name__ == '__main__':
 
     link_public_private_buildings(init_building_data)
 
-    is_genetic = 0
+    is_genetic = 1
     #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
     folder_types = ["only_cost", "only_distance", "only_needs"]
 
