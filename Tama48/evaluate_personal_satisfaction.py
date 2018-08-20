@@ -23,9 +23,10 @@ def evaluate_personal_satisfaction(plan):
 	people.append(p.Person(SINGLE,True))
 	people.append(p.Person(PARENT, False))
 	people.append(p.Person(ELDERLY,True))
-	personal_satisfaction = 0
+	personal_satisfaction = []
 
 	for person in people:
 		person.set_residence(residential_buildings[np.random.randint(len(residential_buildings))])
-		personal_satisfaction +=person.set_satisfaction()
+		personal_satisfaction.append((person.get_type(), str(person.get_religious()), person.get_residence(), person.set_satisfaction()))
+	return personal_satisfaction
 		

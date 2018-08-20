@@ -15,7 +15,7 @@ class State(object):
         self.all_needs_dict = all_needs_dict
 
         self.evaluate_plan_obj = None
-        self.updated_building_data = None
+        self.updated_building_data = buildings_data
         self.update_floors(self.additional_floors_resd)
         self.score = self.calc_plan_score(self.evaluate_plan_obj)
 
