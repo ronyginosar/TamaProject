@@ -74,7 +74,7 @@ class Person(object):
                 (building.get_type() == POLICE) or\
                 (building.get_type() == SPORT):
                 dist = (1000-distance)/1000
-                satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
                 # satisfaction *=  dist    
         self.__satisfaction = satisfaction
 
@@ -90,7 +90,7 @@ class Person(object):
                 (building.get_type() == CLINIC) or \
                 (building.get_type() == POLICE):
                 dist = (1000-distance)/1000
-                satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
                 # satisfaction *=  dist
 
         self.__satisfaction = satisfaction
@@ -107,7 +107,7 @@ class Person(object):
                 (building.get_type() == COMMUNITY_CNTR) or \
                 (building.get_type() == POLICE):
                 dist = (1000-distance)/1000
-                satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
                 # satisfaction *=  dist
 
         self.__satisfaction = satisfaction
@@ -125,7 +125,7 @@ class Person(object):
                 (building.get_type() == COMMUNITY_CNTR) or \
                 (building.get_type() == CLINIC):
                 dist = (1000-distance)/1000
-                satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
                 # # satisfaction *=  (average(dist, building.get_building_score()))
                 # satisfaction *=  dist
 
@@ -137,9 +137,8 @@ class Person(object):
         for (building, distance) in used_buildings:
             if (building.get_type() == MIKVE) or \
                 (building.get_type() == SYNAGOUGE):
-                if(dist <500):
-                    dist = (1000-distance)/1000
-                    self.__satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                dist = (1000-distance)/1000
+                self.__satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
 
                     # self.__satisfaction *=  (average(dist, building.get_building_score()))
                     # self.__satisfaction *=  dist
