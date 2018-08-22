@@ -9,6 +9,7 @@ class PublicBuilding(building.Building):
         building.Building.__init__(self, building_id, b_type, area, location, init_height, polygon)
         # list of residential building which are using this public building (among other public building in this type)
         self.__users_buildings = []
+        self.building_score= 0
 
     def set_users_buildings(self, users_buildings):
         self.__users_buildings = users_buildings
@@ -30,7 +31,12 @@ class PublicBuilding(building.Building):
         using_area = [using_rsd.get_overall_area() for using_rsd in self.get_users_buildings()]
         using_area_meters = sum(using_area)
         area_ratio_score = self.get_overall_area()/using_area_meters
-        return area_ratio_score / (self.get_extra_height() + self.get_init_height())
+        self.building_score = area_ratio_score / (self.get_extra_height() + self.get_init_height())
+        return self.building_score
+
+    def get_building_score(self):
+        return self.building_score
+
 
     def calc_conflicts(self):
         pass
