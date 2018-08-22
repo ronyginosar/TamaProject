@@ -1,5 +1,6 @@
 import math
 import util
+import public_building as pb
 import building_types as bt
 import numpy as np
 
@@ -73,16 +74,15 @@ class Person(object):
                 (building.get_type() == POLICE) or\
                 (building.get_type() == SPORT):
                 dist = (1000-distance)/1000
-                # satisfaction *=  (average(dist, building.get_building_score()))
-                satisfaction *=  dist
-            
-        self.__satisfaction = dist
+                satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                # satisfaction *=  dist    
+        self.__satisfaction = satisfaction
 
     # parent need all schools, clinic, police
     def set_parent_satisfaction(self):
         satisfaction = 1
         used_buildings = self.__residence.get_used_public_buildings()
-        school dist = 0
+    
         for (building, distance) in used_buildings:
             if (building.get_type() == KINDERGARDEN) or \
                 (building.get_type() == PRIMARY_SCHOOL) or \
@@ -90,8 +90,8 @@ class Person(object):
                 (building.get_type() == CLINIC) or \
                 (building.get_type() == POLICE):
                 dist = (1000-distance)/1000
-                # satisfaction *=  (average(dist, building.get_building_score()))
-                satisfaction *=  dist
+                satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                # satisfaction *=  dist
 
         self.__satisfaction = satisfaction
 
@@ -107,8 +107,8 @@ class Person(object):
                 (building.get_type() == COMMUNITY_CNTR) or \
                 (building.get_type() == POLICE):
                 dist = (1000-distance)/1000
-                # satisfaction *=  (average(dist, building.get_building_score()))
-                satisfaction *=  dist
+                satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                # satisfaction *=  dist
 
         self.__satisfaction = satisfaction
 
@@ -125,8 +125,9 @@ class Person(object):
                 (building.get_type() == COMMUNITY_CNTR) or \
                 (building.get_type() == CLINIC):
                 dist = (1000-distance)/1000
-                # satisfaction *=  (average(dist, building.get_building_score()))
-                satisfaction *=  dist
+                satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                # # satisfaction *=  (average(dist, building.get_building_score()))
+                # satisfaction *=  dist
 
         self.__satisfaction = satisfaction
 
@@ -138,8 +139,10 @@ class Person(object):
                 (building.get_type() == SYNAGOUGE):
                 if(dist <500):
                     dist = (1000-distance)/1000
+                    self.__satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+
                     # self.__satisfaction *=  (average(dist, building.get_building_score()))
-                    self.__satisfaction *=  dist
+                    # self.__satisfaction *=  dist
 
 
 def average(a,b):
