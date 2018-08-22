@@ -3,6 +3,16 @@ import util
 import needs
 import building_types as bt
 
+def calc_score_for_persons(pub_building):
+        conflict_points = pub_building.calc_conflicts()
+        score = 1 - (conflict_points / 10)
+        if score > 1:
+            return 1
+        elif score < 0:
+            return 0
+        else:
+            return score
+
 class PublicBuilding(building.Building):
 
     def __init__(self, building_id, b_type, area, location, init_height, polygon):
@@ -33,6 +43,7 @@ class PublicBuilding(building.Building):
         area_ratio_score = self.get_overall_area()/using_area_meters
         self.building_score = area_ratio_score / (self.get_extra_height() + self.get_init_height())
         return self.building_score
+
 
     def get_building_score(self):
         return self.building_score
@@ -146,7 +157,7 @@ class HighSchool(PublicBuilding):
         return age_group_size / num_classes
 
     def calc_conflicts(self):
-        conflict_points = IDEAL_CLASS_SIZE - self.get_class_size()
+        conflict_points = self.get_class_size() - IDEAL_CLASS_SIZE
         if conflict_points <= 0:
             return 0
         else:
@@ -199,7 +210,7 @@ class Kindergarden(PublicBuilding):
 
 
     def calc_conflicts(self):
-        conflict_points = IDEAL_K_CLASS_SIZE - self.get_class_size()
+        conflict_points = self.get_class_size() - IDEAL_K_CLASS_SIZE
         if conflict_points <= 0:
             return 0
         else:
@@ -290,7 +301,7 @@ class PrimarySchool(PublicBuilding):
 
 
     def calc_conflicts(self):
-        conflict_points = IDEAL_P_CLASS_SIZE - self.get_class_size()
+        conflict_points =  self.get_class_size() - IDEAL_P_CLASS_SIZE
         if conflict_points <= 0:
             return 0
         else:
