@@ -21,7 +21,7 @@ def convert_to_json_and_save(state, satisfaction):
     all_buildings_list = []
     for i in range(len(state)):
         for j in range(len(state[i][1])):
-            curr_building = (state[i][1])[j]           
+            curr_building = (state[i][1])[j]
             all_buildings_list.append({
                     'building':
                         {'id': curr_building.get_id(),
@@ -45,7 +45,7 @@ def convert_to_json_and_save(state, satisfaction):
     final_dict = {}
     final_dict['buildings'] = all_buildings_list
     final_dict['satisfaction_evaluation_results'] = satisfaction_list
-    with open('data.json', 'w') as outfile:
+    with open('static/data.json', 'w') as outfile:
         json.dump(final_dict, outfile)
 
 
@@ -80,8 +80,16 @@ def link_public_private_buildings(building_data):
 
     return building_data
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+def makeMyTama(alg,units):  # TODO changed by rony
 
+    print("in MAIN with a " + alg + " algorithm with" ,units , "units") # TODO debugging
+    # TODO changed by rony
+    # add_units_lst = housingUnitsToAdd
+    if alg == 'genetic':
+        is_genetic = 1
+    elif alg == 'minconflict':
+        is_genetic = 0
 
     # dir_path = '..\\..\\data'
     # buildings_data - List < (string, List < Building>>, string:building_type
@@ -91,23 +99,28 @@ if __name__ == '__main__':
 
     link_public_private_buildings(init_building_data)
 
-    is_genetic = 1
+    # is_genetic = 1  # TODO changed by rony
     #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
     folder_types = ["only_cost", "only_distance", "only_needs"]
 
-    add_units_lst = [10000] #, 1000]
-    k_lst = [16] #, 40]
-    iters_lst = [30] #, 25]
-    mut_prob_lst = [0.3] #, 0.03]
-    is_genetic = 0
+    # deleted by rony
+    # add_units_lst = [10000] #, 1000]
+    # k_lst = [16] #, 40]
+    # iters_lst = [30] #, 25]
+    # mut_prob_lst = [0.3] #, 0.03]
+    # is_genetic = 0
     #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
 
-    add_units_lst = [10] #, 1000]
+    # add_units_lst = [10] #, 1000]  # TODO changed by rony
+    add_units_lst = [units]
     k_lst = [8] #, 40]
     iters_lst = [5] #, 20]
     mut_prob_lst = [0.05]#, 0.1]
+    print("in MAIN : using" , add_units_lst , "units") # TODO debugging
+    # print(add_units_lst);
 
     if is_genetic:
+        print("in MAIN : in genetic") # TODO debugging
         for add_housing_units in add_units_lst:
             # calculate needs
             all_needs_dict = needs.calc_needs(init_building_data, add_housing_units)
@@ -118,6 +131,7 @@ if __name__ == '__main__':
                             genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units,
                                                                    k, iters, mut_prob, "5needs_4dist_1cost-new_public")
     else:
+        print("in MAIN : in minconflict") # TODO debugging
         all_needs_dict = needs.calc_needs(init_building_data, add_units_lst[0])
         (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_units_lst[0])
 
@@ -127,3 +141,4 @@ if __name__ == '__main__':
     print('the end!')
     print('score = ' + str(iter_score))
     #print(updated_building_data.get_heights_to_add())
+    return iter_score

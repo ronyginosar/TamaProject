@@ -33,16 +33,20 @@ def min_conflict_solution(buildings_data, all_needs, housing_units_to_add):
 
         # a for loop, iterating over all the residential buildings and counts their conflicts
 
-        conflicts = []
-        # for building in residential_buildings:
-        for i in range(len(residential_buildings)):
-            conflicts.append((calculate_conflicts(residential_buildings[i], new_state), i))
+        for i in range(10):
+            if num_added_units < housing_units_to_add:
+                conflicts = []
+                # for building in residential_buildings:
+                for i in range(len(residential_buildings)):
+                    conflicts.append((calculate_conflicts(residential_buildings[i], new_state), i))
 
-        sorted_conflicts = sorted(conflicts, key=lambda building: building[0]) #TODO check if it works properly
-        building_to_increase = sorted_conflicts[0][1]
-        
-        added_floors_resd[building_to_increase] += 1
-        num_added_units += util.add_floors(1, new_state, residential_buildings[building_to_increase]) # returns the number of units added
+                sorted_conflicts = sorted(conflicts, key=lambda building: building[0]) #TODO check if it works properly
+                for i in range(5):
+                    if num_added_units < housing_units_to_add:
+                        building_to_increase = sorted_conflicts[i][1]
+                        added_floors_resd[building_to_increase] += (10-i)
+                        num_added_units += util.add_floors((10-i), new_state, residential_buildings[building_to_increase]) # returns the number of units added
+
         new_state.update_floors(added_floors_resd)
 
     # score
