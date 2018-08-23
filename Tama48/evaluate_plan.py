@@ -53,8 +53,9 @@ class EvaluatePlan(object):
         self.__buildings_data_public = bt.find_buildings_public(init_buildings_data)
         self.__plan_floors_resd_state = plan_floors_resd_state
         self.__all_needs = all_needs
-        # TODO: TO ADI: this function is updating the the init_building_data with the new state of additional floors
-        # TODO: of ONLY residential buildings. the result will be stores in __updated_building_data_resd
+
+        # this function is updating the the init_building_data with the new state of additional floors
+        # of ONLY residential buildings. the result will be stores in __updated_building_data_resd
         self.updated_building_data_all = \
             bt.update_building_resd_with_floors_plan(self.__init_buildings_data, plan_floors_resd_state)
         self.__plan_needs_score = -1
@@ -128,45 +129,6 @@ class EvaluatePlan(object):
                         if idx == len(building_score_type_sorted):
                             search_more = False
 
-    """
-    def __calculate_public_plan(self):
-        # only for public
-        public_plan_prob_vec_per_type = self.__calculate_public_plan_prob_importance()  # ex: <0.5,0.2,0.3> for one type
-
-        add_extra_floors_dict = dict()
-        for public_type in bt.ALL_PUBLIC_BUILDING_TYPES:
-            units_needed_for_type = self.__all_needs[public_type]                        # ex: 3 units
-            area_per_unit_for_type = needs.one_unit_in_meter_square(public_type)         # ex: 100 m^2 per unit
-            area_needed_for_type = units_needed_for_type * area_per_unit_for_type        # ex: 300 m^2 overall
-            vec_area_for_type = [prob * area_needed_for_type
-                                 for prob in public_plan_prob_vec_per_type[public_type]] # ex: <150,60,90>
-            floors_importance_for_type = []
-            idx = 0
-            for public_building in bt.find_buildings_in_type(public_type, self.__buildings_data_public):
-                floors_importance_for_type.append((public_building.get_id(), public_plan_prob_vec_per_type[public_type][idx],
-                                                   math.ceil(vec_area_for_type[idx] / public_building.get_area())))
-                idx += 1
-            # sort by importance
-            sorted_floors_importance_for_type = sorted(floors_importance_for_type, key=lambda x: x[1])
-            sorted_floors_importance_for_type = sorted_floors_importance_for_type[::-1]
-
-            add_extra_floors_dict[public_type] = dict()
-            left_area = area_needed_for_type
-            for (id,imp,floors) in sorted_floors_importance_for_type:
-                if left_area <= 0:
-                    add_extra_floors_dict[public_type][id] = 0.0
-                else:
-                    building = bt.get_building_by_type_id(public_type, id, self.__init_buildings_data)
-                    floors_to_add = min(floors, math.ceil(left_area/building.get_area()))
-                    add_extra_floors_dict[public_type][id] = floors_to_add
-                    left_area -= building.get_area() * floors_to_add
-
-        # update __updated_building_data_all with all public extra heights.
-        for tuple in bt.find_buildings_public(self.__updated_building_data_all):
-            for building in tuple[1]:
-                building.set_extra_height(add_extra_floors_dict[tuple[0]][building.get_id()])
-    """
-
     ############################## EVALUATION AFTER CALCULATION OF PUBLIC PLAN ##############################
 
     def __evaluate_plan_cost(self):
@@ -206,8 +168,6 @@ class EvaluatePlan(object):
                 extra_units_for_type += building.get_area() * building.get_extra_height()
 
             extra_units_for_type = math.ceil(extra_units_for_type/needs.one_unit_in_meter_square(b_type))
-            # TODO: Naama: in case of better conditions than what is needed, still having 1 as rank ???
-            # TODO: Naama: maybe if ratio>1, than take ratio-1 or just to take max(ratio, 1)???
             ratio = 1
             if extra_units_for_type != 0 and unit_needs_for_type != 0:
                 if extra_units_for_type >= unit_needs_for_type:
@@ -219,7 +179,6 @@ class EvaluatePlan(object):
 
         return self.__plan_needs_score
 
-    # TODO!
     def __evaluate_plan_linked_distance(self):
         if self.__plan_distance_score != -1:
             return self.__plan_distance_score
@@ -229,7 +188,6 @@ class EvaluatePlan(object):
         # loop over only public buildings!!
         for b_type in bt.ALL_PUBLIC_BUILDING_TYPES:
             buildings_in_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
-            # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
             updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.updated_building_data_all)
             updated_building_data_public_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
             for p_building in updated_building_data_public_type:
@@ -246,7 +204,6 @@ class EvaluatePlan(object):
         # loop over only public buildings!!
         for b_type in bt.ALL_PUBLIC_BUILDING_TYPES:
             buildings_in_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
-            # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
             updated_building_data_resd = bt.find_buildings_in_type(bt.RESIDENTIAL, self.updated_building_data_all)
             sum_avg_dist_lst_prob = evaluate_buildings_distances_for_type(updated_building_data_resd, buildings_in_type)
 
@@ -258,8 +215,9 @@ class EvaluatePlan(object):
                 sum_area_public_building = public_building.get_extra_height() * public_building.get_area()
                 sum_all_public_same_type += sum_area_public_building
                 evaluated_for_type += sum_avg_dist_lst_prob[i] * (sum_area_public_building)
-                # TODO: take sum_avg_dist_lst_prob[i] * sum_area_public_building as output maybe
-                # TODO: so it will be good both for evalation and both calc_public_floors...
+
+                # take sum_avg_dist_lst_prob[i] * sum_area_public_building as output maybe
+                # so it will be good both for evalation and both calc_public_floors...
             if evaluated_for_type > 0:
                 self.__plan_distance_score *= evaluated_for_type/max(sum_all_public_same_type, 1)
 
@@ -282,5 +240,42 @@ class EvaluatePlan(object):
     def get_updated_building_data_all(self):
         return self.updated_building_data_all
 
+    """
+       def __calculate_public_plan(self):
+           # only for public
+           public_plan_prob_vec_per_type = self.__calculate_public_plan_prob_importance()  # ex: <0.5,0.2,0.3> for one type
 
+           add_extra_floors_dict = dict()
+           for public_type in bt.ALL_PUBLIC_BUILDING_TYPES:
+               units_needed_for_type = self.__all_needs[public_type]                        # ex: 3 units
+               area_per_unit_for_type = needs.one_unit_in_meter_square(public_type)         # ex: 100 m^2 per unit
+               area_needed_for_type = units_needed_for_type * area_per_unit_for_type        # ex: 300 m^2 overall
+               vec_area_for_type = [prob * area_needed_for_type
+                                    for prob in public_plan_prob_vec_per_type[public_type]] # ex: <150,60,90>
+               floors_importance_for_type = []
+               idx = 0
+               for public_building in bt.find_buildings_in_type(public_type, self.__buildings_data_public):
+                   floors_importance_for_type.append((public_building.get_id(), public_plan_prob_vec_per_type[public_type][idx],
+                                                      math.ceil(vec_area_for_type[idx] / public_building.get_area())))
+                   idx += 1
+               # sort by importance
+               sorted_floors_importance_for_type = sorted(floors_importance_for_type, key=lambda x: x[1])
+               sorted_floors_importance_for_type = sorted_floors_importance_for_type[::-1]
+
+               add_extra_floors_dict[public_type] = dict()
+               left_area = area_needed_for_type
+               for (id,imp,floors) in sorted_floors_importance_for_type:
+                   if left_area <= 0:
+                       add_extra_floors_dict[public_type][id] = 0.0
+                   else:
+                       building = bt.get_building_by_type_id(public_type, id, self.__init_buildings_data)
+                       floors_to_add = min(floors, math.ceil(left_area/building.get_area()))
+                       add_extra_floors_dict[public_type][id] = floors_to_add
+                       left_area -= building.get_area() * floors_to_add
+
+           # update __updated_building_data_all with all public extra heights.
+           for tuple in bt.find_buildings_public(self.__updated_building_data_all):
+               for building in tuple[1]:
+                   building.set_extra_height(add_extra_floors_dict[tuple[0]][building.get_id()])
+       """
 

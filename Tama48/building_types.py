@@ -40,13 +40,6 @@ def find_overall_area_buildings_in_type(b_type, building_data):
 """
 plan_floors_state is a state [(building_id = 1, floors = f1), (building_id = 2, floors = f2), ..], of all building types
 """
-# def floors_given_buldingID_type(plan_floors_state, buildingID, b_type):
-#     # b_f_in_type = for specific building type
-#     b_f_in_type = find_buildings_in_type(b_type, plan_floors_state)
-#     return [building_floor[1] for building_floor in b_f_in_type if building_floor[0] == buildingID][0]
-
-# TODO: TO CHECK INDEXING!!
-
 def get_building_by_type_id(b_type, buildingID, building_data):
     building_in_type = find_buildings_in_type(b_type, building_data)
     for building in building_in_type:
@@ -85,10 +78,3 @@ def update_building_resd_with_floors_plan(init_buildings_data_all, additional_fl
     update_building_data_all[resd_idx] = (RESIDENTIAL, update_resd_building_data_with_floors_plan(buildings_resd, additional_floors_resd))
 
     return update_building_data_all
-
-# def get_building_additional_height_only(updated_building_data):
-#     lst_heights = []
-#     for tuple in updated_building_data:
-#         for building in tuple[1]:
-#             lst_heights.append(building.get_extra_height())
-#     return lst_heights

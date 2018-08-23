@@ -19,14 +19,12 @@ class State(object):
         self.update_floors(self.additional_floors_resd)
         self.score = self.calc_plan_score(self.evaluate_plan_obj)
 
-    # TODO: TO CHECK IMPLEMENTATION
     """
     returns the score of this state
     """
     def get_score(self):
         return self.score
 
-    # TODO: TO CHECK IMPLEMENTATION
     """
     return List< building_type, List<(String:building_id, int:num_of_floors)>>
     """
@@ -55,11 +53,9 @@ class State(object):
         self.additional_floors_resd[building_to_increase.get_id()] += num_floors_to_add
         self.score = self.calc_plan_score(self.evaluate_plan_obj)
 
-    # TODO: TO CHECK IMPLEMENTATION
     def get_heights_to_add(self):
         return self.additional_floors_resd
 
-    # TODO: TO CHECK IMPLEMENTATION
     def get_building_data(self):
         return self.buildings_data
 
@@ -67,7 +63,6 @@ class State(object):
         return self.updated_building_data
 
     def update_floors(self, resd_added_floors):
-        # TODO: Naama: only to update the floors of evaluate_plan_obj.updated... including the
         self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, resd_added_floors, self.all_needs_dict)
         return self.evaluate_plan_obj
 

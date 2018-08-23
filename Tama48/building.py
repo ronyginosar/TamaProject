@@ -14,13 +14,6 @@ class Location(object):
         self.y = y
         self.alt = alt
 
-# # TODO: Naama
-# def create_empty_nearest_public_list(pub_type_list):
-#     pub_dict = dict()
-#     for type in pub_type_list:
-#         pub_dict[type] = (None, None)
-#     return pub_dict
-
 
 class Building(object):
     def __init__(self, building_id, building_type, area, location, init_height, polygon):
