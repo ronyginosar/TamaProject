@@ -21,6 +21,7 @@ PRIMARY_SCHOOL = 'primary_school'
 RESIDENTIAL = 'residential'
 SPORT = 'sport'
 SYNAGOUGE = 'synagogue'
+WEIGHT = 10
 
 person_types = []
 
@@ -74,7 +75,7 @@ class Person(object):
                 (building.get_type() == POLICE) or\
                 (building.get_type() == SPORT):
                 dist = (1000-distance)/1000
-                satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
+                satisfaction *=  (average(dist, WEIGHT*pb.calc_score_for_persons(building)))
                 # satisfaction *=  dist    
         self.__satisfaction = satisfaction
 
@@ -90,7 +91,8 @@ class Person(object):
                 (building.get_type() == CLINIC) or \
                 (building.get_type() == POLICE):
                 dist = (1000-distance)/1000
-                satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
+                # satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
+                satisfaction *=  (average(dist, WEIGHT*pb.calc_score_for_persons(building)))
                 # satisfaction *=  dist
 
         self.__satisfaction = satisfaction
@@ -107,8 +109,9 @@ class Person(object):
                 (building.get_type() == COMMUNITY_CNTR) or \
                 (building.get_type() == POLICE):
                 dist = (1000-distance)/1000
-                satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
+                # satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
                 # satisfaction *=  dist
+                satisfaction *=  (average(dist, WEIGHT*pb.calc_score_for_persons(building)))
 
         self.__satisfaction = satisfaction
 
@@ -125,8 +128,9 @@ class Person(object):
                 (building.get_type() == COMMUNITY_CNTR) or \
                 (building.get_type() == CLINIC):
                 dist = (1000-distance)/1000
-                satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
-                # # satisfaction *=  (average(dist, building.get_building_score()))
+
+                satisfaction *=  (average(dist, WEIGHT*pb.calc_score_for_persons(building)))
+                # satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
                 # satisfaction *=  dist
 
         self.__satisfaction = satisfaction
@@ -138,10 +142,10 @@ class Person(object):
             if (building.get_type() == MIKVE) or \
                 (building.get_type() == SYNAGOUGE):
                 dist = (1000-distance)/1000
-                self.__satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
-
-                    # self.__satisfaction *=  (average(dist, building.get_building_score()))
-                    # self.__satisfaction *=  dist
+                # self.__satisfaction *=  (max(dist, pb.calc_score_for_persons(building)))
+                # satisfaction *=  (average(dist, pb.calc_score_for_persons(building)))
+                self.__satisfaction *=  (average(dist, WEIGHT*building.get_building_score()))
+                # self.__satisfaction *=  dist
 
 
 def average(a,b):

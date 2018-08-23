@@ -135,7 +135,7 @@ def makeMyTama(alg,units):  # TODO changed by rony
         all_needs_dict = needs.calc_needs(init_building_data, add_units_lst[0])
         (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_units_lst[0])
 
-
+    iter_score = round(iter_score,5)
     satisfaction = eps.evaluate_personal_satisfaction(updated_building_data)
     convert_to_json_and_save(updated_building_data, satisfaction)
     print('the end!')
