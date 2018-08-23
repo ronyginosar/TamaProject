@@ -46,16 +46,6 @@ def convert_to_json_and_save(state, satisfaction):
         json.dump(final_dict, outfile)
 
 
-# def generate_random_result_for_Rony(init_building_data):
-#     updated_random_building_data_for_rony = copy.deepcopy(init_building_data)
-#
-#     for tuple in updated_random_building_data_for_rony:
-#         # b_type = tuple[0]
-#         for building in tuple[1]:
-#             if random.randint(0, 1) != 0:
-#                 building.set_extra_height(random.randint(1,10))
-#     return updated_random_building_data_for_rony
-
 def link_public_private_buildings(building_data):
     for resd_building in bt.find_buildings_in_type(bt.RESIDENTIAL, building_data):
         for type in bt.ALL_PUBLIC_BUILDING_TYPES:
