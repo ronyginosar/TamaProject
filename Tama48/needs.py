@@ -67,8 +67,8 @@ def get_residential_sum_area(building_data):
 # elderly_percentage=10, avg_family_size = 3.2, but we didn't use it!
 def calc_needs(buildings_data, add_housing_units):
     #TODO: Naama: all these default parameters should stay here or should it be constant variables like above Adi?
-    add_population = math.ceil(add_housing_units * one_unit_in_meter_square(bt.RESIDENTIAL) / SQ_METER_PER_PERSON)
-    original_population = math.ceil(get_residential_sum_area(buildings_data) / SQ_METER_PER_PERSON)
+    add_population = math.ceil(add_housing_units * AVG_FAMILY_SIZE)
+    original_population = math.ceil(get_residential_sum_area(buildings_data) / METERS_PER_UNIT * AVG_FAMILY_SIZE)
 
     # TODO: Naama: Not in use yet!!
     type_importance_dict = {}

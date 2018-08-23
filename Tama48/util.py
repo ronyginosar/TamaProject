@@ -65,5 +65,6 @@ def calc_importance_of_building(specific_resd_building, buildings_data_resd):
 def calc_pop_size(buildings):
     pop_size = 0
     for building in buildings:
-        pop_size += int(building.get_overall_area()*needs.AVG_FAMILY_SIZE/needs.METERS_PER_UNIT)
+        units_added = get_units_added_to_one_building(building, building.get_extra_height())
+        pop_size += int(get_units_added_to_one_building(building, building.get_extra_height())*needs.AVG_FAMILY_SIZE)
     return pop_size

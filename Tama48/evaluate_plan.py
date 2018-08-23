@@ -182,7 +182,7 @@ class EvaluatePlan(object):
                 extra_extra = max(extra_height - math.ceil(FLOORS_PRCTG * original_height), 0)
                 cost = pow(COST_MORE_PRSTG, extra_extra)
                 if extra_height >= FLOORS_NUM:
-                    cost = min(COST_MORE_NUM_FLOORS, cost)
+                    cost = min(COST_MORE_NUM_FLOORS, 1-cost)
 
                 self.__plan_cost_score *= cost  # max(evaluated_for_type / needs_for_type, 1)
 
@@ -198,10 +198,7 @@ class EvaluatePlan(object):
         # for all buildings, including residential and public!!
         for b_type in bt.ALL_BUILDING_TYPES:
             unit_needs_for_type = self.__all_needs[b_type]
-            # TODO: Naama: Future suggestion: different weights for different public buildings (user request!!)
 
-            if b_type == bt.CLINIC:
-                x = 0
 
             buildings_in_type = bt.find_buildings_in_type(b_type, self.updated_building_data_all)
             extra_units_for_type = 0

@@ -70,12 +70,15 @@ class Clinic(PublicBuilding):
     # more than 0.1 m^2 per person = 0
     # else - 1 conflict point per 0.01 m^2 shortage
     def calc_conflicts(self):
-        area_per_person = self.get_overall_area()/self.get_using_population()
-        conflict_points = int((IDEAL_SIZE_PER_PERSON - area_per_person)*(10/IDEAL_SIZE_PER_PERSON))
-        if conflict_points <= 0:
-            return 0
-        else:
-            return conflict_points
+        using_pop = self.get_using_population()
+        if using_pop > 0:
+            area_per_person = self.get_overall_area()/self.get_using_population()
+            conflict_points = int((IDEAL_SIZE_PER_PERSON - area_per_person)*(10/IDEAL_SIZE_PER_PERSON))
+            if conflict_points <= 0:
+                return 0
+            else:
+                return conflict_points
+        return 0
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.CLINIC)*needs.one_unit_in_meter_square(bt.CLINIC)
@@ -97,12 +100,14 @@ class CommunityCenter(PublicBuilding):
 
     def calc_conflicts(self):
         num_users = int(self.get_using_population() * PERCENTAGE_OF_USERS_FROM_POPULATION)
-        area_per_person = self.get_overall_area()/num_users
-        conflict_points = int((IDEAL_AREA_PER_USER_COMMUNITY - area_per_person)*(10/IDEAL_AREA_PER_USER_COMMUNITY))
-        if conflict_points <= 0:
-            return 0
-        else:
-            return conflict_points
+        if num_users > 0:
+            area_per_person = self.get_overall_area()/num_users
+            conflict_points = int((IDEAL_AREA_PER_USER_COMMUNITY - area_per_person)*(10/IDEAL_AREA_PER_USER_COMMUNITY))
+            if conflict_points <= 0:
+                return 0
+            else:
+                return conflict_points
+        return 0
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.COMMUNITY_CNTR)*needs.one_unit_in_meter_square(bt.COMMUNITY_CNTR)
@@ -126,12 +131,15 @@ class ElderlyCenter(PublicBuilding):
 
     def calc_conflicts(self):
         num_users = int(self.get_using_population() * PERCENTAGE_OF_ELDERLY_USERS_FROM_POPULATION)
-        area_per_person = self.get_overall_area()/num_users
-        conflict_points = int((IDEAL_AREA_PER_USER_ELDERLY - area_per_person)*(10/IDEAL_AREA_PER_USER_ELDERLY))
-        if conflict_points <= 0:
-            return 0
-        else:
-            return conflict_points
+
+        if num_users > 0:
+            area_per_person = self.get_overall_area()/num_users
+            conflict_points = int((IDEAL_AREA_PER_USER_ELDERLY - area_per_person)*(10/IDEAL_AREA_PER_USER_ELDERLY))
+            if conflict_points <= 0:
+                return 0
+            else:
+                return conflict_points
+        return 0
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.ELDERLY_CNTR)*needs.one_unit_in_meter_square(bt.ELDERLY_CNTR)
@@ -161,7 +169,7 @@ class HighSchool(PublicBuilding):
         if conflict_points <= 0:
             return 0
         else:
-            return conflict_points
+            return int (conflict_points / 10)
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.HIGH_SCHOOL)*needs.one_unit_in_meter_square(bt.HIGH_SCHOOL)
@@ -206,7 +214,7 @@ class Kindergarden(PublicBuilding):
     def get_class_size(self):
         age_group_size = self.get_using_population()*needs.AGE_GROUP18_PRCTG*0.01*NUM_K_AGE_GROUPS
         num_classes = int(self.get_overall_area()/needs.one_unit_in_meter_square(bt.KINDERGARDEN))
-        return age_group_size / num_classes
+        return int((age_group_size / num_classes) / 10)
 
 
     def calc_conflicts(self):
@@ -268,12 +276,15 @@ class Police(PublicBuilding):
 
 
     def calc_conflicts(self):
-        area_per_person = self.get_overall_area()/self.get_using_population()
-        conflict_points = int((IDEAL_POLICE_SIZE_PER_PERSON - area_per_person)*(10/IDEAL_POLICE_SIZE_PER_PERSON))
-        if conflict_points <= 0:
-            return 0
-        else:
-            return conflict_points
+        using_pop = self.get_using_population()
+        if using_pop > 0:
+            area_per_person = self.get_overall_area()/using_pop
+            conflict_points = int((IDEAL_POLICE_SIZE_PER_PERSON - area_per_person)*(10/IDEAL_POLICE_SIZE_PER_PERSON))
+            if conflict_points <= 0:
+                return 0
+            else:
+                return conflict_points
+        return 0
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.POLICE)*needs.one_unit_in_meter_square(bt.POLICE)
@@ -297,7 +308,7 @@ class PrimarySchool(PublicBuilding):
     def get_class_size(self):
         age_group_size = self.get_using_population()*needs.AGE_GROUP18_PRCTG*0.01*NUM_P_AGE_GROUPS
         num_classes = int(self.get_overall_area()/needs.one_unit_in_meter_square(bt.PRIMARY_SCHOOL))
-        return age_group_size / num_classes
+        return int((age_group_size / num_classes) / 10)
 
 
     def calc_conflicts(self):
@@ -350,12 +361,14 @@ class Synagogue(PublicBuilding):
 
     def calc_conflicts(self):
         num_users = int(self.get_using_population() * PERCENTAGE_OF_RELIGIOUS_FROM_POPULATION)
-        area_per_person = self.get_overall_area()/num_users
-        conflict_points = int((IDEAL_AREA_PER_USER_SYNAGOGUE - area_per_person)*(10/IDEAL_AREA_PER_USER_SYNAGOGUE))
-        if conflict_points <= 0:
-            return 0
-        else:
-            return conflict_points
+        if num_users > 0:
+            area_per_person = self.get_overall_area()/num_users
+            conflict_points = int((IDEAL_AREA_PER_USER_SYNAGOGUE - area_per_person)*(10/IDEAL_AREA_PER_USER_SYNAGOGUE))
+            if conflict_points <= 0:
+                return 0
+            else:
+                return conflict_points
+        return 0
 
     def calc_building_score(self, all_needs):
         this_needs = all_needs.get(bt.SYNAGOUGE)*needs.one_unit_in_meter_square(bt.SYNAGOUGE)
