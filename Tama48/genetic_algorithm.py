@@ -178,7 +178,6 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units , k, num_
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     idx = 1
-    # ('{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now()))
     try_name = str(add_housing_units) + "units" + str(k)+"k" + str(num_iterations) + "iters" + str(mutatio_prob) + "mut-prob"
     result_file_path = '../results/' + folder_type + '/' + try_name + ".txt" # ToAdd: time_folder + "/"
     file = open(result_file_path, "w")
@@ -201,7 +200,6 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units , k, num_
         for item in lst_extra_heights:
             file.write(str(item) + "\t")
         file.write("\n")
-        #write_to_file(file, idx, iter_score, lst_extra_heights)
 
         population = new_population
         idx += 1
