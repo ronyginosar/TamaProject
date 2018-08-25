@@ -64,7 +64,7 @@ class State(object):
 
     def update_floors(self, resd_added_floors):
         self.evaluate_plan_obj = ep.EvaluatePlan(self.buildings_data, resd_added_floors, self.all_needs_dict)
-        return self.evaluate_plan_obj
+        self.updated_building_data = self.evaluate_plan_obj.get_updated_building_data_all()
 
     def calc_plan_score(self, evaluate_plan_obj):
         return evaluate_plan_obj.evaluate_plan_score()
