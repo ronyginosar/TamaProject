@@ -10,9 +10,6 @@ import util
 import genetic_algorithm
 import min_conflict_algorithm
 import needs
-import copy
-import random
-import datetime
 import json
 import evaluate_personal_satisfaction as eps
 
@@ -49,16 +46,6 @@ def convert_to_json_and_save(state, satisfaction):
         json.dump(final_dict, outfile)
 
 
-# def generate_random_result_for_Rony(init_building_data):
-#     updated_random_building_data_for_rony = copy.deepcopy(init_building_data)
-#
-#     for tuple in updated_random_building_data_for_rony:
-#         # b_type = tuple[0]
-#         for building in tuple[1]:
-#             if random.randint(0, 1) != 0:
-#                 building.set_extra_height(random.randint(1,10))
-#     return updated_random_building_data_for_rony
-
 def link_public_private_buildings(building_data):
     for resd_building in bt.find_buildings_in_type(bt.RESIDENTIAL, building_data):
         for type in bt.ALL_PUBLIC_BUILDING_TYPES:
@@ -81,64 +68,46 @@ def link_public_private_buildings(building_data):
     return building_data
 
 # if __name__ == '__main__':
-def makeMyTama(alg,units):  # TODO changed by rony
+def makeMyTama(alg,units):
 
-    print("in MAIN with a " + alg + " algorithm with" ,units , "units") # TODO debugging
-    # TODO changed by rony
-    # add_units_lst = housingUnitsToAdd
+    print("in MAIN with a " + alg + " algorithm with", units, "units")
     if alg == 'genetic':
         is_genetic = 1
     elif alg == 'minconflict':
         is_genetic = 0
 
-    # dir_path = '..\\..\\data'
-    # buildings_data - List < (string, List < Building>>, string:building_type
     init_building_data = ext_data.read_files()
-
-    # updated_random_building_data_for_rony = generate_random_result_for_Rony(init_building_data)
 
     link_public_private_buildings(init_building_data)
 
-    # is_genetic = 1  # TODO changed by rony
-    #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
-    folder_types = ["only_cost", "only_distance", "only_needs"]
-
-    # deleted by rony
-    # add_units_lst = [10000] #, 1000]
-    # k_lst = [16] #, 40]
-    # iters_lst = [30] #, 25]
-    # mut_prob_lst = [0.3] #, 0.03]
-    # is_genetic = 0
-    #time_folder = '{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now())
-
-    # add_units_lst = [10] #, 1000]  # TODO changed by rony
-    add_units_lst = [units]
-    k_lst = [8] #, 40]
-    iters_lst = [5] #, 20]
-    mut_prob_lst = [0.05]#, 0.1]
-    print("in MAIN : using" , add_units_lst , "units") # TODO debugging
-    # print(add_units_lst);
+    k = 30
+    iters = 30
+    mut_prob = 0.3
 
     if is_genetic:
-        print("in MAIN : in genetic") # TODO debugging
-        for add_housing_units in add_units_lst:
-            # calculate needs
-            all_needs_dict = needs.calc_needs(init_building_data, add_housing_units)
-            for k in k_lst:
-                for iters in iters_lst:
-                    for mut_prob in mut_prob_lst:
-                        (iter_score, updated_building_data) =\
-                            genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, add_housing_units,
-                                                                   k, iters, mut_prob, "5needs_4dist_1cost-new_public")
+        all_needs_dict = needs.calc_needs(init_building_data, units)
+        (iter_score, updated_building_data) = \
+            genetic_algorithm.genetic_solution(init_building_data, all_needs_dict, units,
+                                               k, iters, mut_prob, "5needs_4dist_1cost-new_public")
     else:
-        print("in MAIN : in minconflict") # TODO debugging
-        all_needs_dict = needs.calc_needs(init_building_data, add_units_lst[0])
-        (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, add_units_lst[0])
+        print("in MAIN : in minconflict")
+        all_needs_dict = needs.calc_needs(init_building_data, units)
+        (iter_score, updated_building_data) = min_conflict_algorithm.min_conflict_solution(init_building_data, all_needs_dict, units)
 
-    iter_score = round(iter_score,5)
+    iter_score = round(iter_score, 5)
     satisfaction = eps.evaluate_personal_satisfaction(updated_building_data)
     convert_to_json_and_save(updated_building_data, satisfaction)
     print('the end!')
     print('score = ' + str(iter_score))
-    #print(updated_building_data.get_heights_to_add())
     return iter_score
+
+
+# def generate_random_result_for_Rony(init_building_data):
+#     updated_random_building_data_for_rony = copy.deepcopy(init_building_data)
+#
+#     for tuple in updated_random_building_data_for_rony:
+#         # b_type = tuple[0]
+#         for building in tuple[1]:
+#             if random.randint(0, 1) != 0:
+#                 building.set_extra_height(random.randint(1,10))
+#     return updated_random_building_data_for_rony

@@ -5,22 +5,12 @@ import building_types as bt
 import util
 import math
 
-# TODO: Naama: Should it be a user value and it it only temporarily as a magic number??
 #MUTATION_PROB = 0.1
-
 TYPE = 0
 BUILDINGS = 1
-#import datetime
 
-# """
-# creates a random state
-# """
-# # TODO rony: does min_conf need it??
-# # TODO: Naama: I don't understand what is the reason for that here. please talk to me- I'll implement it inside state!!
-# def get_additional_public_floors(buildings_data, additional_floors, all_needs):
-#     return 1
 
-def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  # TODO rony: does min_conf need it??
+def generate_random_state(buildings_data, add_housing_units, all_needs_dict):
 
     residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
 
@@ -37,7 +27,6 @@ def generate_random_state(buildings_data, add_housing_units, all_needs_dict):  #
     return new_state
 
 # generates the first set of states
-# TODO: TO CHECK IMPLEMENTATION
 def generate_random_population(pop_size, buildings_data, add_housing_unit, all_needs):
     population = []
     for i in range(pop_size):
@@ -48,7 +37,6 @@ def generate_random_population(pop_size, buildings_data, add_housing_unit, all_n
 """
 selects the top 25% of states, according to their score
 """
-#TODO: to implement. don't forget to return at least 2 individuals
 def get_top_individuals(population):
     scores = []
     top_individuals = []
@@ -63,9 +51,6 @@ def get_top_individuals(population):
     return top_individuals
 
 
-"""
-"""
-# TODO: TO CHECK IMPLEMENTATION
 def calibrate_num_units(units_added, residential_buildings, additional_floors, add_housing_unit, comparator,
                         max_min_floor_value):
 
@@ -114,9 +99,7 @@ def merge_elite(pair, add_housing_unit, all_needs, residential_buildings):
 
     return new_state
 
-"""
-"""
-# TODO: TO CHECK IMPLEMENTATION
+
 def get_pair(elite):
     first = elite[random.randint(0,len(elite)-1)]
     second = elite[random.randint(0,len(elite)-1)]
@@ -125,10 +108,6 @@ def get_pair(elite):
     return (first, second)
 
 
-"""
-creates a new set of states, by reproducing the top states in the population
-"""
-# TODO: TO CHECK IMPLEMENTATION
 def reproduce(population, buildings_data, add_housing_unit, all_needs, mutatio_prob):
     residential_buildings = bt.find_buildings_in_type(bt.RESIDENTIAL, buildings_data)
     elite = get_top_individuals(population)
@@ -144,10 +123,6 @@ def reproduce(population, buildings_data, add_housing_unit, all_needs, mutatio_p
     return new_pop
 
 
-"""
-returns the best state of a group of states
-"""
-# TODO: TO CHECK IMPLEMENTATION
 def get_best_state(population):
     best_state = population[0]
     for individual in population:
@@ -178,7 +153,6 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units , k, num_
     population = generate_random_population(k, buildings_data, add_housing_units, all_needs_dict)
 
     idx = 1
-    # ('{:%Y-%m-%d_%H-%M-%S}'.format(datetime.datetime.now()))
     try_name = str(add_housing_units) + "units" + str(k)+"k" + str(num_iterations) + "iters" + str(mutatio_prob) + "mut-prob"
     result_file_path = '../results/' + folder_type + '/' + try_name + ".txt" # ToAdd: time_folder + "/"
     file = open(result_file_path, "w")
@@ -201,7 +175,6 @@ def genetic_solution(buildings_data, all_needs_dict, add_housing_units , k, num_
         for item in lst_extra_heights:
             file.write(str(item) + "\t")
         file.write("\n")
-        #write_to_file(file, idx, iter_score, lst_extra_heights)
 
         population = new_population
         idx += 1

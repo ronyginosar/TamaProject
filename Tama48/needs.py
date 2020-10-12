@@ -20,40 +20,33 @@ AGE_GROUP18_PRCTG = 2.0
 RELIGION_PRCTG = 20.0
 
 # square meters per housing unit
-# METER_PER_UNIT = 90 # TODO: Naama: Temp
-SQ_METER_PER_PERSON = 30 # TODO: Naama: it wasn't in the file of AJ. This is what I remember.. is it correct Adi, AJ??
+# METER_PER_UNIT = 90
+SQ_METER_PER_PERSON = 30
 METERS_PER_UNIT = SQ_METER_PER_PERSON * AVG_FAMILY_SIZE
 
 def one_unit_in_meter_square(b_type):
-    # TODO: for AJ or Adi: To implement according to document of excel.
+    # implemented according to document of excel.
     if b_type == bt.CLINIC:
-        # TODO: to check
         return 100
     elif b_type == bt.COMMUNITY_CNTR:
-        # TODO: to check
         return 100
     elif b_type == bt.ELDERLY_CNTR:
-        # TODO: to check
         return 100
     elif b_type == bt.HIGH_SCHOOL:
         return 130
     elif b_type == bt.HOSPITAL:
-        # TODO: to check department maybe?
         return 300
     elif b_type == bt.KINDERGARDEN:
         return 130
     elif b_type == bt.MIKVE:
         return 65
     elif b_type == bt.POLICE:
-        #TODO: to check
         return 200
     elif b_type == bt.PRIMARY_SCHOOL:
         return 130
     elif b_type == bt.RESIDENTIAL:
-        # TODO: to check
         return 90
     elif b_type == bt.SPORT:
-        # TODO: to check
         return 100
     elif b_type == bt.SYNAGOUGE:
         return 200
@@ -66,18 +59,16 @@ def get_residential_sum_area(building_data):
 
 # elderly_percentage=10, avg_family_size = 3.2, but we didn't use it!
 def calc_needs(buildings_data, add_housing_units):
-    #TODO: Naama: all these default parameters should stay here or should it be constant variables like above Adi?
+
     add_population = math.ceil(add_housing_units * AVG_FAMILY_SIZE)
     original_population = math.ceil(get_residential_sum_area(buildings_data) / METERS_PER_UNIT * AVG_FAMILY_SIZE)
 
-    # TODO: Naama: Not in use yet!!
     type_importance_dict = {}
     avg_imp = 1/(len(bt.ALL_BUILDING_TYPES)-1) # -1 for not considering the residential
     for building in bt.ALL_BUILDING_TYPES:
         type_importance_dict[str(building)] = avg_imp
 
     # number of kids in a certain age (for ex. 102 kids in the age of 10 yo)
-    # TODO: I don't see population_increase, I guess it is add_population, I don't understand why it is perctg
     # grade_size = age_percentage18 * population_increase / PERCENTAGE
     grade_size = AGE_GROUP18_PRCTG * add_population / PERCENTAGE
 
@@ -119,7 +110,6 @@ def calc_needs(buildings_data, add_housing_units):
     community_center_needs /= one_unit_in_meter_square(bt.COMMUNITY_CNTR)
 
     # ELDERLY CENTER
-    # TODO: Naama: to add according to some percentage of the elderly popultion??
     elderly_center_needs = 0
 
     # CLINIC
