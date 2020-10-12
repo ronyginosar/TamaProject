@@ -1,11 +1,7 @@
-Adi Yehezkeli	300203791
-Naama Glauber	312513583
-Ariel Bruce	332668854
-Rony Ginosar	203810221
 
 EXECUTION NOTE:
-install Flask (link bellow), then run from the command line ìpython server.pyî under the TAMA48 folder. The
-commandline should show: ì Running on http://0.0.0.0:8080/ Restarting with statî . Open your browser and paste the
+install Flask (link bellow), then run from the command line ‚Äúpython server.py‚Äù under the TAMA48 folder. The
+commandline should show: ‚Äú Running on http://0.0.0.0:8080/ Restarting with stat‚Äù . Open your browser and paste the
 url that is written in your command line. Your browser should do the rest :)
 
 'Flask' INSTALLATION LINK:
